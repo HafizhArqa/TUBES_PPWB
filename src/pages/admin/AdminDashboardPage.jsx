@@ -105,8 +105,8 @@ export default function AdminDashboardPage() {
             </span>
           </div>
           <p className="text-3xl font-extrabold text-slate-900 mt-2">{kpi.unitDisewa}</p>
-          <Link to="/admin/status-unit" className="text-[11px] font-bold text-indigo-600 hover:underline mt-2 inline-block">
-            Pantau Lokasi Site &rarr;
+          <Link to="/admin/units" className="text-[11px] font-bold text-indigo-600 hover:underline mt-2 inline-block">
+            Lihat Inventaris Unit &rarr;
           </Link>
         </article>
 
@@ -195,10 +195,10 @@ export default function AdminDashboardPage() {
               Seluruh kontrak sewa dilengkapi jaminan ketersediaan frekuensi SLA 99,5% dan dukungan penggantian perangkat Hot-Swap 1x24 jam.
             </p>
             <Link
-              to="/admin/master-tarif"
+              to="/admin/pelanggan"
               className="inline-block pt-1 font-bold text-sky-300 hover:underline"
             >
-              Lihat Master Tarif &amp; SLA &rarr;
+              Lihat Data Pelanggan &rarr;
             </Link>
           </div>
         </aside>
@@ -209,7 +209,7 @@ export default function AdminDashboardPage() {
         <section className="tera-card overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
             <h2 className="text-sm font-bold text-slate-900">Daftar Unit Sedang Beroperasi di Site Klien</h2>
-            <Link to="/admin/status-unit" className="text-xs font-bold text-blue-600 hover:underline">
+            <Link to="/admin/units" className="text-xs font-bold text-blue-600 hover:underline">
               Lihat Semua
             </Link>
           </div>

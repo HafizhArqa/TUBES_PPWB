@@ -12,18 +12,12 @@ const NAV_GROUPS = [
     items: [{ to: '/admin/dashboard', label: 'Dashboard', icon: 'dashboard' }],
   },
   {
-    heading: 'Kelola Unit',
-    items: [
-      { to: '/admin/units', label: 'Data Unit Radio', icon: 'box' },
-      { to: '/admin/status-unit', label: 'Status Fisik Unit', icon: 'layers' },
-    ],
+    heading: 'Inventaris',
+    items: [{ to: '/admin/units', label: 'Kelola Unit Radio', icon: 'box' }],
   },
   {
-    heading: 'Manajemen Master Data',
-    items: [
-      { to: '/admin/pelanggan', label: 'Data Pelanggan', icon: 'building' },
-      { to: '/admin/master-tarif', label: 'Master Tarif', icon: 'tag' },
-    ],
+    heading: 'Master Data',
+    items: [{ to: '/admin/pelanggan', label: 'Data Pelanggan', icon: 'building' }],
   },
 ];
 

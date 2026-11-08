@@ -13,12 +13,12 @@ Berdasarkan kesepakatan pembagian tugas anggota kelompok:
 
 | No | Nama Anggota | Peran / Fitur Utama | Rute Halaman Aktif | File & Komponen Kunci |
 | :---: | :--- | :--- | :--- | :--- |
-| **1** | **Zakaria** | **Fitur Manajemen Master Data** | `/admin/pelanggan`<br>`/admin/master-tarif` | • `src/pages/admin/PelangganPage.jsx`<br>• `src/pages/admin/MasterTarifPage.jsx`<br>• `src/services/masterDataService.js`<br>• `src/services/pelangganService.js`<br>• `src/components/WilayahSelector.jsx` |
+| **1** | **Zakaria** | **Fitur Manajemen Master Data** | `/admin/pelanggan` | • `src/pages/admin/PelangganPage.jsx`<br>• `src/services/pelangganService.js`<br>• `src/components/WilayahSelector.jsx`<br>• `src/services/wilayahPublicApi.js` |
 | **2** | **Hafizh Arqamilandri Wakhyudi** | **Fitur Login, Register, Forgot Password** | `/login`<br>`/register`<br>`/register/verify-otp`<br>`/forgot-password`<br>`/verify-otp`<br>`/reset-password/:token` | • `src/pages/auth/LoginPage.jsx`<br>• `src/pages/auth/RegisterPage.jsx`<br>• `src/pages/auth/VerifyRegisterOtpPage.jsx`<br>• `src/pages/auth/ForgotPasswordPage.jsx`<br>• `src/pages/auth/VerifyResetOtpPage.jsx`<br>• `src/pages/auth/ResetPasswordPage.jsx`<br>• `src/services/authService.js`<br>• `src/context/AuthContext.jsx` |
 | **3** | **Marta Safitri** | **Fitur Dashboard** | `/admin/dashboard` | • `src/pages/admin/AdminDashboardPage.jsx`<br>• `src/components/AreaLineChart.jsx`<br>• `src/services/dashboardService.js` |
-| **4** | **Steven Taufik Fajar** | **Kelola Unit** | `/admin/units`<br>`/admin/status-unit` | • `src/pages/admin/UnitsPage.jsx`<br>• `src/pages/admin/StatusUnitPage.jsx`<br>• `src/services/unitService.js` |
+| **4** | **Steven Taufik Fajar** | **Kelola Unit** | `/admin/units` | • `src/pages/admin/UnitsPage.jsx`<br>• `src/services/unitService.js` |
 
-*Catatan: Seluruh modul di luar pembagian tugas aktif ini (Portal Pelanggan, Transaksi Proyek, Keranjang, Permintaan, dan Laporan Tambahan) diarsipkan dengan aman di dalam folder `100% finish/`.*
+*Catatan: Seluruh modul di luar pembagian tugas aktif ini (Master Tarif, Status Fisik Unit, Portal Pelanggan, Transaksi Proyek, Keranjang, Permintaan, dan Laporan Tambahan) diarsipkan dengan aman di dalam folder `100% finish/`.*
 
 ---
 
@@ -53,9 +53,7 @@ TUBES_PPWEB/
 │   ├── pages/                 # Halaman aplikasi
 │   │   ├── admin/             # Portal Admin
 │   │   │   ├── AdminDashboardPage.jsx (Marta Safitri)
-│   │   │   ├── MasterTarifPage.jsx    (Zakaria)
 │   │   │   ├── PelangganPage.jsx      (Zakaria)
-│   │   │   ├── StatusUnitPage.jsx     (Steven Taufik Fajar)
 │   │   │   └── UnitsPage.jsx          (Steven Taufik Fajar)
 │   │   ├── auth/              # Portal Autentikasi (Hafizh Arqamilandri W.)
 │   │   │   ├── ForgotPasswordPage.jsx
@@ -69,10 +67,10 @@ TUBES_PPWEB/
 │   │   ├── apiClient.js       # Instance Axios dengan simulasi latensi & galat
 │   │   ├── authService.js     # Layanan autentikasi & OTP (Hafizh)
 │   │   ├── dashboardService.js# Layanan metrik KPI dashboard (Marta)
-│   │   ├── masterDataService.js# Layanan master tarif & pajak (Zakaria)
 │   │   ├── mockDb.js          # Document store client-side via localStorage
 │   │   ├── pelangganService.js# Layanan master data pelanggan (Zakaria)
 │   │   ├── unitService.js     # Layanan inventaris radio (Steven)
+│   │   └── wilayahPublicApi.js# Layanan Fetch API Wilayah Indonesia (Zakaria)
 │   │   └── wilayahPublicApi.js# Layanan Fetch API Wilayah Indonesia (Zakaria)
 │   ├── utils/
 │   │   └── formatters.js      # Format mata uang Rupiah & tanggal Indonesia

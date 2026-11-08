@@ -17,11 +17,9 @@ import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 
 // Steven Taufik Fajar: Kelola Unit
 import UnitsPage from './pages/admin/UnitsPage';
-import StatusUnitPage from './pages/admin/StatusUnitPage';
 
 // Zakaria: Fitur Manajemen Master Data
 import PelangganPage from './pages/admin/PelangganPage';
-import MasterTarifPage from './pages/admin/MasterTarifPage';
 
 import NotFoundPage from './pages/NotFoundPage';
 
@@ -118,10 +116,8 @@ export default function App() {
             <Route path="dashboard" element={<AdminDashboardPage />} />
             {/* Steven Taufik Fajar: Kelola Unit */}
             <Route path="units" element={<UnitsPage />} />
-            <Route path="status-unit" element={<StatusUnitPage />} />
             {/* Zakaria: Fitur Manajemen Master Data */}
             <Route path="pelanggan" element={<PelangganPage />} />
-            <Route path="master-tarif" element={<MasterTarifPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />
