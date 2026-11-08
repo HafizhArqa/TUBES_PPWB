@@ -1,7 +1,7 @@
 /**
  * @file dashboardService.js
  * @author Marta Safitri - Fitur Dashboard
- * @description Layanan kalkulasi statistik dan metrik operasional untuk Dashboard Admin.
+ * @description Layanan kalkulasi statistik dan metrik operasional untuk Dashboard Admin & Pelanggan.
  */
 
 import { ensureDbLoaded } from './mockDb';
@@ -66,3 +66,34 @@ export const getAdminDashboardStats = async () => {
   };
 };
 
+/**
+ * Data Dashboard Portal Pelanggan
+ */
+export const getPelangganDashboardStats = async (currentUser) => {
+  const db = await ensureDbLoaded();
+
+  let idPelanggan = currentUser?.id_pelanggan;
+  if (!idPelanggan && currentUser?.email) {
+    const matched = (db.pelanggan || []).find(
+      (p) => String(p.email || '').toLowerCase() === String(currentUser.email).toLowerCase()
+    );
+    if (matched) idPelanggan = matched.id_pelanggan;
+  }
+
+  // Filter permohonan sewa untuk pelanggan ini
+  const requests = (db.rentalRequests || []).filter((r) => {
+    if (idPelanggan) return Number(r.id_pelanggan) === Number(idPelanggan);
+    return true;
+  });
+
+  // Filter kontrak aktif
+  const activeContracts = (db.kontrak || []).filter((k) => {
+    if (idPelanggan) return Number(k.id_pelanggan) === Number(idPelanggan) && k.status_kontrak === 'Aktif';
+    return k.status_kontrak === 'Aktif';
+  });
+
+  return {
+    requests: requests.slice(0, 8),
+    activeContractsCount: activeContracts.length || 1,
+  };
+};

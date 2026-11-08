@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 import AdminLayout from './layouts/AdminLayout';
+import PelangganLayout from './layouts/PelangganLayout';
 
 // Hafizh Arqamilandri Wakhyudi: Fitur Login, Register, Forgot Password
 import LoginPage from './pages/auth/LoginPage';
@@ -14,6 +15,7 @@ import ResetPasswordPage from './pages/auth/ResetPasswordPage';
 
 // Marta Safitri: Fitur Dashboard
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
+import PelangganDashboardPage from './pages/pelanggan/PelangganDashboardPage';
 
 // Steven Taufik Fajar: Kelola Unit
 import UnitsPage from './pages/admin/UnitsPage';
@@ -26,6 +28,9 @@ import NotFoundPage from './pages/NotFoundPage';
 function GuestOnlyRoute({ children }) {
   const { user } = useAuth();
   if (user) {
+    if (user.role === 'pelanggan') {
+      return <Navigate to="/pelanggan/dashboard" replace />;
+    }
     return <Navigate to="/admin/dashboard" replace />;
   }
   return children;
@@ -42,6 +47,7 @@ function ProtectedRoute({ children }) {
 function RootRedirect() {
   const { user } = useAuth();
   if (!user) return <Navigate to="/login" replace />;
+  if (user.role === 'pelanggan') return <Navigate to="/pelanggan/dashboard" replace />;
   return <Navigate to="/admin/dashboard" replace />;
 }
 
@@ -112,12 +118,25 @@ export default function App() {
             }
           >
             <Route index element={<Navigate to="/admin/dashboard" replace />} />
-            {/* Marta Safitri: Fitur Dashboard */}
+            {/* Marta Safitri: Fitur Dashboard Admin */}
             <Route path="dashboard" element={<AdminDashboardPage />} />
             {/* Steven Taufik Fajar: Kelola Unit */}
             <Route path="units" element={<UnitsPage />} />
             {/* Zakaria: Fitur Manajemen Master Data */}
             <Route path="pelanggan" element={<PelangganPage />} />
+          </Route>
+
+          {/* Portal Pelanggan: Marta Safitri (Fitur Dashboard Pelanggan) */}
+          <Route
+            path="/pelanggan"
+            element={
+              <ProtectedRoute>
+                <PelangganLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Navigate to="/pelanggan/dashboard" replace />} />
+            <Route path="dashboard" element={<PelangganDashboardPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />

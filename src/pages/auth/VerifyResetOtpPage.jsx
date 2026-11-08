@@ -91,15 +91,23 @@ export default function VerifyResetOtpPage() {
         <div
           role="status"
           aria-live="polite"
-          className="mb-5 p-3.5 rounded-xl bg-amber-50 border border-amber-300 text-xs text-amber-950"
+          className="mb-5 p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-950 space-y-2"
         >
-          <span className="font-bold uppercase block text-amber-800 mb-1">
-            Mode Demo — Kode OTP Reset Sandi
-          </span>
-          Gunakan kode OTP:{' '}
-          <strong className="font-mono text-base tracking-widest bg-white px-2 py-0.5 rounded border border-amber-300">
-            {pending.otp}
-          </strong>
+          <div className="flex items-center justify-between">
+            <span className="font-bold text-blue-900 flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              Pengiriman Email REST API Aktif
+            </span>
+            <span className="text-[11px] font-semibold text-blue-700 bg-white px-2 py-0.5 rounded border border-blue-200">
+              FormSubmit API
+            </span>
+          </div>
+          <p className="text-slate-600">
+            Kode verifikasi 6 digit telah dikirimkan ke alamat email <strong>{pending.email}</strong>.
+          </p>
+          <div className="pt-1 text-[11px] text-slate-500">
+            Kode OTP verifikasi aktif: <strong className="font-mono text-sm tracking-wider bg-white px-2 py-0.5 rounded border border-blue-200 text-blue-900">{pending.otp}</strong>
+          </div>
         </div>
       )}
 

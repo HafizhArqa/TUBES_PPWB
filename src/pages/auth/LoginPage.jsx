@@ -45,23 +45,16 @@ export default function LoginPage() {
     try {
       const loggedUser = await login({ identity, password });
       showToast(`Selamat datang kembali, ${loggedUser.name}!`, 'success');
-      navigate('/admin/dashboard', { replace: true });
+      if (loggedUser.role === 'pelanggan') {
+        navigate('/pelanggan/dashboard', { replace: true });
+      } else {
+        navigate('/admin/dashboard', { replace: true });
+      }
     } catch (err) {
       setErrors({ form: err.message });
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const fillDemoAccount = (role) => {
-    if (role === 'admin') {
-      setIdentity('admin@tera.co.id');
-      setPassword('password123');
-    } else {
-      setIdentity('admin.tera');
-      setPassword('password123');
-    }
-    setErrors({});
   };
 
   return (
@@ -78,29 +71,6 @@ export default function LoginPage() {
           <span>{errors.form}</span>
         </div>
       )}
-
-      {/* Demo Account Quick Fill */}
-      <div className="mb-5 p-3.5 rounded-xl bg-blue-50/80 border border-blue-200 text-xs">
-        <p className="font-bold text-blue-950 mb-2">Akun Demo Siap Pakai (Klik untuk isi otomatis):</p>
-        <div className="grid grid-cols-2 gap-2">
-          <button
-            type="button"
-            onClick={() => fillDemoAccount('admin')}
-            className="px-3 py-2 rounded-lg bg-white hover:bg-blue-600 hover:text-white border border-blue-200 font-semibold text-blue-800 transition-colors text-left"
-          >
-            <span className="block font-bold">Admin Utama</span>
-            <span className="block text-[11px] opacity-80">admin@tera.co.id</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => fillDemoAccount('project')}
-            className="px-3 py-2 rounded-lg bg-white hover:bg-blue-600 hover:text-white border border-blue-200 font-semibold text-blue-800 transition-colors text-left"
-          >
-            <span className="block font-bold">Admin Operasional</span>
-            <span className="block text-[11px] opacity-80">admin.tera</span>
-          </button>
-        </div>
-      </div>
 
       <form onSubmit={handleSubmit} noValidate className="space-y-4">
         <div>

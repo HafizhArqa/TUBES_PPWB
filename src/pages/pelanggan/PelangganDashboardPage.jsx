@@ -1,21 +1,20 @@
 /**
  * @file PelangganDashboardPage.jsx
  * @author Marta Safitri - Fitur Dashboard
- * @description Dashboard Portal Pelanggan Korporat B2B TERA. Menampilkan ringkasan kontrak aktif,
- * notifikasi permohonan sewa, akses cepat ke katalog perangkat, dan status pengadaan.
+ * @description Dashboard Portal Pelanggan Korporat B2B TERA. Menampilkan ringkasan akun mitra,
+ * status kontrak sewa aktif, dan permohonan pengadaan perangkat radio telekomunikasi.
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { getPelangganDashboardStats } from '../../services/laporanService';
+import { getPelangganDashboardStats } from '../../services/dashboardService';
 import { LoadingState, ErrorState } from '../../components/StatusStates';
 import StatusBadge from '../../components/StatusBadge';
 import Icon from '../../components/Icon';
 import { formatRupiah, formatDateId } from '../../utils/formatters';
 
 export default function PelangganDashboardPage() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [data, setData] = useState({ requests: [], activeContractsCount: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -49,89 +48,82 @@ export default function PelangganDashboardPage() {
         <div className="space-y-2 max-w-2xl">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 text-xs font-semibold border border-sky-400/25">
             <Icon name="radio" size={14} />
-            Portal Mitra B2B PT Utama Telekomindo
+            Portal Klien B2B — PT Utama Telekomindo
           </span>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-            Selamat Datang, {user?.name}
+            Selamat Datang, {user?.name || 'Mitra B2B'}
           </h1>
           <p className="text-sm text-slate-300 leading-relaxed">
-            Ajukan penyewaan perangkat radio Repeater, Base Station, Handy Talkie Explosion Proof, hingga HF SSB untuk operasional tambang, maritim, dan kilang dengan jaminan SLA 99,5%.
+            Sistem informasi penyewaan perangkat radio Repeater, Base Station, Handy Talkie Explosion Proof, dan HF SSB untuk operasional industri telekomunikasi, pertambangan, maritim, dan konstruksi.
           </p>
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Link
-            to="/pelanggan/katalog"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg transition-colors"
-          >
-            <Icon name="radio" size={16} />
-            <span>Jelajahi Katalog Unit</span>
-          </Link>
-          <Link
-            to="/profile"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/15 transition-colors"
-          >
-            <Icon name="user" size={16} />
-            <span>Kelola Profil Akun</span>
-          </Link>
+          <div className="px-4 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white text-xs">
+            <span className="block text-slate-400 text-[10px] uppercase font-bold">Status Layanan SLA</span>
+            <span className="font-bold text-emerald-400 flex items-center gap-1.5 mt-0.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              99.5% Uptime Dijamin
+            </span>
+          </div>
         </div>
       </section>
 
       {/* Quick Access Cards */}
-      <section aria-label="Menu akses cepat" className="kpi-grid-3">
-        <article className="tera-card tera-card-hover p-5 flex flex-col justify-between">
+      <section aria-label="Ringkasan Status Klien" className="kpi-grid-3">
+        <article className="tera-card p-5 flex flex-col justify-between">
           <div className="flex items-start justify-between gap-3 mb-4">
             <div>
-              <h2 className="text-base font-bold text-slate-900">Katalog Perangkat Radio</h2>
+              <h2 className="text-base font-bold text-slate-900">Kontrak Sewa Berjalan</h2>
               <p className="text-xs text-slate-500 mt-1">
-                Pilih unit Repeater, Rig Base, HT Digital, dan HF SSB siap deploy.
+                Saat ini terdapat <strong className="text-emerald-700">{activeContractsCount} kontrak sewa aktif</strong> dengan jaminan penggantian unit 1x24 jam.
+              </p>
+            </div>
+            <span className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <Icon name="box" size={20} />
+            </span>
+          </div>
+          <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg inline-block w-fit">
+            &bull; Kontrak Beroperasi Normal
+          </span>
+        </article>
+
+        <article className="tera-card p-5 flex flex-col justify-between">
+          <div className="flex items-start justify-between gap-3 mb-4">
+            <div>
+              <h2 className="text-base font-bold text-slate-900">Dukungan Hot-Swap Radio</h2>
+              <p className="text-xs text-slate-500 mt-1">
+                Layanan penggantian unit cadangan tersedia 24/7 untuk menjaga kontinuitas komunikasi di area site kritis.
               </p>
             </div>
             <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
               <Icon name="radio" size={20} />
             </span>
           </div>
-          <Link to="/pelanggan/katalog" className="text-xs font-bold text-blue-600 hover:underline">
-            Buka Katalog Sewa &rarr;
-          </Link>
+          <span className="text-xs font-semibold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-lg inline-block w-fit">
+            &bull; Hot-Swap Ready
+          </span>
         </article>
 
-        <article className="tera-card tera-card-hover p-5 flex flex-col justify-between">
+        <article className="tera-card p-5 flex flex-col justify-between">
           <div className="flex items-start justify-between gap-3 mb-4">
             <div>
-              <h2 className="text-base font-bold text-slate-900">Kontrak Berjalan</h2>
+              <h2 className="text-base font-bold text-slate-900">Perwakilan PIC Terdaftar</h2>
               <p className="text-xs text-slate-500 mt-1">
-                Saat ini terdapat <strong className="text-emerald-700">{activeContractsCount} kontrak sewa aktif</strong> dengan jaminan SLA operasional 99.5%.
-              </p>
-            </div>
-            <span className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-              <Icon name="shieldCheck" size={20} />
-            </span>
-          </div>
-          <Link to="/pelanggan/katalog" className="text-xs font-bold text-emerald-600 hover:underline">
-            Lihat Unit Tersedia &rarr;
-          </Link>
-        </article>
-
-        <article className="tera-card tera-card-hover p-5 flex flex-col justify-between">
-          <div className="flex items-start justify-between gap-3 mb-4">
-            <div>
-              <h2 className="text-base font-bold text-slate-900">Profil & Keamanan Akun</h2>
-              <p className="text-xs text-slate-500 mt-1">
-                Perbarui data perwakilan procurement dan kata sandi korporat akun Anda.
+                Akun terverifikasi sebagai perwakilan resmi procurement korporat mitra TERA.
               </p>
             </div>
             <span className="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
-              <Icon name="user" size={20} />
+              <Icon name="building" size={20} />
             </span>
           </div>
-          <Link to="/profile" className="text-xs font-bold text-sky-600 hover:underline">
-            Pengaturan Akun &rarr;
-          </Link>
+          <span className="text-xs font-semibold text-sky-700 bg-sky-50 px-3 py-1.5 rounded-lg inline-block w-fit">
+            &bull; Akun Terverifikasi
+          </span>
         </article>
       </section>
 
-      {/* Recent Requests & Account Card */}
+      {/* Requests & Account Details */}
       <div className="dashboard-split-grid">
         <section className="tera-card overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
@@ -140,7 +132,7 @@ export default function PelangganDashboardPage() {
           </div>
           {requests.length === 0 ? (
             <div className="p-8 text-center text-xs text-slate-500">
-              Belum ada permohonan penyewaan. Silakan pilih perangkat pada menu Katalog.
+              Belum ada permohonan penyewaan aktif yang tercatat.
             </div>
           ) : (
             <div className="tera-table-wrap">
@@ -195,15 +187,16 @@ export default function PelangganDashboardPage() {
               <dd className="font-semibold text-emerald-700">Mitra Korporat B2B</dd>
             </div>
           </dl>
-          <Link
-            to="/profile"
-            className="block text-center w-full py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-700"
+
+          <button
+            type="button"
+            onClick={logout}
+            className="w-full py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 text-xs font-bold transition-colors border border-red-200"
           >
-            Kelola Profil & Kata Sandi
-          </Link>
+            Keluar Sesi Akun
+          </button>
         </aside>
       </div>
     </div>
   );
 }
-

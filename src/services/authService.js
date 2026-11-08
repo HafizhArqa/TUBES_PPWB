@@ -6,6 +6,7 @@
  */
 
 import { ensureDbLoaded, persistDb, nextId, appendActivityLog } from './mockDb';
+import { sendOtpEmailApi } from './emailService';
 
 const SESSION_USER_KEY = 'tera_auth_session_v1';
 const REGISTER_OTP_KEY = 'tera_pending_register_otp_v1';
@@ -81,6 +82,14 @@ export const initiateRegisterOtp = async ({ name, username, email, password }) =
   const otp = generateSixDigitOtp();
   const expiresAt = Date.now() + 10 * 60 * 1000;
 
+  // Panggil REST API pengiriman email OTP (FormSubmit AJAX API)
+  const emailResult = await sendOtpEmailApi({
+    email: cleanEmail,
+    otp,
+    purpose: 'register',
+    name: name.trim(),
+  });
+
   const payload = {
     name: name.trim(),
     username: cleanUsername,
@@ -88,9 +97,11 @@ export const initiateRegisterOtp = async ({ name, username, email, password }) =
     password,
     otp,
     expiresAt,
+    emailSent: emailResult.success,
+    emailApiUsed: emailResult.apiUsed,
   };
   sessionStorage.setItem(REGISTER_OTP_KEY, JSON.stringify(payload));
-  return { email: cleanEmail, otpDemo: otp, expiresAt };
+  return { email: cleanEmail, otpDemo: otp, expiresAt, emailSent: emailResult.success };
 };
 
 export const getPendingRegisterOtp = () => {
@@ -109,9 +120,23 @@ export const resendRegisterOtp = async () => {
   }
   const otp = generateSixDigitOtp();
   const expiresAt = Date.now() + 10 * 60 * 1000;
-  const updated = { ...pending, otp, expiresAt };
+
+  const emailResult = await sendOtpEmailApi({
+    email: pending.email,
+    otp,
+    purpose: 'register',
+    name: pending.name,
+  });
+
+  const updated = {
+    ...pending,
+    otp,
+    expiresAt,
+    emailSent: emailResult.success,
+    emailApiUsed: emailResult.apiUsed,
+  };
   sessionStorage.setItem(REGISTER_OTP_KEY, JSON.stringify(updated));
-  return { email: updated.email, otpDemo: otp, expiresAt };
+  return { email: updated.email, otpDemo: otp, expiresAt, emailSent: emailResult.success };
 };
 
 /**
@@ -168,14 +193,25 @@ export const requestPasswordResetOtp = async (email) => {
 
   const otp = generateSixDigitOtp();
   const expiresAt = Date.now() + 10 * 60 * 1000;
+
+  // Panggil REST API pengiriman email OTP (FormSubmit AJAX API)
+  const emailResult = await sendOtpEmailApi({
+    email: cleanEmail,
+    otp,
+    purpose: 'reset',
+    name: user.name || 'Pengguna',
+  });
+
   const payload = {
     email: cleanEmail,
     otp,
     expiresAt,
     verifiedToken: null,
+    emailSent: emailResult.success,
+    emailApiUsed: emailResult.apiUsed,
   };
   sessionStorage.setItem(RESET_OTP_KEY, JSON.stringify(payload));
-  return { email: cleanEmail, otpDemo: otp, expiresAt };
+  return { email: cleanEmail, otpDemo: otp, expiresAt, emailSent: emailResult.success };
 };
 
 export const getPendingResetOtp = () => {
@@ -194,9 +230,24 @@ export const resendPasswordResetOtp = async () => {
   }
   const otp = generateSixDigitOtp();
   const expiresAt = Date.now() + 10 * 60 * 1000;
-  const updated = { ...pending, otp, expiresAt, verifiedToken: null };
+
+  const emailResult = await sendOtpEmailApi({
+    email: pending.email,
+    otp,
+    purpose: 'reset',
+    name: 'Pengguna',
+  });
+
+  const updated = {
+    ...pending,
+    otp,
+    expiresAt,
+    verifiedToken: null,
+    emailSent: emailResult.success,
+    emailApiUsed: emailResult.apiUsed,
+  };
   sessionStorage.setItem(RESET_OTP_KEY, JSON.stringify(updated));
-  return { email: updated.email, otpDemo: otp, expiresAt };
+  return { email: updated.email, otpDemo: otp, expiresAt, emailSent: emailResult.success };
 };
 
 /**

@@ -14,11 +14,11 @@ Berdasarkan kesepakatan pembagian tugas anggota kelompok:
 | No | Nama Anggota | Peran / Fitur Utama | Rute Halaman Aktif | File & Komponen Kunci |
 | :---: | :--- | :--- | :--- | :--- |
 | **1** | **Zakaria** | **Fitur Manajemen Master Data** | `/admin/pelanggan` | • `src/pages/admin/PelangganPage.jsx`<br>• `src/services/pelangganService.js`<br>• `src/components/WilayahSelector.jsx`<br>• `src/services/wilayahPublicApi.js` |
-| **2** | **Hafizh Arqamilandri Wakhyudi** | **Fitur Login, Register, Forgot Password** | `/login`<br>`/register`<br>`/register/verify-otp`<br>`/forgot-password`<br>`/verify-otp`<br>`/reset-password/:token` | • `src/pages/auth/LoginPage.jsx`<br>• `src/pages/auth/RegisterPage.jsx`<br>• `src/pages/auth/VerifyRegisterOtpPage.jsx`<br>• `src/pages/auth/ForgotPasswordPage.jsx`<br>• `src/pages/auth/VerifyResetOtpPage.jsx`<br>• `src/pages/auth/ResetPasswordPage.jsx`<br>• `src/services/authService.js`<br>• `src/context/AuthContext.jsx` |
-| **3** | **Marta Safitri** | **Fitur Dashboard** | `/admin/dashboard` | • `src/pages/admin/AdminDashboardPage.jsx`<br>• `src/components/AreaLineChart.jsx`<br>• `src/services/dashboardService.js` |
+| **2** | **Hafizh Arqamilandri Wakhyudi** | **Fitur Login, Register, Forgot Password** | `/login`<br>`/register`<br>`/register/verify-otp`<br>`/forgot-password`<br>`/verify-otp`<br>`/reset-password/:token` | • `src/pages/auth/LoginPage.jsx`<br>• `src/pages/auth/RegisterPage.jsx`<br>• `src/pages/auth/VerifyRegisterOtpPage.jsx`<br>• `src/pages/auth/ForgotPasswordPage.jsx`<br>• `src/pages/auth/VerifyResetOtpPage.jsx`<br>• `src/pages/auth/ResetPasswordPage.jsx`<br>• `src/services/authService.js`<br>• `src/services/emailService.js` *(REST API Email)*<br>• `src/context/AuthContext.jsx` |
+| **3** | **Marta Safitri** | **Fitur Dashboard** | `/admin/dashboard`<br>`/pelanggan/dashboard` | • `src/pages/admin/AdminDashboardPage.jsx`<br>• `src/pages/pelanggan/PelangganDashboardPage.jsx`<br>• `src/layouts/PelangganLayout.jsx`<br>• `src/components/AreaLineChart.jsx`<br>• `src/services/dashboardService.js` |
 | **4** | **Steven Taufik Fajar** | **Kelola Unit** | `/admin/units` | • `src/pages/admin/UnitsPage.jsx`<br>• `src/services/unitService.js` |
 
-*Catatan: Seluruh modul di luar pembagian tugas aktif ini (Master Tarif, Status Fisik Unit, Portal Pelanggan, Transaksi Proyek, Keranjang, Permintaan, dan Laporan Tambahan) diarsipkan dengan aman di dalam folder `100% finish/`.*
+*Catatan: Seluruh modul di luar pembagian tugas aktif ini (Master Tarif, Status Fisik Unit, Transaksi Proyek, Keranjang, Permintaan, dan Laporan Tambahan) diarsipkan dengan aman di dalam folder `100% finish/`.*
 
 ---
 
@@ -117,7 +117,14 @@ Seluruh teknologi di luar kriteria resmi (seperti PHP/Laravel, Blade, MySQL, Boo
    ```
 3. Buka URL yang ditampilkan di terminal (default: `http://localhost:5173/`).
 
-**Kredensial Demo Admin Resmi**:
-* **Email / Username**: `admin@tera.co.id` atau `admin.tera`
-* **Password**: `password123`
-* *(Tersedia tombol auto-fill cepat di halaman Login untuk kemudahan presentasi)*
+**Kredensial Login Akun Resmi**:
+* **Akun Admin Operasional**:
+  - Email / Username: `admin@tera.co.id` atau `admin.tera`
+  - Password: `password123`
+  - *Mengarahkan ke Dashboard Admin (`/admin/dashboard`)*
+* **Akun Pelanggan / Mitra Korporat B2B**:
+  - Email / Username: `pelanggan@tera.co.id` atau `rendra.ben`
+  - Password: `password123`
+  - *Mengarahkan ke Dashboard Portal Pelanggan (`/pelanggan/dashboard`)*
+* **Registrasi Mandiri**:
+  - Pengguna dapat mendaftar langsung di `/register`, menerima kode verifikasi OTP via REST API Email, dan otomatis masuk ke Portal Pelanggan.
