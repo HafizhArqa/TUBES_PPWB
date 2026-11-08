@@ -20,9 +20,15 @@ const NAV_GROUPS = [
     ],
   },
   {
+    heading: 'Manajemen Master Data',
+    items: [
+      { to: '/admin/pelanggan', label: 'Master Pelanggan B2B', icon: 'building' },
+      { to: '/admin/master-tarif', label: 'Master Tarif & Standar', icon: 'tag' },
+    ],
+  },
+  {
     heading: 'Komersial & Proyek B2B',
     items: [
-      { to: '/admin/pelanggan', label: 'Mitra Pelanggan B2B', icon: 'building' },
       { to: '/admin/transaksi', label: 'Transaksi & Proyek', icon: 'briefcase', end: true },
       { to: '/admin/transaksi/create', label: 'Buat Transaksi Baru', icon: 'plus' },
       { to: '/admin/angsuran', label: 'Monitoring Angsuran', icon: 'receipt' },
