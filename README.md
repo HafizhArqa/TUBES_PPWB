@@ -16,8 +16,8 @@ Berdasarkan kesepakatan pembagian tugas anggota kelompok:
 | :---: | :--- | :--- | :--- | :--- |
 | **1** | **Zakaria** | **Fitur Manajemen Master Data** | `/admin/pelanggan`<br>`/admin/master-tarif` | `PelangganPage.jsx`<br>`MasterTarifPage.jsx`<br>`masterDataService.js`<br>`pelangganService.js`<br>`WilayahSelector.jsx` |
 | **2** | **Hafizh Arqamilandri Wakhyudi** | **Fitur Login, Register, Forgot Password** | `/login`<br>`/register`<br>`/register/verify-otp`<br>`/forgot-password`<br>`/verify-otp`<br>`/reset-password/:token`<br>`/profile` | `LoginPage.jsx`<br>`RegisterPage.jsx`<br>`VerifyRegisterOtpPage.jsx`<br>`ForgotPasswordPage.jsx`<br>`VerifyResetOtpPage.jsx`<br>`ResetPasswordPage.jsx`<br>`ProfilePage.jsx`<br>`authService.js`<br>`AuthContext.jsx` |
-| **3** | **Marta Safitri** | **Fitur Dashboard** | `/admin/dashboard`<br>`/pelanggan/dashboard`<br>`/admin/laporan-penyewaan`<br>`/admin/laporan-pendapatan` | `AdminDashboardPage.jsx`<br>`PelangganDashboardPage.jsx`<br>`AreaLineChart.jsx` (Pure SVG)<br>`laporanService.js`<br>`LaporanPenyewaanPage.jsx`<br>`LaporanPendapatanPage.jsx` |
-| **4** | **Steven Taufik Fajar** | **Kelola Unit** | `/admin/units`<br>`/admin/status-unit`<br>`/pelanggan/katalog` | `UnitsPage.jsx` (CRUD + Riwayat)<br>`StatusUnitPage.jsx` (Grid/Table)<br>`unitService.js`<br>`KatalogPage.jsx` |
+| **3** | **Marta Safitri** | **Fitur Dashboard** | `/admin/dashboard`<br>`/admin/laporan-penyewaan`<br>`/admin/laporan-pendapatan` | `AdminDashboardPage.jsx`<br>`AreaLineChart.jsx` (Pure SVG)<br>`laporanService.js`<br>`LaporanPenyewaanPage.jsx`<br>`LaporanPendapatanPage.jsx` |
+| **4** | **Steven Taufik Fajar** | **Kelola Unit** | `/admin/units`<br>`/admin/status-unit` | `UnitsPage.jsx` (CRUD + Riwayat)<br>`StatusUnitPage.jsx` (Grid/Table)<br>`unitService.js` |
 
 ---
 
@@ -85,7 +85,7 @@ Gunakan rincian berikut untuk penyusunan laporan individu Word/PDF per anggota:
 ---
 
 ### C. Marta Safitri — Fitur Dashboard
-* **Deskripsi Fitur:** Mengembangkan antarmuka eksekutif berupa Admin Operational & Commercial Dashboard, Portal Pelanggan Dashboard, visualisasi grafik analitik murni SVG, serta modul pelaporan penyewaan dan pendapatan tahunan.
+* **Deskripsi Fitur:** Mengembangkan antarmuka eksekutif berupa Admin Operational & Commercial Dashboard, visualisasi grafik analitik murni SVG, serta modul pelaporan penyewaan dan pendapatan tahunan.
 * **HTML Semantics & A11y:**
   - Menggunakan struktur hierarkis `<header>`, `<main id="main-content">`, `<section aria-labelledby="...">`, `<article className="kpi-card">`, dan `<figure>` untuk visualisasi data grafik.
   - Grafik SVG dilengkapi elemen `<title>`, `<desc>`, dan atribut ARIA (`role="img" aria-label="Grafik Arus Kas Bulanan"`).
@@ -97,15 +97,15 @@ Gunakan rincian berikut untuk penyusunan laporan individu Word/PDF per anggota:
 * **React Architecture & State:**
   - Komponen murni SVG `AreaLineChart.jsx` dengan kalkulasi koordinat matematis dinamis, SVG gradient fill, dan interaktivitas hover tooltip tanpa pustaka pihak ketiga.
   - Metric switcher state (`realisasi` vs `komitmen`) yang langsung merender ulang kurva grafik.
-  - Aggregation engine di `laporanService.js` untuk menghitung rasio utilisasi unit, total revenue, dan piutang jatuh tempo.
+  - Aggregation engine di `laporanService.js` untuk menghitung rasio utilisasi unit, total revenue, dan target tahunan.
 * **API Integration:**
-  - Agregasi data dari 5 endpoint Mock JSON API (`/api/units.json`, `/api/kontrak.json`, `/api/invoices.json`, `/api/pelanggan.json`, `/api/activity-logs.json`).
+  - Agregasi data dari endpoint Mock JSON API (`/api/units.json`, `/api/kontrak.json`, `/api/invoices.json`, `/api/pelanggan.json`, `/api/activity-logs.json`).
   - Loading skeleton shimmer effect dan komponen ErrorState dengan tombol retry.
 
 ---
 
 ### D. Steven Taufik Fajar — Fitur Kelola Unit
-* **Deskripsi Fitur:** Mengembangkan modul inventaris perangkat telekomunikasi radio industri TERA, mencakup CRUD Unit (Repeater, Radio Base, HT, Radio HF), modal upload pratinjau foto perangkat, pencarian & filter kategori, pemantauan status unit dengan toggle mode Grid & Tabel, serta katalog perangkat untuk portal pelanggan.
+* **Deskripsi Fitur:** Mengembangkan modul inventaris perangkat telekomunikasi radio industri TERA, mencakup CRUD Unit (Repeater, Radio Base, HT, Radio HF), modal upload pratinjau foto perangkat, pencarian & filter kategori, serta pemantauan status fisik unit dengan toggle mode Grid & Tabel.
 * **HTML Semantics & A11y:**
   - Komponen dialog modal ramah aksesibilitas menggunakan `role="dialog"`, `aria-modal="true"`, dan `aria-labelledby="modal-title"`.
   - Penutupan modal via keyboard dengan event listener `Escape`.
@@ -131,8 +131,8 @@ Aplikasi dilengkapi tombol **Isi Otomatis (Auto-fill Demo)** pada halaman login 
 
 | Peran (Role) | Email / Username | Kata Sandi | Akses Pengujian |
 | :--- | :--- | :--- | :--- |
-| **Administrator TERA** | `admin@tera.co.id` *(atau `admin.tera`)* | `password123` | Dashboard Admin, CRUD Unit, Status Unit, Transaksi Sewa & Jual Lepas, Proyek 8-Tab, Angsuran, Laporan. |
-| **Pelanggan Korporat B2B** | `pelanggan@tera.co.id` *(atau `rendra.ben`)* | `password123` | Dashboard Pelanggan, Katalog Radio, Keranjang Pengajuan Sewa, Pelacakan Status Proyek 5 Tahap. |
+| **Admin Utama** | `admin@tera.co.id` | `password123` | Dashboard Admin, Kelola Unit, Status Unit, Master Pelanggan B2B, Master Tarif Acuan, Laporan Penyewaan & Pendapatan. |
+| **Admin Operasional** | `admin.tera` | `password123` | Seluruh modul administrasi inventaris dan master data. |
 
 > **Mode Demo OTP:** Pada pengujian registrasi baru (`/register`) dan lupa kata sandi (`/forgot-password`), kode 6-digit OTP ditampilkan secara langsung di kotak informasi **Mode Demo** pada halaman verifikasi sehingga dapat langsung diisi atau di-paste.
 

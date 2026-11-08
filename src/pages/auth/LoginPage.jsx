@@ -45,9 +45,7 @@ export default function LoginPage() {
     try {
       const loggedUser = await login({ identity, password });
       showToast(`Selamat datang kembali, ${loggedUser.name}!`, 'success');
-      navigate(loggedUser.role === 'admin' ? '/admin/dashboard' : '/pelanggan/dashboard', {
-        replace: true,
-      });
+      navigate('/admin/dashboard', { replace: true });
     } catch (err) {
       setErrors({ form: err.message });
     } finally {
@@ -60,7 +58,7 @@ export default function LoginPage() {
       setIdentity('admin@tera.co.id');
       setPassword('password123');
     } else {
-      setIdentity('pelanggan@tera.co.id');
+      setIdentity('admin.tera');
       setPassword('password123');
     }
     setErrors({});
@@ -90,16 +88,16 @@ export default function LoginPage() {
             onClick={() => fillDemoAccount('admin')}
             className="px-3 py-2 rounded-lg bg-white hover:bg-blue-600 hover:text-white border border-blue-200 font-semibold text-blue-800 transition-colors text-left"
           >
-            <span className="block font-bold">Admin TERA</span>
+            <span className="block font-bold">Admin Utama</span>
             <span className="block text-[11px] opacity-80">admin@tera.co.id</span>
           </button>
           <button
             type="button"
-            onClick={() => fillDemoAccount('pelanggan')}
+            onClick={() => fillDemoAccount('project')}
             className="px-3 py-2 rounded-lg bg-white hover:bg-blue-600 hover:text-white border border-blue-200 font-semibold text-blue-800 transition-colors text-left"
           >
-            <span className="block font-bold">Mitra Pelanggan</span>
-            <span className="block text-[11px] opacity-80">pelanggan@tera.co.id</span>
+            <span className="block font-bold">Admin Operasional</span>
+            <span className="block text-[11px] opacity-80">admin.tera</span>
           </button>
         </div>
       </div>

@@ -254,28 +254,3 @@ export const getLaporanPendapatanData = async () => {
   };
 };
 
-/**
- * Mengambil ringkasan data untuk Dashboard Portal Pelanggan B2B
- * @param {object} user - Informasi sesi user yang sedang login
- */
-export const getPelangganDashboardStats = async (user) => {
-  const db = await ensureDbLoaded();
-  const userId = Number(user?.id) || 2;
-  const userEmail = String(user?.email || '').toLowerCase();
-
-  const requests = (db.rentalRequests || [])
-    .filter((r) => {
-      if (r.id_user && Number(r.id_user) === userId) return true;
-      if (r.pic_email && r.pic_email.toLowerCase() === userEmail) return true;
-      return true; // Tampilkan pengajuan untuk demo pelanggan B2B
-    })
-    .sort((a, b) => new Date(b.created_at || b.tanggal_mulai) - new Date(a.created_at || a.tanggal_mulai));
-
-  const totalKontrakAktif = (db.kontrak || []).filter((k) => k.status_kontrak === 'Aktif').length;
-
-  return {
-    requests,
-    activeContractsCount: totalKontrakAktif,
-  };
-};
-

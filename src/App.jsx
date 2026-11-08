@@ -4,7 +4,6 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 
 import AdminLayout from './layouts/AdminLayout';
-import PelangganLayout from './layouts/PelangganLayout';
 
 // Auth & Account Pages
 import LoginPage from './pages/auth/LoginPage';
@@ -14,10 +13,6 @@ import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import VerifyResetOtpPage from './pages/auth/VerifyResetOtpPage';
 import ResetPasswordPage from './pages/auth/ResetPasswordPage';
 import ProfilePage from './pages/ProfilePage';
-
-// Pelanggan Portal Pages
-import PelangganDashboardPage from './pages/pelanggan/PelangganDashboardPage';
-import KatalogPage from './pages/pelanggan/KatalogPage';
 
 // Admin Portal Pages
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
@@ -33,18 +28,15 @@ import NotFoundPage from './pages/NotFoundPage';
 function GuestOnlyRoute({ children }) {
   const { user } = useAuth();
   if (user) {
-    return <Navigate to={user.role === 'admin' ? '/admin/dashboard' : '/pelanggan/dashboard'} replace />;
+    return <Navigate to="/admin/dashboard" replace />;
   }
   return children;
 }
 
-function ProtectedRoute({ allowedRole, children }) {
+function ProtectedRoute({ children }) {
   const { user } = useAuth();
   if (!user) {
     return <Navigate to="/login" replace />;
-  }
-  if (allowedRole && user.role !== allowedRole) {
-    return <Navigate to={user.role === 'admin' ? '/admin/dashboard' : '/pelanggan/dashboard'} replace />;
   }
   return children;
 }
@@ -52,7 +44,7 @@ function ProtectedRoute({ allowedRole, children }) {
 function RootRedirect() {
   const { user } = useAuth();
   if (!user) return <Navigate to="/login" replace />;
-  return <Navigate to={user.role === 'admin' ? '/admin/dashboard' : '/pelanggan/dashboard'} replace />;
+  return <Navigate to="/admin/dashboard" replace />;
 }
 
 export default function App() {
@@ -123,25 +115,11 @@ export default function App() {
               }
             />
 
-            {/* Portal Pelanggan Routes */}
-            <Route
-              path="/pelanggan"
-              element={
-                <ProtectedRoute allowedRole="pelanggan">
-                  <PelangganLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Navigate to="/pelanggan/dashboard" replace />} />
-              <Route path="dashboard" element={<PelangganDashboardPage />} />
-              <Route path="katalog" element={<KatalogPage />} />
-            </Route>
-
-            {/* Portal Admin Routes */}
+            {/* Admin Portal Routes */}
             <Route
               path="/admin"
               element={
-                <ProtectedRoute allowedRole="admin">
+                <ProtectedRoute>
                   <AdminLayout />
                 </ProtectedRoute>
               }
