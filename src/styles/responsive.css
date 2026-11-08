@@ -1,0 +1,141 @@
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES (5 EXPLICIT BREAKPOINTS + PRINT)
+   ========================================================================== */
+
+/* 1. Large Desktop / Compact Laptop (<= 1280px) */
+@media (max-width: 1280px) {
+  .builder-split-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-split-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-content {
+    padding: 1.25rem;
+  }
+}
+
+/* 2. Tablet Landscape (<= 1024px) */
+@media (max-width: 1024px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    z-index: 60;
+  }
+
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .kpi-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kpi-grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* 3. Tablet Portrait / Large Mobile (<= 768px) */
+@media (max-width: 768px) {
+  .admin-topbar {
+    padding: 0 1rem;
+    height: 60px;
+  }
+
+  .portal-navbar-inner {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+  }
+
+  .portal-main {
+    padding: 1.25rem 1rem 2.25rem;
+  }
+
+  .kpi-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .tera-stepper {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .tera-step-item {
+    flex-direction: row;
+    text-align: left;
+    gap: 0.75rem;
+  }
+}
+
+/* 4. Small Mobile (<= 480px) */
+@media (max-width: 480px) {
+  .kpi-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-content {
+    padding: 1rem 0.85rem 2rem;
+  }
+
+  .otp-input-grid {
+    gap: 0.35rem;
+  }
+}
+
+/* 5. Reduced Motion Accessibility Preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 6. Print Friendly Reports & Quotations */
+@media print {
+  .admin-sidebar,
+  .admin-topbar,
+  .portal-navbar,
+  .no-print,
+  .skip-link {
+    display: none !important;
+  }
+
+  .admin-shell {
+    display: block !important;
+    background: #ffffff !important;
+  }
+
+  .admin-content,
+  .portal-main {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .tera-card {
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1 !important;
+    break-inside: avoid;
+  }
+}
+

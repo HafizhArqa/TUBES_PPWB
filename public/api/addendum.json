@@ -1,0 +1,19 @@
+[
+  {
+    "id_addendum": 801,
+    "id_request": 701,
+    "id_kontrak": 401,
+    "nomor_addendum": "TERA/KONT/202606/0101/ADD-01",
+    "judul_addendum": "Adendum No. 1 - Penambahan 4 Unit HT Digital Pos Keamanan Pit",
+    "tanggal_efektif": "2026-10-01",
+    "tanggal_selesai": "2028-05-31",
+    "durasi_bulan": 20,
+    "total_unit": 4,
+    "tambahan_bulanan": 1800000,
+    "total_nilai_addendum": 36000000,
+    "status_addendum": "Aktif",
+    "catatan": "Penambahan perangkat operasional regu patroli tambang shift malam mengacu kontrak induk.",
+    "created_at": "2026-10-01T09:15:00.000Z"
+  }
+]
+
