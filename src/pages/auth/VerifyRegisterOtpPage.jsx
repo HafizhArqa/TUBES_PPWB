@@ -85,7 +85,7 @@ export default function VerifyRegisterOtpPage() {
       const createdUser = await verifyRegisterOtp(code);
       syncUser(createdUser);
       showToast('Akun berhasil diverifikasi! Selamat datang di Portal TERA.', 'success');
-      navigate('/pelanggan/dashboard', { replace: true });
+      navigate('/admin/dashboard', { replace: true });
     } catch (err) {
       setError(err.message);
     } finally {

@@ -6,7 +6,7 @@
  */
 
 import { ensureDbLoaded, persistDb, nextId, appendActivityLog } from './mockDb';
-import { sendOtpEmailApi } from './emailService';
+import { sendOtpEmailApi, sendLoginNotificationEmailApi } from './emailService';
 
 const SESSION_USER_KEY = 'tera_auth_session_v1';
 const REGISTER_OTP_KEY = 'tera_pending_register_otp_v1';
@@ -55,6 +55,12 @@ export const loginUser = async ({ identity, password }) => {
   if (!found || found.password !== password) {
     throw new Error('Email/Username atau kata sandi tidak sesuai. Silakan periksa kembali.');
   }
+
+  // Trigger REST API pengiriman notifikasi sesi login ke email pengguna
+  sendLoginNotificationEmailApi({
+    email: found.email,
+    name: found.name || 'Pengguna',
+  }).catch(() => {});
 
   return saveSessionUser(found);
 };
@@ -160,9 +166,8 @@ export const verifyRegisterOtp = async (inputOtp) => {
     name: pending.name,
     username: pending.username,
     email: pending.email,
-    role: 'pelanggan',
+    role: 'admin',
     password: pending.password,
-    id_pelanggan: null,
     email_verified_at: new Date().toISOString(),
     created_at: new Date().toISOString(),
   };
@@ -170,8 +175,8 @@ export const verifyRegisterOtp = async (inputOtp) => {
   db.users.push(newUser);
   appendActivityLog(db, {
     user_nama: newUser.name,
-    aksi: 'Registrasi Akun Pelanggan',
-    deskripsi: `Akun portal pelanggan baru (${newUser.email}) berhasil diverifikasi melalui OTP.`,
+    aksi: 'Registrasi Akun Sistem',
+    deskripsi: `Akun baru (${newUser.email}) berhasil diverifikasi melalui OTP REST API.`,
   });
   persistDb(db);
   sessionStorage.removeItem(REGISTER_OTP_KEY);

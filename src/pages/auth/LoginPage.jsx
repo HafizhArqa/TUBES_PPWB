@@ -44,12 +44,8 @@ export default function LoginPage() {
     setSubmitting(true);
     try {
       const loggedUser = await login({ identity, password });
-      showToast(`Selamat datang kembali, ${loggedUser.name}!`, 'success');
-      if (loggedUser.role === 'pelanggan') {
-        navigate('/pelanggan/dashboard', { replace: true });
-      } else {
-        navigate('/admin/dashboard', { replace: true });
-      }
+      showToast(`Selamat datang kembali, ${loggedUser.name}! Notifikasi login dikirim ke email.`, 'success');
+      navigate('/admin/dashboard', { replace: true });
     } catch (err) {
       setErrors({ form: err.message });
     } finally {

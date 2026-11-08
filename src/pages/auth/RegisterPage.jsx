@@ -65,8 +65,8 @@ export default function RegisterPage() {
 
   return (
     <AuthLayout
-      title="Registrasi Akun Pelanggan"
-      subtitle="Daftarkan akun pengadaan perusahaan Anda untuk mengakses katalog sewa TERA"
+      title="Registrasi Akun Baru"
+      subtitle="Daftarkan akun Anda untuk mengakses sistem informasi manajemen TERA"
     >
       {errors.form && (
         <div
