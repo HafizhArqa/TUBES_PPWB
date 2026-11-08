@@ -2,7 +2,7 @@
  * @file LoginPage.jsx
  * @author Hafizh Arqamilandri Wakhyudi - Fitur Login
  * @description Halaman autentikasi sistem TERA dengan konsumsi Mock API via Axios,
- * validasi client-side, dan integrasi notifikasi login ke email via REST API.
+ * validasi client-side, tema Tailwind Blue & Dark Mode, dan pengiriman notifikasi login ke email via REST API.
  */
 
 import React, { useState } from 'react';
@@ -78,29 +78,31 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="auth-shell">
-      <header className="w-full max-w-6xl mx-auto flex items-center justify-between px-2 py-4">
-        <div className="flex items-center gap-2.5">
-          <span className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black">
-            <Icon name="radio" size={20} />
+    <div className="min-h-screen flex flex-col justify-between bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200 p-4">
+      <header className="w-full max-w-5xl mx-auto flex items-center justify-between py-2">
+        <div className="flex items-center gap-2">
+          <span className="w-9 h-9 rounded-md bg-blue-700 text-white flex items-center justify-center font-black">
+            <Icon name="radio" size={18} />
           </span>
           <div>
-            <span className="block text-base font-extrabold text-slate-900 leading-tight">
-              TERA <span className="text-blue-600">SYSTEM</span>
+            <span className="block text-sm font-extrabold text-gray-900 dark:text-white leading-tight">
+              TERA <span className="text-blue-600 dark:text-blue-400">SYSTEM</span>
             </span>
-            <span className="text-[11px] text-slate-500 font-medium">PT Utama Telekomindo</span>
+            <span className="text-[10px] text-gray-500 dark:text-gray-400">PT Utama Telekomindo</span>
           </div>
         </div>
-        <span className="text-xs text-slate-500 bg-white border border-slate-200 px-3 py-1.5 rounded-full font-medium hidden sm:inline-block">
-          Axios Mock &amp; Public REST API
+        <span className="text-xs text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-3 py-1 rounded-full font-medium hidden sm:inline-block">
+          Axios Mock &amp; REST API
         </span>
       </header>
 
-      <main className="w-full max-w-md mx-auto my-auto p-4">
-        <section className="tera-card p-6 sm:p-8 bg-white/95 backdrop-blur shadow-xl">
+      <main className="w-full max-w-md mx-auto my-auto py-6">
+        <section className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl rounded-lg p-6 sm:p-8 transition-colors">
           <div className="text-center mb-6">
-            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Masuk ke Sistem</h1>
-            <p className="text-xs text-slate-500 mt-1.5">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
+              Masuk ke Sistem Administrator
+            </h1>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               Masukkan kredensial akun administrator Anda untuk melanjutkan
             </p>
           </div>
@@ -108,7 +110,7 @@ export default function LoginPage() {
           {error && (
             <div
               role="alert"
-              className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-xs font-semibold text-red-700 flex items-center gap-2"
+              className="mb-4 p-3 rounded bg-red-100 dark:bg-red-900/40 border border-red-300 dark:border-red-700 text-xs font-semibold text-red-800 dark:text-red-200 flex items-center gap-2"
             >
               <Icon name="alert" size={16} />
               <span>{error}</span>
@@ -117,8 +119,8 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} noValidate className="space-y-4">
             <div>
-              <label htmlFor="login-identity" className="block text-xs font-semibold text-slate-700 mb-1.5">
-                Email atau Username <span className="text-red-600">*</span>
+              <label htmlFor="login-identity" className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                Email atau Username <span className="text-red-500">*</span>
               </label>
               <input
                 id="login-identity"
@@ -126,16 +128,16 @@ export default function LoginPage() {
                 value={identity}
                 onChange={(e) => setIdentity(e.target.value)}
                 placeholder="nama@email.com"
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-blue-600 focus:outline-none"
+                className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
               />
             </div>
 
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label htmlFor="login-password" className="block text-xs font-semibold text-slate-700">
-                  Kata Sandi <span className="text-red-600">*</span>
+              <div className="flex items-center justify-between mb-1">
+                <label htmlFor="login-password" className="block text-xs font-semibold text-gray-700 dark:text-gray-300">
+                  Kata Sandi <span className="text-red-500">*</span>
                 </label>
-                <Link to="/forgot-password" className="text-xs text-blue-600 hover:underline font-semibold">
+                <Link to="/forgot-password" className="text-xs text-blue-600 dark:text-blue-400 hover:underline font-semibold">
                   Lupa kata sandi?
                 </Link>
               </div>
@@ -146,15 +148,15 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Masukkan kata sandi"
-                  className="w-full rounded-xl border border-slate-300 pl-3.5 pr-10 py-2.5 text-sm focus:border-blue-600 focus:outline-none"
+                  className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 pl-3 pr-9 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass((v) => !v)}
-                  className="absolute inset-y-0 right-3 flex items-center text-slate-400 hover:text-slate-700"
+                  className="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                   aria-label="Tampilkan kata sandi"
                 >
-                  <Icon name={showPass ? 'eyeOff' : 'eye'} size={18} />
+                  <Icon name={showPass ? 'eyeOff' : 'eye'} size={16} />
                 </button>
               </div>
             </div>
@@ -162,22 +164,22 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold shadow-md transition-colors disabled:opacity-50"
+              className="w-full py-2.5 px-4 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow transition-colors disabled:opacity-50"
             >
               {loading ? 'Memvalidasi via Axios API...' : 'Masuk ke Akun'}
             </button>
           </form>
 
-          <div className="mt-6 pt-4 border-t border-slate-100 text-center text-xs text-slate-500">
+          <div className="mt-5 pt-4 border-t border-gray-200 dark:border-gray-700 text-center text-xs text-gray-500 dark:text-gray-400">
             Belum memiliki akun?{' '}
-            <Link to="/register" className="font-bold text-blue-600 hover:underline">
+            <Link to="/register" className="font-bold text-blue-600 dark:text-blue-400 hover:underline">
               Daftar Akun Baru
             </Link>
           </div>
         </section>
       </main>
 
-      <footer className="text-center text-xs text-slate-500 py-4">
+      <footer className="text-center text-xs text-gray-500 dark:text-gray-400 py-2">
         &copy; {new Date().getFullYear()} PT Utama Telekomindo (TERA). Sistem Informasi Berbasis API.
       </footer>
     </div>

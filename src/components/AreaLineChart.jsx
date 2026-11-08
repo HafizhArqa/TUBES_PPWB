@@ -100,7 +100,7 @@ export default function AreaLineChart({
                   y1={y}
                   x2={width - padRight}
                   y2={y}
-                  stroke="#e2e8f0"
+                  className="stroke-gray-200 dark:stroke-gray-700"
                   strokeDasharray="4 4"
                 />
                 <text
@@ -108,7 +108,7 @@ export default function AreaLineChart({
                   y={y + 4}
                   textAnchor="end"
                   fontSize="10"
-                  fill="#64748b"
+                  className="fill-gray-500 dark:fill-gray-400 font-mono"
                 >
                   {formatVal(tickVal)}
                 </text>
@@ -121,7 +121,7 @@ export default function AreaLineChart({
           <path
             d={linePath}
             fill="none"
-            stroke="#2563eb"
+            stroke="#3b82f6"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -138,7 +138,7 @@ export default function AreaLineChart({
                   textAnchor="middle"
                   fontSize="11"
                   fontWeight={isActive ? '700' : '500'}
-                  fill={isActive ? '#0f172a' : '#64748b'}
+                  className={isActive ? 'fill-blue-600 dark:fill-blue-400 font-bold' : 'fill-gray-600 dark:fill-gray-400'}
                 >
                   {pt.label}
                 </text>
@@ -147,8 +147,11 @@ export default function AreaLineChart({
                   cx={pt.x}
                   cy={pt.y}
                   r={isActive ? 6.5 : 4.5}
-                  fill={isActive ? '#1d4ed8' : '#ffffff'}
-                  stroke="#2563eb"
+                  className={`cursor-pointer transition-all ${
+                    isActive
+                      ? 'fill-blue-600 dark:fill-blue-400 stroke-white dark:stroke-gray-800'
+                      : 'fill-white dark:fill-gray-800 stroke-blue-600 dark:stroke-blue-400'
+                  }`}
                   strokeWidth="2.5"
                   tabIndex={0}
                   role="button"
@@ -157,19 +160,18 @@ export default function AreaLineChart({
                   onMouseLeave={() => setActiveIndex(null)}
                   onFocus={() => setActiveIndex(idx)}
                   onBlur={() => setActiveIndex(null)}
-                  className="cursor-pointer transition-all"
                 />
 
                 {isActive && (
                   <g transform={`translate(${Math.min(Math.max(pt.x - 58, 8), width - 124)}, ${Math.max(pt.y - 42, 4)})`}>
-                    <rect width="116" height="30" rx="6" fill="#071536" />
+                    <rect width="116" height="30" rx="6" className="fill-gray-900 dark:fill-gray-100" />
                     <text
                       x="58"
                       y="19"
                       textAnchor="middle"
                       fontSize="11"
                       fontWeight="700"
-                      fill="#ffffff"
+                      className="fill-white dark:fill-gray-900"
                     >
                       {formatVal(pt.val)}
                     </text>

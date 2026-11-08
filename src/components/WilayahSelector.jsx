@@ -106,14 +106,14 @@ export default function WilayahSelector({ onSelectRegion }) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
         <div>
-          <label htmlFor={provSelectId} className="block text-slate-700 font-medium mb-1">
+          <label htmlFor={provSelectId} className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
             Provinsi Site
           </label>
           <select
             id={provSelectId}
             value={selectedProvId}
             onChange={handleProvinceChange}
-            className="w-full rounded-lg border border-slate-300 bg-white p-2 text-xs focus:border-blue-600 focus:outline-none"
+            className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 text-xs focus:border-blue-500 focus:outline-none"
           >
             <option value="">-- Pilih Provinsi --</option>
             {provinces.map((prov) => (
@@ -125,7 +125,7 @@ export default function WilayahSelector({ onSelectRegion }) {
         </div>
 
         <div>
-          <label htmlFor={citySelectId} className="block text-slate-700 font-medium mb-1">
+          <label htmlFor={citySelectId} className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
             Kabupaten / Kota
           </label>
           <select
@@ -133,7 +133,7 @@ export default function WilayahSelector({ onSelectRegion }) {
             value={selectedCityName}
             disabled={!selectedProvId || loadingRegency}
             onChange={handleCityChange}
-            className="w-full rounded-lg border border-slate-300 bg-white p-2 text-xs focus:border-blue-600 focus:outline-none disabled:opacity-50"
+            className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 text-xs focus:border-blue-500 focus:outline-none disabled:opacity-50"
           >
             <option value="">
               {loadingRegency ? 'Mengambil data kota...' : '-- Pilih Kota/Kabupaten --'}

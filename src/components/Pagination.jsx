@@ -2,64 +2,53 @@ import React from 'react';
 
 export default function Pagination({
   currentPage = 1,
+  totalPages: propTotalPages,
   totalItems = 0,
   pageSize = 10,
   onPageChange,
 }) {
-  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
-  if (totalItems <= pageSize) return null;
+  const calculatedPages = propTotalPages || Math.max(1, Math.ceil(totalItems / pageSize));
+  if (calculatedPages <= 1) return null;
 
-  const startItem = (currentPage - 1) * pageSize + 1;
-  const endItem = Math.min(totalItems, currentPage * pageSize);
-
-  const pages = Array.from({ length: totalPages }, (_, idx) => idx + 1);
+  const pages = Array.from({ length: calculatedPages }, (_, idx) => idx + 1);
 
   return (
-    <nav
-      aria-label="Navigasi halaman data"
-      className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-t border-slate-200 bg-slate-50/70 text-xs text-slate-600"
-    >
-      <span>
-        Menampilkan <strong className="text-slate-900">{startItem}</strong>–
-        <strong className="text-slate-900">{endItem}</strong> dari{' '}
-        <strong className="text-slate-900">{totalItems}</strong> data
-      </span>
+    <nav aria-label="Navigasi halaman tabel" className="inline-flex items-center space-x-1">
+      <button
+        type="button"
+        disabled={currentPage <= 1}
+        onClick={() => onPageChange(currentPage - 1)}
+        className="px-2.5 py-1 rounded text-xs border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-40 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+        aria-label="Halaman Sebelumnya"
+      >
+        &laquo;
+      </button>
 
-      <div className="flex items-center gap-1">
+      {pages.map((p) => (
         <button
+          key={p}
           type="button"
-          disabled={currentPage <= 1}
-          onClick={() => onPageChange(currentPage - 1)}
-          className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white font-semibold disabled:opacity-40 hover:bg-slate-100"
+          aria-current={p === currentPage ? 'page' : undefined}
+          onClick={() => onPageChange(p)}
+          className={`px-3 py-1 text-xs rounded transition-colors font-medium ${
+            p === currentPage
+              ? 'bg-blue-600 dark:bg-blue-500 text-white font-bold shadow'
+              : 'border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600'
+          }`}
         >
-          Sebelumnya
+          {p}
         </button>
+      ))}
 
-        {pages.map((p) => (
-          <button
-            key={p}
-            type="button"
-            aria-current={p === currentPage ? 'page' : undefined}
-            onClick={() => onPageChange(p)}
-            className={`w-8 h-8 rounded-lg font-semibold transition-colors ${
-              p === currentPage
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
-            }`}
-          >
-            {p}
-          </button>
-        ))}
-
-        <button
-          type="button"
-          disabled={currentPage >= totalPages}
-          onClick={() => onPageChange(currentPage + 1)}
-          className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white font-semibold disabled:opacity-40 hover:bg-slate-100"
-        >
-          Berikutnya
-        </button>
-      </div>
+      <button
+        type="button"
+        disabled={currentPage >= calculatedPages}
+        onClick={() => onPageChange(currentPage + 1)}
+        className="px-2.5 py-1 rounded text-xs border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-40 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+        aria-label="Halaman Berikutnya"
+      >
+        &raquo;
+      </button>
     </nav>
   );
 }

@@ -3,13 +3,12 @@
  * @author Steven Taufik Fajar - Fitur Kelola Unit
  * @description Modul Pengelolaan Inventaris Radio Komunikasi TERA.
  * Fitur: Form create/edit modal, upload foto preview, filter kategori, search, dan pagination.
- * Mengonsumsi data dinamis dari Mock API via Axios.
+ * Mengonsumsi data dinamis dari Mock API via Axios dengan tema Tailwind Blue & Dark Mode.
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
-import StatusBadge from '../components/StatusBadge';
 import Pagination from '../components/Pagination';
 import Modal from '../components/Modal';
 import Icon from '../components/Icon';
@@ -55,7 +54,7 @@ export default function UnitsPage() {
 
   const showFeedback = (msg) => {
     setFeedback(msg);
-    setTimeout(() => setFeedback(null), 3000);
+    setTimeout(() => setFeedback(null), 3500);
   };
 
   const fetchUnits = useCallback(async () => {
@@ -123,7 +122,7 @@ export default function UnitsPage() {
         ...form,
       };
       setUnits((prev) => [newUnit, ...prev]);
-      showFeedback(`Perangkat [${form.kode_unit}] berhasil ditambahkan.`);
+      showFeedback(`Perangkat [${form.kode_unit}] berhasil ditambahkan ke inventaris.`);
     }
     setModalOpen(false);
   };
@@ -136,40 +135,42 @@ export default function UnitsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white dark:bg-gray-700 text-black dark:text-white transition-colors duration-200">
       <Navbar />
 
-      <main id="main-content" className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+      <main id="main-content" className="h-full ml-14 mt-14 mb-10 md:ml-64 p-3 sm:p-4 space-y-4">
         {/* Floating feedback alert */}
         {feedback && (
-          <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-xs font-bold text-emerald-800 shadow-md">
+          <div role="status" className="p-3 rounded-md bg-green-100 dark:bg-green-700 border border-green-300 dark:border-green-600 text-xs font-bold text-green-900 dark:text-green-100 shadow">
             {feedback}
           </div>
         )}
 
         {/* Page Title & Add Button */}
-        <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 px-1 pt-2">
           <div>
-            <h1 className="text-2xl font-extrabold text-slate-900">Kelola Unit Radio</h1>
-            <p className="text-xs text-slate-500 mt-1">
-              Inventaris perangkat telekomunikasi repeater, handy talkie, base station, dan radio maritim
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
+              Kelola Unit Radio Komunikasi
+            </h1>
+            <p className="text-xs text-gray-500 dark:text-gray-300 mt-0.5">
+              Modul Steven Taufik Fajar — Inventaris Repeater, Handy Talkie, Base Station &amp; Radio Maritim
             </p>
           </div>
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 dark:bg-gray-800 dark:hover:bg-gray-600 text-white text-xs font-bold shadow transition-colors"
           >
-            <Icon name="plus" size={16} />
+            <Icon name="plus" size={14} />
             <span>Tambah Unit Baru</span>
           </button>
         </div>
 
-        {/* Search & Category Filter */}
-        <div className="tera-card p-4 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2 flex-1 min-w-[240px]">
-            <span className="text-slate-400">
-              <Icon name="search" size={16} />
+        {/* Search & Category Filter Bar */}
+        <div className="bg-gray-50 dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow border border-gray-200 dark:border-gray-700 flex flex-wrap items-center justify-between gap-3 transition-colors">
+          <div className="flex items-center gap-2 flex-1 min-w-[220px] bg-white dark:bg-gray-700 px-3 py-1.5 rounded border border-gray-300 dark:border-gray-600">
+            <span className="text-gray-400">
+              <Icon name="search" size={14} />
             </span>
             <input
               type="search"
@@ -178,12 +179,12 @@ export default function UnitsPage() {
                 setQuery(e.target.value);
                 setCurrentPage(1);
               }}
-              placeholder="Cari kode unit, model, atau lokasi..."
-              className="w-full text-xs bg-transparent border-none focus:outline-none text-slate-800"
+              placeholder="Cari kode unit, model, atau lokasi site..."
+              className="w-full text-xs bg-transparent border-none focus:outline-none text-gray-900 dark:text-gray-100 placeholder-gray-400"
             />
           </div>
 
-          <div className="flex flex-wrap items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-1">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
@@ -192,10 +193,10 @@ export default function UnitsPage() {
                   setCategory(cat);
                   setCurrentPage(1);
                 }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                className={`px-3 py-1 rounded text-xs font-semibold transition-colors ${
                   category === cat
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-blue-600 text-white shadow'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
                 }`}
               >
                 {cat}
@@ -204,7 +205,7 @@ export default function UnitsPage() {
           </div>
         </div>
 
-        {loading && <LoadingState message="Mengambil katalog unit via Axios API..." rows={4} />}
+        {loading && <LoadingState message="Mengambil katalog unit via Axios Mock API..." rows={4} />}
         {error && <ErrorState message={error} onRetry={fetchUnits} />}
 
         {!loading && !error && filteredUnits.length === 0 && (
@@ -220,71 +221,104 @@ export default function UnitsPage() {
         )}
 
         {!loading && !error && filteredUnits.length > 0 && (
-          <>
-            <div className="tera-card overflow-hidden">
-              <div className="tera-table-wrap">
-                <table className="tera-table">
-                  <thead>
-                    <tr>
-                      <th>Kode Unit</th>
-                      <th>Model &amp; Merk</th>
-                      <th>Kategori</th>
-                      <th>Frekuensi</th>
-                      <th>Harga Sewa/Bulan</th>
-                      <th>Status</th>
-                      <th className="text-right">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paginatedUnits.map((unit) => (
-                      <tr key={unit.id}>
-                        <td>
-                          <span className="font-mono font-bold text-blue-700">{unit.kode_unit}</span>
-                          <span className="block text-[11px] text-slate-400">{unit.lokasi}</span>
+          <div className="w-full overflow-hidden rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors">
+            <div className="w-full overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                    <th className="px-4 py-3">Kode Unit</th>
+                    <th className="px-4 py-3">Model &amp; Merk</th>
+                    <th className="px-4 py-3">Kategori</th>
+                    <th className="px-4 py-3">Frekuensi</th>
+                    <th className="px-4 py-3">Harga Sewa / Bln</th>
+                    <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3 text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                  {paginatedUnits.map((unit) => {
+                    const isAvailable = unit.status_unit === 'Tersedia';
+                    const isRented = unit.status_unit === 'Disewa';
+                    return (
+                      <tr
+                        key={unit.id}
+                        className="bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-200 text-xs transition-colors"
+                      >
+                        <td className="px-4 py-3">
+                          <span className="font-mono font-bold text-blue-600 dark:text-blue-400 block">
+                            {unit.kode_unit}
+                          </span>
+                          <span className="text-[11px] text-gray-400 dark:text-gray-500">
+                            {unit.lokasi}
+                          </span>
                         </td>
-                        <td>
-                          <span className="font-semibold text-slate-900 block">{unit.nama_unit}</span>
-                          <span className="text-[11px] text-slate-500 font-medium">{unit.merk}</span>
+                        <td className="px-4 py-3">
+                          <span className="font-semibold text-gray-900 dark:text-gray-100 block">
+                            {unit.nama_unit}
+                          </span>
+                          <span className="text-[11px] text-gray-500 dark:text-gray-400">
+                            {unit.merk}
+                          </span>
                         </td>
-                        <td>{unit.kategori}</td>
-                        <td className="text-xs text-slate-600 font-mono">{unit.frekuensi}</td>
-                        <td className="font-bold text-slate-900">{formatRupiah(unit.harga_sewa)}</td>
-                        <td>
-                          <StatusBadge status={unit.status_unit} />
+                        <td className="px-4 py-3">{unit.kategori}</td>
+                        <td className="px-4 py-3 font-mono text-[11px]">{unit.frekuensi}</td>
+                        <td className="px-4 py-3 font-semibold text-gray-900 dark:text-gray-100">
+                          {formatRupiah(unit.harga_sewa || unit.tarif_sewa_bulanan)}
                         </td>
-                        <td className="text-right space-x-2">
-                          <button
-                            type="button"
-                            onClick={() => handleOpenEdit(unit)}
-                            className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg text-xs font-semibold"
-                            title="Edit Unit"
+                        <td className="px-4 py-3">
+                          <span
+                            className={`px-2 py-0.5 font-semibold text-[11px] rounded-full inline-block ${
+                              isAvailable
+                                ? 'text-green-700 bg-green-100 dark:bg-green-700 dark:text-green-100'
+                                : isRented
+                                ? 'text-yellow-700 bg-yellow-100 dark:bg-amber-600 dark:text-amber-100'
+                                : 'text-gray-700 bg-gray-100 dark:bg-gray-700 dark:text-gray-200'
+                            }`}
                           >
-                            <Icon name="edit" size={15} />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setDeleteTarget(unit)}
-                            className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg text-xs font-semibold"
-                            title="Hapus Unit"
-                          >
-                            <Icon name="trash" size={15} />
-                          </button>
+                            {unit.status_unit}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-right">
+                          <div className="inline-flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => handleOpenEdit(unit)}
+                              className="px-2.5 py-1 rounded bg-blue-50 hover:bg-blue-100 dark:bg-gray-700 dark:hover:bg-gray-600 text-blue-600 dark:text-blue-300 font-semibold text-xs transition-colors"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setDeleteTarget(unit)}
+                              className="px-2.5 py-1 rounded bg-red-50 hover:bg-red-100 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-600 dark:text-red-300 font-semibold text-xs transition-colors"
+                            >
+                              Hapus
+                            </button>
+                          </div>
                         </td>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
 
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              totalItems={filteredUnits.length}
-              pageSize={pageSize}
-              onPageChange={setCurrentPage}
-            />
-          </>
+            {/* Pagination Controls */}
+            <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+              <span className="flex items-center col-span-4">
+                Menampilkan {(currentPage - 1) * pageSize + 1}-
+                {Math.min(currentPage * pageSize, filteredUnits.length)} dari {filteredUnits.length} Unit
+              </span>
+              <span className="col-span-1"></span>
+              <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              </span>
+            </div>
+          </div>
         )}
       </main>
 
@@ -292,157 +326,157 @@ export default function UnitsPage() {
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={editingId ? 'Edit Perangkat Radio' : 'Tambah Perangkat Radio Baru'}
-        subtitle="Lengkapi spesifikasi teknis dan parameter komersial sewa unit"
-        maxWidth="max-w-xl"
-        footer={
-          <>
-            <button
-              type="button"
-              onClick={() => setModalOpen(false)}
-              className="px-4 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100"
-            >
-              Batal
-            </button>
-            <button
-              type="button"
-              onClick={handleSave}
-              className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white"
-            >
-              Simpan Perangkat
-            </button>
-          </>
-        }
+        title={editingId ? `Edit Unit: ${form.kode_unit}` : 'Tambah Unit Radio Baru'}
+        subtitle="Form registrasi perangkat radio komunikasi ke inventaris Mock API"
+        maxWidth="max-w-2xl"
       >
-        <form onSubmit={handleSave} className="space-y-3.5 text-xs">
-          <div className="grid grid-cols-2 gap-3">
+        <form onSubmit={handleSave} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-slate-700 font-medium mb-1">Kode Unit</label>
+              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                Kode Unit <span className="text-red-500">*</span>
+              </label>
               <input
                 type="text"
+                required
                 value={form.kode_unit}
                 onChange={(e) => setForm({ ...form, kode_unit: e.target.value })}
-                className="w-full rounded-lg border border-slate-300 p-2 font-mono font-bold text-slate-800"
+                className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
               />
             </div>
             <div>
-              <label className="block text-slate-700 font-medium mb-1">Kategori</label>
+              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                Kategori <span className="text-red-500">*</span>
+              </label>
               <select
                 value={form.kategori}
                 onChange={(e) => setForm({ ...form, kategori: e.target.value })}
-                className="w-full rounded-lg border border-slate-300 p-2 bg-white"
+                className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
               >
-                {CATEGORIES.filter((c) => c !== 'Semua').map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
+                <option value="Repeater">Repeater</option>
+                <option value="Radio Base">Radio Base</option>
+                <option value="Radio HT">Radio HT</option>
+                <option value="Radio HF SSB">Radio HF SSB</option>
               </select>
             </div>
           </div>
 
-          <div>
-            <label className="block text-slate-700 font-medium mb-1">Nama Model Perangkat *</label>
-            <input
-              type="text"
-              value={form.nama_unit}
-              onChange={(e) => setForm({ ...form, nama_unit: e.target.value })}
-              placeholder="Contoh: Motorola SLR 5300 Repeater"
-              className="w-full rounded-lg border border-slate-300 p-2 text-slate-800"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-slate-700 font-medium mb-1">Merk</label>
+              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                Nama Model Perangkat <span className="text-red-500">*</span>
+              </label>
               <input
                 type="text"
+                required
+                value={form.nama_unit}
+                onChange={(e) => setForm({ ...form, nama_unit: e.target.value })}
+                placeholder="Contoh: Motorola SLR 5300"
+                className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                Merk / Manufaktur <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                required
                 value={form.merk}
                 onChange={(e) => setForm({ ...form, merk: e.target.value })}
-                className="w-full rounded-lg border border-slate-300 p-2"
-              />
-            </div>
-            <div>
-              <label className="block text-slate-700 font-medium mb-1">Rentang Frekuensi</label>
-              <input
-                type="text"
-                value={form.frekuensi}
-                onChange={(e) => setForm({ ...form, frekuensi: e.target.value })}
-                className="w-full rounded-lg border border-slate-300 p-2 font-mono"
+                className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-slate-700 font-medium mb-1">Harga Sewa / Bulan (Rp)</label>
+              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                Harga Sewa Bulanan (Rp)
+              </label>
               <input
                 type="number"
                 value={form.harga_sewa}
                 onChange={(e) => setForm({ ...form, harga_sewa: Number(e.target.value) })}
-                className="w-full rounded-lg border border-slate-300 p-2"
+                className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
               />
             </div>
             <div>
-              <label className="block text-slate-700 font-medium mb-1">Status Fisik</label>
+              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                Status Unit
+              </label>
               <select
                 value={form.status_unit}
                 onChange={(e) => setForm({ ...form, status_unit: e.target.value })}
-                className="w-full rounded-lg border border-slate-300 p-2 bg-white"
+                className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
               >
                 <option value="Tersedia">Tersedia</option>
                 <option value="Disewa">Disewa</option>
-                <option value="Maintenance">Maintenance</option>
+                <option value="Perawatan">Perawatan</option>
               </select>
             </div>
           </div>
 
           <div>
-            <label className="block text-slate-700 font-medium mb-1">Lokasi Unit / Gudang</label>
+            <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+              Lokasi Penempatan / Gudang
+            </label>
             <input
               type="text"
               value={form.lokasi}
               onChange={(e) => setForm({ ...form, lokasi: e.target.value })}
-              className="w-full rounded-lg border border-slate-300 p-2"
+              className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
             />
+          </div>
+
+          <div className="flex justify-end gap-2 pt-3 border-t border-gray-200 dark:border-gray-700">
+            <button
+              type="button"
+              onClick={() => setModalOpen(false)}
+              className="px-4 py-2 rounded border border-gray-300 dark:border-gray-600 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white shadow"
+            >
+              {editingId ? 'Simpan Perubahan' : 'Tambahkan Unit'}
+            </button>
           </div>
         </form>
       </Modal>
 
-      {/* Modal Konfirmasi Hapus */}
+      {/* Modal Hapus Unit */}
       <Modal
         open={Boolean(deleteTarget)}
         onClose={() => setDeleteTarget(null)}
-        title="Hapus Unit Radio?"
-        subtitle={`Konfirmasi penghapusan unit [${deleteTarget?.kode_unit || ''}]`}
+        title="Hapus Unit Radio"
+        subtitle={`Konfirmasi penghapusan perangkat [${deleteTarget?.kode_unit}]`}
         maxWidth="max-w-md"
         footer={
           <>
             <button
               type="button"
               onClick={() => setDeleteTarget(null)}
-              className="px-4 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+              className="px-4 py-2 rounded border border-gray-300 dark:border-gray-600 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               Batal
             </button>
             <button
               type="button"
               onClick={handleDelete}
-              className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-xs font-semibold text-white"
+              className="px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-xs font-semibold text-white shadow"
             >
-              Hapus Unit
+              Ya, Hapus Unit
             </button>
           </>
         }
       >
-        <p className="text-xs text-slate-600">
-          Apakah Anda yakin ingin menghapus <strong>{deleteTarget?.nama_unit}</strong> dari inventaris sistem?
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          Apakah Anda yakin ingin menghapus unit <strong>{deleteTarget?.nama_unit}</strong> ({deleteTarget?.kode_unit}) dari inventaris?
         </p>
       </Modal>
-
-      <footer className="text-center text-xs text-slate-500 py-4 border-t border-slate-200 bg-white">
-        &copy; {new Date().getFullYear()} PT Utama Telekomindo. Sistem Informasi Berbasis API.
-      </footer>
     </div>
   );
 }
