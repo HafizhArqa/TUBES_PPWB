@@ -18,9 +18,6 @@ import ProfilePage from './pages/ProfilePage';
 // Pelanggan Portal Pages
 import PelangganDashboardPage from './pages/pelanggan/PelangganDashboardPage';
 import KatalogPage from './pages/pelanggan/KatalogPage';
-import KeranjangPage from './pages/pelanggan/KeranjangPage';
-import PermintaanListPage from './pages/pelanggan/PermintaanListPage';
-import PermintaanDetailPage from './pages/pelanggan/PermintaanDetailPage';
 
 // Admin Portal Pages
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
@@ -28,10 +25,6 @@ import UnitsPage from './pages/admin/UnitsPage';
 import StatusUnitPage from './pages/admin/StatusUnitPage';
 import PelangganPage from './pages/admin/PelangganPage';
 import MasterTarifPage from './pages/admin/MasterTarifPage';
-import TransaksiIndexPage from './pages/admin/TransaksiIndexPage';
-import TransaksiCreatePage from './pages/admin/TransaksiCreatePage';
-import ProyekDetailPage from './pages/admin/ProyekDetailPage';
-import AngsuranPage from './pages/admin/AngsuranPage';
 import LaporanPenyewaanPage from './pages/admin/LaporanPenyewaanPage';
 import LaporanPendapatanPage from './pages/admin/LaporanPendapatanPage';
 
@@ -142,9 +135,6 @@ export default function App() {
               <Route index element={<Navigate to="/pelanggan/dashboard" replace />} />
               <Route path="dashboard" element={<PelangganDashboardPage />} />
               <Route path="katalog" element={<KatalogPage />} />
-              <Route path="keranjang" element={<KeranjangPage />} />
-              <Route path="permintaan" element={<PermintaanListPage />} />
-              <Route path="permintaan/:id" element={<PermintaanDetailPage />} />
             </Route>
 
             {/* Portal Admin Routes */}
@@ -162,10 +152,6 @@ export default function App() {
               <Route path="status-unit" element={<StatusUnitPage />} />
               <Route path="pelanggan" element={<PelangganPage />} />
               <Route path="master-tarif" element={<MasterTarifPage />} />
-              <Route path="transaksi" element={<TransaksiIndexPage />} />
-              <Route path="transaksi/create" element={<TransaksiCreatePage />} />
-              <Route path="proyek/:id" element={<ProyekDetailPage />} />
-              <Route path="angsuran" element={<AngsuranPage />} />
               <Route path="laporan-penyewaan" element={<LaporanPenyewaanPage />} />
               <Route path="laporan-pendapatan" element={<LaporanPendapatanPage />} />
             </Route>

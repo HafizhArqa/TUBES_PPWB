@@ -109,3 +109,4 @@ export const deleteMasterKatalogItem = async (kodeTarget, actorName = 'Admin TER
 
   return removed;
 };
+

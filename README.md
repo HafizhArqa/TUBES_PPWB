@@ -129,16 +129,41 @@ Gunakan rincian berikut untuk penyusunan laporan individu Word/PDF per anggota:
 
 Aplikasi dilengkapi tombol **Isi Otomatis (Auto-fill Demo)** pada halaman login untuk kemudahan evaluasi:
 
-| Peran (Role) | Email / Username | Kata Sandi | Akses Pengujian |
+| Peran (Role) | Email / Username | Kata Sandi | Akses Pengujian Sesuai Jobdesk |
 | :--- | :--- | :--- | :--- |
-| **Administrator TERA** | `admin@tera.co.id` *(atau `admin.tera`)* | `password123` | Dashboard Admin, CRUD Unit, Status Unit, Transaksi Sewa & Jual Lepas, Proyek 8-Tab, Angsuran, Laporan. |
-| **Pelanggan Korporat B2B** | `pelanggan@tera.co.id` *(atau `rendra.ben`)* | `password123` | Dashboard Pelanggan, Katalog Radio, Keranjang Pengajuan Sewa, Pelacakan Status Proyek 5 Tahap. |
+| **Administrator TERA** | `admin@tera.co.id` *(atau `admin.tera`)* | `password123` | Dashboard Eksekutif, Kelola Unit Radio, Status Fisik Unit, Master Pelanggan B2B, Master Tarif & Standar, Laporan Penyewaan & Pendapatan. |
+| **Pelanggan Korporat B2B** | `pelanggan@tera.co.id` *(atau `rendra.ben`)* | `password123` | Dashboard Portal Pelanggan, Katalog Perangkat Telekomunikasi, Profil & Keamanan Akun. |
 
 > **Mode Demo OTP:** Pada pengujian registrasi baru (`/register`) dan lupa kata sandi (`/forgot-password`), kode 6-digit OTP ditampilkan secara langsung di kotak informasi **Mode Demo** pada halaman verifikasi sehingga dapat langsung diisi atau di-paste.
 
 ---
 
-## 5. Instruksi Menjalankan Proyek (Setup & Run)
+## 5. Arsip Modul Tambahan ("100% finish")
+
+Seluruh modul dan halaman di luar pembagian tugas resmi 4 anggota (yaitu modul transaksi lelang komersial, kalkulator transaksi sewa/jual multi-seksi, 8-Tab Project Control Center, monitoring angsuran faktur, keranjang proposal sewa, dan pelacakan detail 5 tahap permintaan) telah dipindahkan secara rapi ke folder arsip:
+
+```text
+c:\xampp\htdocs\TUBES_Pemweb\100% finish/
+├── pages/
+│   ├── admin/
+│   │   ├── TransaksiIndexPage.jsx
+│   │   ├── TransaksiCreatePage.jsx
+│   │   ├── ProyekDetailPage.jsx
+│   │   └── AngsuranPage.jsx
+│   └── pelanggan/
+│       ├── KeranjangPage.jsx
+│       ├── PermintaanListPage.jsx
+│       └── PermintaanDetailPage.jsx
+└── services/
+    ├── transaksiService.js
+    └── portalPelangganService.js
+```
+
+Ruang kerja aktif di dalam `src/` kini **100% murni dan presisi hanya berisi fitur yang menjadi tanggung jawab resmi 4 anggota kelompok**.
+
+---
+
+## 6. Instruksi Menjalankan Proyek (Setup & Run)
 
 Pastikan **Node.js versi 18 ke atas** dan **npm** telah terpasang.
 
@@ -163,7 +188,7 @@ Buka URL lokal yang muncul pada terminal (umumnya `http://localhost:5173`) di pe
 
 ---
 
-## 6. Strategi Git Branch & Riwayat Commit
+## 7. Strategi Git Branch & Riwayat Commit
 
 Struktur repository dikelola menggunakan alur kerja kolaboratif bersih (*Clean Branching Strategy*):
 
@@ -171,7 +196,7 @@ Struktur repository dikelola menggunakan alur kerja kolaboratif bersih (*Clean B
 main (branch produksi utama)
  ├── feature/auth-hafizh        (Fitur Login, Register, Forgot Password & OTP)
  ├── feature/unit-steven        (Fitur Kelola Unit, Status Unit & Katalog)
- ├── feature/transaksi-zakaria  (Fitur Kelola Transaksi, Kalkulator Komersial & 8-Tab Proyek)
+ ├── feature/master-data-zakaria(Fitur Manajemen Master Data Pelanggan & Tarif)
  └── feature/dashboard-marta    (Fitur Dashboard Eksekutif, SVG Chart & Laporan)
 ```
 

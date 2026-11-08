@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import Icon from '../components/Icon';
 import Modal from '../components/Modal';
-import { getCartItems } from '../services/portalPelangganService';
 
 export default function PelangganLayout() {
   const { user, logout } = useAuth();
@@ -13,22 +12,6 @@ export default function PelangganLayout() {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
-
-  useEffect(() => {
-    const syncCart = () => {
-      const items = getCartItems(user?.id);
-      const total = items.reduce((s, it) => s + (Number(it.qty) || 0), 0);
-      setCartCount(total);
-    };
-    syncCart();
-    window.addEventListener('tera-cart-updated', syncCart);
-    window.addEventListener('storage', syncCart);
-    return () => {
-      window.removeEventListener('tera-cart-updated', syncCart);
-      window.removeEventListener('storage', syncCart);
-    };
-  }, [user?.id]);
 
   const handleLogout = async () => {
     await logout();
@@ -38,15 +21,8 @@ export default function PelangganLayout() {
   };
 
   const navLinks = [
-    { to: '/pelanggan/dashboard', label: 'Beranda', icon: 'dashboard' },
+    { to: '/pelanggan/dashboard', label: 'Dashboard Portal', icon: 'dashboard' },
     { to: '/pelanggan/katalog', label: 'Katalog Perangkat', icon: 'radio' },
-    {
-      to: '/pelanggan/keranjang',
-      label: 'Keranjang Sewa',
-      icon: 'cart',
-      badge: cartCount,
-    },
-    { to: '/pelanggan/permintaan', label: 'Status Permohonan', icon: 'briefcase' },
   ];
 
   return (

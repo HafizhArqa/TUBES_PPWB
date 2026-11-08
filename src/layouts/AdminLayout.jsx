@@ -27,14 +27,6 @@ const NAV_GROUPS = [
     ],
   },
   {
-    heading: 'Komersial & Proyek B2B',
-    items: [
-      { to: '/admin/transaksi', label: 'Transaksi & Proyek', icon: 'briefcase', end: true },
-      { to: '/admin/transaksi/create', label: 'Buat Transaksi Baru', icon: 'plus' },
-      { to: '/admin/angsuran', label: 'Monitoring Angsuran', icon: 'receipt' },
-    ],
-  },
-  {
     heading: 'Pelaporan & Analitik',
     items: [
       { to: '/admin/laporan-penyewaan', label: 'Laporan Penyewaan', icon: 'chart' },

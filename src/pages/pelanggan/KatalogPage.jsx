@@ -9,7 +9,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { getUnitsData } from '../../services/unitService';
-import { addUnitToCart } from '../../services/portalPelangganService';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { LoadingState, ErrorState, EmptyState } from '../../components/StatusStates';
@@ -56,8 +55,8 @@ export default function KatalogPage() {
 
   const handleAddToCart = (unit) => {
     const qty = Math.max(1, Number(qtyMap[unit.id_unit]) || 1);
-    addUnitToCart(user?.id, unit, qty);
-    showToast(`${qty} unit "${unit.nama_unit}" ditambahkan ke Keranjang Sewa!`, 'success');
+    setDetailUnit(unit);
+    showToast(`${qty} unit "${unit.nama_unit}" dipilih. Menampilkan spesifikasi teknis lengkap.`, 'success');
   };
 
   if (loading) return <LoadingState message="Memuat katalog perangkat telekomunikasi..." rows={4} />;
@@ -72,15 +71,15 @@ export default function KatalogPage() {
         <div>
           <h1 className="text-2xl font-extrabold text-slate-900">Katalog Perangkat Telekomunikasi</h1>
           <p className="text-xs text-slate-500 mt-1">
-            Pilih perangkat komunikasi berstandar industri untuk ditambahkan ke proposal sewa B2B Anda
+            Pilih perangkat komunikasi berstandar industri untuk operasional pertambangan, maritim, dan kilang
           </p>
         </div>
         <Link
-          to="/pelanggan/keranjang"
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm"
+          to="/pelanggan/dashboard"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-sm"
         >
-          <Icon name="cart" size={16} />
-          <span>Lihat Keranjang Pengajuan</span>
+          <Icon name="dashboard" size={16} />
+          <span>Kembali ke Dashboard</span>
         </Link>
       </header>
 

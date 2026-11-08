@@ -55,18 +55,18 @@ export default function AdminDashboardPage() {
 
         <div className="flex flex-wrap gap-2.5">
           <Link
-            to="/admin/transaksi/create"
+            to="/admin/units"
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm"
           >
-            <Icon name="plus" size={16} />
-            <span>Buat Transaksi Baru</span>
+            <Icon name="box" size={16} />
+            <span>Kelola Unit Radio</span>
           </Link>
           <Link
-            to="/admin/angsuran"
+            to="/admin/master-tarif"
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold"
           >
-            <Icon name="receipt" size={16} />
-            <span>Cek Faktur ({kpi.pendingVerifCount} Verifikasi)</span>
+            <Icon name="tag" size={16} />
+            <span>Master Tarif Acuan</span>
           </Link>
         </div>
       </header>
