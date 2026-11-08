@@ -2,9 +2,9 @@
  * @file PelangganPage.jsx
  * @author Zakaria - Fitur Manajemen Master Data
  * @description Modul Master Pelanggan Korporat B2B TERA.
- * Mengelola direktori master data entitas mitra perusahaan (PT/CV), NPWP, PIC Procurement,
- * dan integrasi pemilihan lokasi site via Public API EMSIFA (WilayahSelector).
- * Menggunakan tema Tailwind Blue & Dark Mode terpadu.
+ * 100% Fetch data dinamis dari Mock API (/api/pelanggan.json) via Axios & Public API Wilayah Indonesia (EMSIFA) via Fetch API.
+ * Dilengkapi Error Handling komprehensif (try-catch), Loading State (Skeleton Shimmer),
+ * modal inspeksi data legalitas mitra, dan tombol simulasi gangguan API.
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -14,18 +14,14 @@ import WilayahSelector from '../components/WilayahSelector';
 import Pagination from '../components/Pagination';
 import Modal from '../components/Modal';
 import Icon from '../components/Icon';
-import { LoadingState, ErrorState, EmptyState } from '../components/StatusStates';
-
-const EMPTY_CLIENT = {
-  nama_perusahaan: '',
-  npwp: '',
-  pic_nama: '',
-  pic_jabatan: 'Procurement Manager',
-  pic_telepon: '',
-  pic_email: '',
-  alamat_kantor: '',
-  status_aktif: 'Aktif',
-};
+import {
+  LoadingState,
+  ErrorState,
+  EmptyState,
+  checkSimulatedError,
+  isSimulatedErrorActive,
+  setSimulatedError,
+} from '../components/StatusStates';
 
 export default function PelangganPage() {
   const [clients, setClients] = useState([]);
@@ -34,29 +30,35 @@ export default function PelangganPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('Semua');
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [simActive, setSimActive] = useState(isSimulatedErrorActive());
+  const [testRegion, setTestRegion] = useState(null);
   const pageSize = 6;
 
-  // Form State
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-  const [form, setForm] = useState(EMPTY_CLIENT);
-  const [deleteTarget, setDeleteTarget] = useState(null);
-  const [feedback, setFeedback] = useState(null);
-
-  const showFeedback = (msg) => {
-    setFeedback(msg);
-    setTimeout(() => setFeedback(null), 3500);
-  };
-
+  // 1. Fetch data 100% dari Mock API via Axios dengan try-catch
   const fetchPelanggan = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-      // Konsumsi data dinamis dari Mock API via Axios
+      // Pengecekan pra-fetch untuk pengujian simulasi galat API
+      checkSimulatedError();
+
       const res = await axios.get('/api/pelanggan.json');
-      setClients(res.data || []);
+      if (!Array.isArray(res.data)) {
+        throw new Error('Respon Mock API bukan daftar data pelanggan yang valid.');
+      }
+      setClients(res.data);
     } catch (err) {
-      setError(err.message || 'Gagal memuat data pelanggan dari Mock API.');
+      console.error('[Pelanggan Fetch Error]:', err);
+      const message = err.isSimulated
+        ? err.message
+        : err.response
+        ? `Server Mock API mengembalikan status ${err.response.status}: ${err.response.statusText || 'Gagal memuat pelanggan.json'}.`
+        : err.request
+        ? 'Gagal terhubung ke endpoint Mock API pelanggan.json. Periksa koneksi server lokal Anda.'
+        : `Terjadi kendala saat mengambil data pelanggan: ${err.message}`;
+
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -66,7 +68,14 @@ export default function PelangganPage() {
     fetchPelanggan();
   }, [fetchPelanggan]);
 
-  // Filter & Search
+  const handleToggleSimulation = () => {
+    const nextState = !simActive;
+    setSimActive(nextState);
+    setSimulatedError(nextState);
+    fetchPelanggan();
+  };
+
+  // 2. Filter & Search data dinamis
   const filteredClients = clients.filter((c) => {
     if (statusFilter !== 'Semua' && c.status_aktif !== statusFilter) return false;
     if (search.trim()) {
@@ -74,7 +83,8 @@ export default function PelangganPage() {
       const match =
         String(c.nama_perusahaan || '').toLowerCase().includes(q) ||
         String(c.pic_nama || '').toLowerCase().includes(q) ||
-        String(c.alamat_kantor || '').toLowerCase().includes(q);
+        String(c.alamat_kantor || '').toLowerCase().includes(q) ||
+        String(c.npwp || '').toLowerCase().includes(q);
       if (!match) return false;
     }
     return true;
@@ -86,87 +96,46 @@ export default function PelangganPage() {
     currentPage * pageSize
   );
 
-  const handleOpenAdd = () => {
-    setEditingId(null);
-    setForm(EMPTY_CLIENT);
-    setModalOpen(true);
-  };
-
-  const handleOpenEdit = (client) => {
-    setEditingId(client.id_pelanggan);
-    setForm({ ...client });
-    setModalOpen(true);
-  };
-
-  const handleRegionSelected = ({ province, city }) => {
-    const combined = [city, province].filter(Boolean).join(', ');
-    setForm((prev) => ({
-      ...prev,
-      alamat_kantor: combined
-        ? `${prev.alamat_kantor ? prev.alamat_kantor.split(' - Site: ')[0] + ' - Site: ' : 'Site Area: '}${combined}`
-        : prev.alamat_kantor,
-    }));
-  };
-
-  const handleSave = (e) => {
-    e.preventDefault();
-    if (!form.nama_perusahaan.trim()) {
-      alert('Nama perusahaan mitra wajib diisi!');
-      return;
-    }
-
-    if (editingId) {
-      setClients((prev) =>
-        prev.map((c) => (c.id_pelanggan === editingId ? { ...c, ...form } : c))
-      );
-      showFeedback(`Data mitra ${form.nama_perusahaan} berhasil diperbarui.`);
-    } else {
-      const newClient = {
-        id_pelanggan: Date.now(),
-        ...form,
-      };
-      setClients((prev) => [newClient, ...prev]);
-      showFeedback(`Mitra baru ${form.nama_perusahaan} berhasil didaftarkan.`);
-    }
-    setModalOpen(false);
-  };
-
-  const handleDelete = () => {
-    if (!deleteTarget) return;
-    setClients((prev) => prev.filter((c) => c.id_pelanggan !== deleteTarget.id_pelanggan));
-    showFeedback(`Mitra ${deleteTarget.nama_perusahaan} telah dihapus.`);
-    setDeleteTarget(null);
-  };
-
   return (
     <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white dark:bg-gray-700 text-black dark:text-white transition-colors duration-200">
       <Navbar />
 
       <main id="main-content" className="h-full ml-14 mt-14 mb-10 md:ml-64 p-3 sm:p-4 space-y-4">
-        {feedback && (
-          <div role="status" className="p-3 rounded-md bg-green-100 dark:bg-green-700 border border-green-300 dark:border-green-600 text-xs font-bold text-green-900 dark:text-green-100 shadow">
-            {feedback}
-          </div>
-        )}
-
-        {/* Page Header */}
+        {/* Bar Judul & Kontrol Pengujian API */}
         <div className="flex flex-wrap items-center justify-between gap-3 px-1 pt-2">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
               Manajemen Master Data Pelanggan
             </h1>
             <p className="text-xs text-gray-500 dark:text-gray-300 mt-0.5">
-              Modul Zakaria — Direktori Mitra Korporat B2B &amp; Integrasi Public API Wilayah Indonesia (EMSIFA)
+              Modul Zakaria — 100% Mock API (/api/pelanggan.json) &amp; Public API EMSIFA Wilayah Indonesia
             </p>
           </div>
-          <button
-            type="button"
-            onClick={handleOpenAdd}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 dark:bg-gray-800 dark:hover:bg-gray-600 text-white text-xs font-bold shadow transition-colors"
-          >
-            <Icon name="plus" size={14} />
-            <span>Tambah Mitra Baru</span>
-          </button>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleToggleSimulation}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-bold shadow transition-colors ${
+                simActive
+                  ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                  : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200'
+              }`}
+              title="Aktifkan simulasi galat untuk menguji tampilan Error State & tombol Retry"
+            >
+              <Icon name="alert" size={14} />
+              <span>{simActive ? 'Simulasi Error: ON' : 'Tes Simulasi Error'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={fetchPelanggan}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-blue-600 hover:bg-blue-700 dark:bg-gray-800 dark:hover:bg-gray-600 text-white text-xs font-semibold shadow transition-colors"
+            >
+              <Icon name="refresh" size={14} />
+              <span>Segarkan API</span>
+            </button>
+          </div>
         </div>
 
         {/* Search & Filter Bar */}
@@ -182,12 +151,15 @@ export default function PelangganPage() {
                 setSearch(e.target.value);
                 setCurrentPage(1);
               }}
-              placeholder="Cari nama perusahaan, PIC, atau alamat site..."
+              placeholder="Cari nama perusahaan mitra, NPWP, PIC, atau alamat..."
               className="w-full text-xs bg-transparent border-none focus:outline-none text-gray-900 dark:text-gray-100 placeholder-gray-400"
             />
           </div>
 
           <div className="flex items-center gap-1">
+            <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 mr-1 hidden sm:inline">
+              Filter Status:
+            </span>
             {['Semua', 'Aktif', 'Non-Aktif'].map((st) => (
               <button
                 key={st}
@@ -208,13 +180,23 @@ export default function PelangganPage() {
           </div>
         </div>
 
-        {loading && <LoadingState message="Mengambil master pelanggan via Axios API..." rows={4} />}
-        {error && <ErrorState message={error} onRetry={fetchPelanggan} />}
+        {/* Loading State UI (Skeleton Shimmer) */}
+        {loading && <LoadingState message="Mengambil master data pelanggan via Axios Mock API..." rows={5} />}
 
+        {/* Error State UI (Comprehensive Error & Retry) */}
+        {error && !loading && (
+          <ErrorState
+            title="Gagal Memuat Master Pelanggan dari Mock API"
+            message={error}
+            onRetry={fetchPelanggan}
+          />
+        )}
+
+        {/* Empty State UI */}
         {!loading && !error && filteredClients.length === 0 && (
           <EmptyState
-            title="Tidak Ada Data Mitra"
-            description="Tidak ditemukan data pelanggan yang sesuai dengan kriteria pencarian."
+            title="Mitra Pelanggan Tidak Ditemukan"
+            description="Tidak ada data mitra yang cocok dengan filter atau kata kunci pencarian Anda."
             actionText="Reset Pencarian"
             onAction={() => {
               setSearch('');
@@ -223,18 +205,19 @@ export default function PelangganPage() {
           />
         )}
 
+        {/* Data Table Hasil Fetch */}
         {!loading && !error && filteredClients.length > 0 && (
           <div className="w-full overflow-hidden rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors">
             <div className="w-full overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                    <th className="px-4 py-3">Perusahaan &amp; Legalitas</th>
+                    <th className="px-4 py-3">Perusahaan &amp; NPWP</th>
                     <th className="px-4 py-3">PIC Procurement</th>
                     <th className="px-4 py-3">Kontak &amp; Email</th>
-                    <th className="px-4 py-3">Lokasi / Site Proyek</th>
+                    <th className="px-4 py-3">Alamat Site / Kantor</th>
                     <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3 text-right">Aksi</th>
+                    <th className="px-4 py-3 text-right">Detail API</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -287,22 +270,13 @@ export default function PelangganPage() {
                           </span>
                         </td>
                         <td className="px-4 py-3 text-right">
-                          <div className="inline-flex items-center gap-1.5">
-                            <button
-                              type="button"
-                              onClick={() => handleOpenEdit(c)}
-                              className="px-2.5 py-1 rounded bg-blue-50 hover:bg-blue-100 dark:bg-gray-700 dark:hover:bg-gray-600 text-blue-600 dark:text-blue-300 font-semibold text-xs transition-colors"
-                            >
-                              Edit
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setDeleteTarget(c)}
-                              className="px-2.5 py-1 rounded bg-red-50 hover:bg-red-100 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-600 dark:text-red-300 font-semibold text-xs transition-colors"
-                            >
-                              Hapus
-                            </button>
-                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedClient(c)}
+                            className="px-2.5 py-1 rounded bg-blue-50 hover:bg-blue-100 dark:bg-gray-700 dark:hover:bg-gray-600 text-blue-600 dark:text-blue-300 font-semibold text-xs transition-colors"
+                          >
+                            Inspeksi Mitra
+                          </button>
                         </td>
                       </tr>
                     );
@@ -311,10 +285,11 @@ export default function PelangganPage() {
               </table>
             </div>
 
+            {/* Paginasi Data */}
             <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
               <span className="flex items-center col-span-4">
                 Menampilkan {(currentPage - 1) * pageSize + 1}-
-                {Math.min(currentPage * pageSize, filteredClients.length)} dari {filteredClients.length} Mitra
+                {Math.min(currentPage * pageSize, filteredClients.length)} dari {filteredClients.length} Mitra (Mock API)
               </span>
               <span className="col-span-1"></span>
               <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
@@ -329,150 +304,81 @@ export default function PelangganPage() {
         )}
       </main>
 
-      {/* Modal Form Tambah / Edit Mitra B2B dengan Integrasi WilayahSelector */}
+      {/* Modal Detail Inspeksi Legalitas Mitra & Pengujian Public API EMSIFA */}
       <Modal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        title={editingId ? `Edit Mitra: ${form.nama_perusahaan}` : 'Pendaftaran Mitra Korporat B2B Baru'}
-        subtitle="Form terintegrasi Public API Wilayah Indonesia (EMSIFA) untuk penentuan site"
-        maxWidth="max-w-2xl"
-      >
-        <form onSubmit={handleSave} className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                Nama Perusahaan / Badan Usaha <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                value={form.nama_perusahaan}
-                onChange={(e) => setForm({ ...form, nama_perusahaan: e.target.value })}
-                placeholder="Contoh: PT Telekomunikasi Nusantara"
-                className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                Nomor Pokok Wajib Pajak (NPWP)
-              </label>
-              <input
-                type="text"
-                value={form.npwp}
-                onChange={(e) => setForm({ ...form, npwp: e.target.value })}
-                placeholder="01.234.567.8-901.000"
-                className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500 font-mono"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                Nama Lengkap PIC
-              </label>
-              <input
-                type="text"
-                value={form.pic_nama}
-                onChange={(e) => setForm({ ...form, pic_nama: e.target.value })}
-                placeholder="Nama penanggung jawab"
-                className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                No. Telepon / WhatsApp
-              </label>
-              <input
-                type="text"
-                value={form.pic_telepon}
-                onChange={(e) => setForm({ ...form, pic_telepon: e.target.value })}
-                placeholder="+62 812-..."
-                className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                Email Korespondensi
-              </label>
-              <input
-                type="email"
-                value={form.pic_email}
-                onChange={(e) => setForm({ ...form, pic_email: e.target.value })}
-                placeholder="procurement@perusahaan.co.id"
-                className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
-              />
-            </div>
-          </div>
-
-          {/* Integrasi Komponen Public API EMSIFA (Zakaria) */}
-          <div className="p-3 rounded-lg border border-blue-200 dark:border-gray-600 bg-blue-50/60 dark:bg-gray-700/60">
-            <span className="block text-xs font-bold text-blue-900 dark:text-blue-300 mb-2">
-              Pilih Wilayah Operasional Site (Fetch API EMSIFA)
-            </span>
-            <WilayahSelector onSelectRegion={handleRegionSelected} />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-              Alamat Kantor / Deskripsi Site Lengkap
-            </label>
-            <textarea
-              rows={2}
-              value={form.alamat_kantor}
-              onChange={(e) => setForm({ ...form, alamat_kantor: e.target.value })}
-              placeholder="Alamat jalan, gedung, kawasan industri, atau koordinat site"
-              className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
-            />
-          </div>
-
-          <div className="flex justify-end gap-2 pt-3 border-t border-gray-200 dark:border-gray-700">
-            <button
-              type="button"
-              onClick={() => setModalOpen(false)}
-              className="px-4 py-2 rounded border border-gray-300 dark:border-gray-600 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              Batal
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white shadow"
-            >
-              {editingId ? 'Simpan Perubahan' : 'Daftarkan Mitra'}
-            </button>
-          </div>
-        </form>
-      </Modal>
-
-      {/* Modal Konfirmasi Hapus Mitra */}
-      <Modal
-        open={Boolean(deleteTarget)}
-        onClose={() => setDeleteTarget(null)}
-        title="Hapus Data Mitra"
-        subtitle={`Konfirmasi penghapusan mitra [${deleteTarget?.nama_perusahaan}]`}
-        maxWidth="max-w-md"
+        open={Boolean(selectedClient)}
+        onClose={() => {
+          setSelectedClient(null);
+          setTestRegion(null);
+        }}
+        title={`Inspeksi Mitra B2B: ${selectedClient?.nama_perusahaan}`}
+        subtitle="Data profil & integrasi Public API Wilayah Indonesia (EMSIFA) via Fetch API"
+        maxWidth="max-w-xl"
         footer={
-          <>
-            <button
-              type="button"
-              onClick={() => setDeleteTarget(null)}
-              className="px-4 py-2 rounded border border-gray-300 dark:border-gray-600 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              Batal
-            </button>
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-xs font-semibold text-white shadow"
-            >
-              Ya, Hapus Mitra
-            </button>
-          </>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedClient(null);
+              setTestRegion(null);
+            }}
+            className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white shadow"
+          >
+            Tutup Dialog
+          </button>
         }
       >
-        <p className="text-sm text-gray-600 dark:text-gray-300">
-          Apakah Anda yakin ingin menghapus data mitra <strong>{deleteTarget?.nama_perusahaan}</strong> dari sistem?
-        </p>
+        {selectedClient && (
+          <div className="space-y-4 text-xs">
+            <div className="p-3 rounded-lg bg-blue-50 dark:bg-gray-700/60 border border-blue-200 dark:border-gray-600 flex items-center justify-between">
+              <div>
+                <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                  {selectedClient.nama_perusahaan}
+                </p>
+                <p className="text-[11px] font-mono text-gray-500 dark:text-gray-400">
+                  NPWP: {selectedClient.npwp || 'Belum Terdaftar'}
+                </p>
+              </div>
+              <span className="px-2.5 py-1 rounded-full font-bold text-xs bg-emerald-600 text-white">
+                {selectedClient.status_aktif}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="p-2.5 rounded bg-gray-50 dark:bg-gray-700/40 border border-gray-200 dark:border-gray-600">
+                <span className="text-gray-400 block text-[10px]">Penanggung Jawab (PIC)</span>
+                <span className="font-semibold text-gray-900 dark:text-gray-100 block">{selectedClient.pic_nama}</span>
+                <span className="text-[11px] text-gray-500 dark:text-gray-400">{selectedClient.pic_jabatan}</span>
+              </div>
+              <div className="p-2.5 rounded bg-gray-50 dark:bg-gray-700/40 border border-gray-200 dark:border-gray-600">
+                <span className="text-gray-400 block text-[10px]">Kontak &amp; Korespondensi</span>
+                <span className="text-gray-900 dark:text-gray-100 block">{selectedClient.pic_telepon}</span>
+                <span className="text-[11px] text-blue-600 dark:text-blue-400">{selectedClient.pic_email}</span>
+              </div>
+            </div>
+
+            <div className="p-2.5 rounded bg-gray-50 dark:bg-gray-700/40 border border-gray-200 dark:border-gray-600">
+              <span className="text-gray-400 block text-[10px]">Alamat Kantor Terdaftar</span>
+              <p className="font-medium text-gray-800 dark:text-gray-200 mt-0.5">{selectedClient.alamat_kantor}</p>
+            </div>
+
+            {/* Komponen Pengujian Public API EMSIFA (Zakaria) */}
+            <div className="p-3 rounded-lg border border-blue-200 dark:border-gray-600 bg-blue-50/50 dark:bg-gray-700/50">
+              <p className="text-xs font-bold text-blue-900 dark:text-blue-300 mb-2">
+                Simulasi Pemilihan Wilayah Site Baru (Fetch API EMSIFA Real-time):
+              </p>
+              <WilayahSelector
+                onSelectRegion={(reg) => {
+                  setTestRegion(reg);
+                }}
+              />
+              {testRegion && (testRegion.province || testRegion.city) && (
+                <div className="mt-2 p-2 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-[11px] text-emerald-800 dark:text-emerald-200">
+                  Lokasi Terpilih dari Public API: <strong>{testRegion.city}</strong>, {testRegion.province}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </Modal>
     </div>
   );

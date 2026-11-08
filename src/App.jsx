@@ -7,9 +7,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-// Hafizh Arqamilandri Wakhyudi: Fitur Login, Register, Forgot Password
+// Hafizh Arqamilandri Wakhyudi: Fitur Login & Forgot Password
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
 // Marta Safitri: Fitur Dashboard
@@ -51,20 +50,12 @@ export default function App() {
       <Routes>
         <Route path="/" element={<RootRedirect />} />
 
-        {/* Fitur Login, Register, Forgot Password (Hafizh Arqamilandri Wakhyudi) */}
+        {/* Fitur Autentikasi Mock API (Hafizh Arqamilandri Wakhyudi) */}
         <Route
           path="/login"
           element={
             <GuestRoute>
               <LoginPage />
-            </GuestRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <GuestRoute>
-              <RegisterPage />
             </GuestRoute>
           }
         />

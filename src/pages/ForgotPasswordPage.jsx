@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Icon from '../components/Icon';
+import { checkSimulatedError } from '../components/StatusStates';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -34,16 +35,19 @@ export default function ForgotPasswordPage() {
     setError('');
 
     try {
-      // 1. Verifikasi ketersediaan akun di Mock API via Axios
+      // 1. Pengecekan pra-fetch simulasi galat
+      checkSimulatedError();
+
+      // 2. Verifikasi ketersediaan akun di Mock API via Axios
       const res = await axios.get('/api/users.json');
-      const users = res.data || [];
+      const users = Array.isArray(res.data) ? res.data : [];
       const user = users.find((u) => String(u.email).toLowerCase() === cleanEmail);
 
       if (!user) {
-        throw new Error('Alamat email tidak terdaftar dalam sistem.');
+        throw new Error('Alamat email tidak terdaftar dalam data Mock API users.json.');
       }
 
-      // 2. Kirim instruksi pemulihan langsung ke email via REST API eksternal
+      // 3. Kirim instruksi pemulihan langsung ke email via REST API eksternal
       await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(cleanEmail)}`, {
         method: 'POST',
         headers: {
@@ -63,7 +67,16 @@ export default function ForgotPasswordPage() {
 
       setSuccess(true);
     } catch (err) {
-      setError(err.message || 'Gagal memproses permintaan pemulihan kata sandi.');
+      console.error('[Forgot Password Error]:', err);
+      const userMessage = err.isSimulated
+        ? err.message
+        : err.response
+        ? `Server Mock API merespon dengan status ${err.response.status}: ${err.response.statusText || 'Gagal memproses users.json'}.`
+        : err.request
+        ? 'Gagal menghubungi server Mock API. Periksa koneksi jaringan.'
+        : err.message || 'Gagal memproses permintaan pemulihan kata sandi.';
+
+      setError(userMessage);
     } finally {
       setLoading(false);
     }

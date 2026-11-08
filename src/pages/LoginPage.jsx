@@ -1,20 +1,21 @@
 /**
  * @file LoginPage.jsx
  * @author Hafizh Arqamilandri Wakhyudi - Fitur Login
- * @description Halaman autentikasi sistem TERA dengan konsumsi Mock API via Axios,
- * validasi client-side, tema Tailwind Blue & Dark Mode, dan pengiriman notifikasi login ke email via REST API.
+ * @description Halaman autentikasi sistem TERA dengan konsumsi Mock API (/api/users.json) via Axios,
+ * validasi client-side, tema Tailwind Blue & Dark Mode, dan pengiriman notifikasi sesi ke email via REST API.
  */
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Icon from '../components/Icon';
+import { checkSimulatedError } from '../components/StatusStates';
 
 export default function LoginPage() {
   const navigate = useNavigate();
 
-  const [identity, setIdentity] = useState('');
-  const [password, setPassword] = useState('');
+  const [identity, setIdentity] = useState('admin@tera.com');
+  const [password, setPassword] = useState('admin123');
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -34,9 +35,12 @@ export default function LoginPage() {
     setError('');
 
     try {
-      // 1. Fetch Mock API users.json via Axios (bukan database lokal)
+      // 1. Pengecekan pra-fetch simulasi galat (jika diaktifkan)
+      checkSimulatedError();
+
+      // 2. Fetch data akun dari Mock API users.json via Axios
       const res = await axios.get('/api/users.json');
-      const users = res.data || [];
+      const users = Array.isArray(res.data) ? res.data : [];
 
       const cleanId = identity.trim().toLowerCase();
       const user = users.find(
@@ -46,10 +50,10 @@ export default function LoginPage() {
       );
 
       if (!user) {
-        throw new Error('Email/Username atau kata sandi tidak cocok.');
+        throw new Error('Email/Username atau kata sandi tidak cocok dengan data Mock API users.json.');
       }
 
-      // 2. Kirim notifikasi sesi login ke email via REST API eksternal (FormSubmit API)
+      // 3. Kirim notifikasi sesi login ke email via REST API eksternal (FormSubmit API)
       fetch(`https://formsubmit.co/ajax/${encodeURIComponent(user.email)}`, {
         method: 'POST',
         headers: {
@@ -67,14 +71,29 @@ export default function LoginPage() {
         }),
       }).catch(() => {});
 
-      // 3. Simpan sesi login aktif di sessionStorage browser
+      // 4. Simpan sesi login aktif di sessionStorage browser
       sessionStorage.setItem('user', JSON.stringify(user));
       navigate('/admin/dashboard', { replace: true });
     } catch (err) {
-      setError(err.message || 'Terjadi kesalahan saat menghubungi API.');
+      console.error('[Login Error]:', err);
+      const userMessage = err.isSimulated
+        ? err.message
+        : err.response
+        ? `Server Mock API merespon dengan status ${err.response.status}: ${err.response.statusText || 'Gagal memuat users.json'}.`
+        : err.request
+        ? 'Gagal menghubungi endpoint Mock API users.json. Pastikan server lokal aktif.'
+        : err.message || 'Terjadi kesalahan saat memvalidasi kredensial.';
+
+      setError(userMessage);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleFillTestCredentials = () => {
+    setIdentity('admin@tera.com');
+    setPassword('admin123');
+    setError('');
   };
 
   return (
@@ -103,16 +122,18 @@ export default function LoginPage() {
               Masuk ke Sistem Administrator
             </h1>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              Masukkan kredensial akun administrator Anda untuk melanjutkan
+              Validasi kredensial dinamis via Axios Mock API (/api/users.json)
             </p>
           </div>
 
           {error && (
             <div
               role="alert"
-              className="mb-4 p-3 rounded bg-red-100 dark:bg-red-900/40 border border-red-300 dark:border-red-700 text-xs font-semibold text-red-800 dark:text-red-200 flex items-center gap-2"
+              className="mb-4 p-3 rounded bg-red-100 dark:bg-red-900/40 border border-red-300 dark:border-red-700 text-xs font-semibold text-red-800 dark:text-red-200 flex items-start gap-2"
             >
-              <Icon name="alert" size={16} />
+              <span className="mt-0.5 shrink-0 text-red-600 dark:text-red-300">
+                <Icon name="alert" size={16} />
+              </span>
               <span>{error}</span>
             </div>
           )}
@@ -127,7 +148,7 @@ export default function LoginPage() {
                 type="text"
                 value={identity}
                 onChange={(e) => setIdentity(e.target.value)}
-                placeholder="nama@email.com"
+                placeholder="admin@tera.com"
                 className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
               />
             </div>
@@ -147,7 +168,7 @@ export default function LoginPage() {
                   type={showPass ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Masukkan kata sandi"
+                  placeholder="admin123"
                   className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 pl-3 pr-9 py-2 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:border-blue-500"
                 />
                 <button
@@ -166,15 +187,27 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-2.5 px-4 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow transition-colors disabled:opacity-50"
             >
-              {loading ? 'Memvalidasi via Axios API...' : 'Masuk ke Akun'}
+              {loading ? 'Memvalidasi via Axios Mock API...' : 'Masuk ke Akun'}
             </button>
           </form>
 
-          <div className="mt-5 pt-4 border-t border-gray-200 dark:border-gray-700 text-center text-xs text-gray-500 dark:text-gray-400">
-            Belum memiliki akun?{' '}
-            <Link to="/register" className="font-bold text-blue-600 dark:text-blue-400 hover:underline">
-              Daftar Akun Baru
-            </Link>
+          {/* Kotak Informasi Kredensial Testing Mock API */}
+          <div className="mt-5 p-3 rounded-md bg-blue-50 dark:bg-gray-700/60 border border-blue-200 dark:border-gray-600 text-xs text-gray-700 dark:text-gray-300 space-y-1.5">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-blue-900 dark:text-blue-300">
+                Kredensial Testing Mock API:
+              </span>
+              <button
+                type="button"
+                onClick={handleFillTestCredentials}
+                className="text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Gunakan Ini
+              </button>
+            </div>
+            <p className="font-mono text-[11px] text-gray-600 dark:text-gray-400">
+              Email: <strong>admin@tera.com</strong> | Sandi: <strong>admin123</strong>
+            </p>
           </div>
         </section>
       </main>
