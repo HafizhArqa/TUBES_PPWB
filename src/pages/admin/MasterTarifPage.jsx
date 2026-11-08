@@ -14,7 +14,7 @@ import {
   deleteMasterKatalogItem,
 } from '../../services/masterDataService';
 import { useAuth } from '../../context/AuthContext';
-import { useToast } from '../../context/ToastContext';
+import { useToast } from '../../context/AuthContext';
 import { LoadingState, ErrorState, EmptyState } from '../../components/StatusStates';
 import Modal from '../../components/Modal';
 import Icon from '../../components/Icon';

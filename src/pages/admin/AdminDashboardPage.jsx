@@ -7,7 +7,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { getAdminDashboardStats } from '../../services/laporanService';
+import { getAdminDashboardStats } from '../../services/dashboardService';
 import { LoadingState, ErrorState } from '../../components/StatusStates';
 import AreaLineChart from '../../components/AreaLineChart';
 import StatusBadge from '../../components/StatusBadge';
@@ -195,10 +195,10 @@ export default function AdminDashboardPage() {
               Seluruh kontrak sewa dilengkapi jaminan ketersediaan frekuensi SLA 99,5% dan dukungan penggantian perangkat Hot-Swap 1x24 jam.
             </p>
             <Link
-              to="/admin/laporan-pendapatan"
+              to="/admin/master-tarif"
               className="inline-block pt-1 font-bold text-sky-300 hover:underline"
             >
-              Buka Laporan Pendapatan Lengkap &rarr;
+              Lihat Master Tarif &amp; SLA &rarr;
             </Link>
           </div>
         </aside>

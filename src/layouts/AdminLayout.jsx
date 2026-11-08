@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useToast } from '../context/ToastContext';
 import Icon from '../components/Icon';
 import Modal from '../components/Modal';
 import { resetMockDatabase } from '../services/mockDb';
@@ -10,34 +9,26 @@ import { isSimulatedApiErrorEnabled, setSimulatedApiError } from '../services/ap
 const NAV_GROUPS = [
   {
     heading: 'Utama',
-    items: [{ to: '/admin/dashboard', label: 'Dashboard Eksekutif', icon: 'dashboard' }],
+    items: [{ to: '/admin/dashboard', label: 'Dashboard', icon: 'dashboard' }],
   },
   {
-    heading: 'Inventaris Perangkat',
+    heading: 'Kelola Unit',
     items: [
-      { to: '/admin/units', label: 'Kelola Unit Radio', icon: 'box' },
+      { to: '/admin/units', label: 'Data Unit Radio', icon: 'box' },
       { to: '/admin/status-unit', label: 'Status Fisik Unit', icon: 'layers' },
     ],
   },
   {
     heading: 'Manajemen Master Data',
     items: [
-      { to: '/admin/pelanggan', label: 'Master Pelanggan B2B', icon: 'building' },
-      { to: '/admin/master-tarif', label: 'Master Tarif & Standar', icon: 'tag' },
-    ],
-  },
-  {
-    heading: 'Pelaporan & Analitik',
-    items: [
-      { to: '/admin/laporan-penyewaan', label: 'Laporan Penyewaan', icon: 'chart' },
-      { to: '/admin/laporan-pendapatan', label: 'Laporan Pendapatan', icon: 'wallet' },
+      { to: '/admin/pelanggan', label: 'Data Pelanggan', icon: 'building' },
+      { to: '/admin/master-tarif', label: 'Master Tarif', icon: 'tag' },
     ],
   },
 ];
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
-  const { showToast } = useToast();
   const navigate = useNavigate();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -46,6 +37,12 @@ export default function AdminLayout() {
   const [resetting, setResetting] = useState(false);
   const [quickQuery, setQuickQuery] = useState('');
   const [simError, setSimError] = useState(() => isSimulatedApiErrorEnabled());
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const triggerToast = (message, type = 'info') => {
+    setToastMessage({ message, type });
+    setTimeout(() => setToastMessage(null), 3500);
+  };
 
   const handleQuickSearch = (e) => {
     e.preventDefault();
@@ -59,10 +56,10 @@ export default function AdminLayout() {
     const next = !simError;
     setSimulatedApiError(next);
     setSimError(next);
-    showToast(
+    triggerToast(
       next
-        ? 'Simulasi Gangguan API diaktifkan. Buka/muat halaman untuk menguji Error State & tombol Coba Lagi.'
-        : 'Simulasi Gangguan API dimatikan. Koneksi Mock API kembali normal.',
+        ? 'Simulasi Gangguan API diaktifkan. Buka halaman untuk menguji Error State & tombol Coba Lagi.'
+        : 'Simulasi Gangguan API dimatikan. Koneksi Mock API normal.',
       next ? 'warning' : 'info'
     );
   };
@@ -73,11 +70,11 @@ export default function AdminLayout() {
       setSimulatedApiError(false);
       setSimError(false);
       await resetMockDatabase();
-      showToast('Database demo berhasil di-reset ulang dari endpoint /api/*.json!', 'success');
+      triggerToast('Database demo berhasil di-reset ulang dari Mock API!', 'success');
       setResetModalOpen(false);
       window.location.reload();
     } catch (err) {
-      showToast(err.message || 'Gagal mereset database demo.', 'error');
+      triggerToast(err.message || 'Gagal mereset database demo.', 'error');
     } finally {
       setResetting(false);
     }
@@ -86,7 +83,6 @@ export default function AdminLayout() {
   const confirmLogout = async () => {
     await logout();
     setLogoutModalOpen(false);
-    showToast('Anda telah keluar dari sesi Admin TERA.', 'info');
     navigate('/login');
   };
 
@@ -96,50 +92,89 @@ export default function AdminLayout() {
         Lewati ke konten utama
       </a>
 
+      {/* Floating Toast Notification */}
+      {toastMessage && (
+        <div
+          role="status"
+          aria-live="polite"
+          className={`fixed top-4 right-4 z-50 px-4 py-3 rounded-xl shadow-lg text-xs font-semibold flex items-center gap-2 border animate-bounce ${
+            toastMessage.type === 'success'
+              ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+              : toastMessage.type === 'warning'
+              ? 'bg-amber-50 text-amber-800 border-amber-300'
+              : toastMessage.type === 'error'
+              ? 'bg-red-50 text-red-800 border-red-300'
+              : 'bg-blue-50 text-blue-800 border-blue-300'
+          }`}
+        >
+          <span>{toastMessage.message}</span>
+          <button
+            onClick={() => setToastMessage(null)}
+            className="ml-2 text-slate-400 hover:text-slate-600 font-bold"
+            aria-label="Tutup notifikasi"
+          >
+            &times;
+          </button>
+        </div>
+      )}
+
       {/* Backdrop Mobile Sidebar */}
       {sidebarOpen && (
         <div
-          aria-hidden="true"
+          className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 lg:hidden"
           onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 bg-slate-950/60 z-50 lg:hidden"
+          aria-hidden="true"
         />
       )}
 
-      {/* Semantic Aside Sidebar */}
+      {/* ASIDE SIDEBAR */}
       <aside
-        aria-label="Navigasi utama panel admin"
+        id="admin-sidebar"
         className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}
+        aria-label="Navigasi Utama Admin"
       >
-        <div className="px-5 py-5 border-b border-white/10 flex items-center justify-between">
-          <Link
-            to="/admin/dashboard"
-            onClick={() => setSidebarOpen(false)}
-            className="flex items-center gap-3"
-          >
-            <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow">
-              <Icon name="radio" size={20} />
-            </div>
+        {/* Brand Header */}
+        <div className="p-5 border-b border-white/10 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-lg shadow-lg shadow-blue-500/30">
+              <Icon name="radio" size={22} />
+            </span>
             <div>
-              <span className="block text-base font-extrabold tracking-tight text-white">
+              <span className="block font-black text-white text-base tracking-wide">
                 TERA <span className="text-sky-400">ADMIN</span>
               </span>
-              <span className="block text-[11px] text-slate-400">PT Utama Telekomindo</span>
+              <span className="block text-[11px] text-slate-400 font-medium">
+                PT Utama Telekomindo
+              </span>
             </div>
-          </Link>
+          </div>
           <button
             type="button"
+            className="lg:hidden p-1.5 text-slate-400 hover:text-white rounded-lg"
             onClick={() => setSidebarOpen(false)}
-            aria-label="Tutup menu samping"
-            className="lg:hidden p-1.5 rounded-lg text-slate-300 hover:bg-white/10"
+            aria-label="Tutup menu sidebar"
           >
-            <Icon name="close" size={18} />
+            <Icon name="x" size={20} />
           </button>
         </div>
 
-        <nav aria-label="Daftar modul administrasi" className="flex-1 px-3.5 py-4 space-y-5">
+        {/* User Card */}
+        <div className="p-4 mx-3 my-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-sm">
+            {String(user?.name || 'A').slice(0, 2).toUpperCase()}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-bold text-white truncate">{user?.name || 'Administrator'}</p>
+            <p className="text-[11px] text-slate-400 truncate">{user?.email || 'admin@tera.co.id'}</p>
+          </div>
+          <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 ring-4 ring-emerald-400/20" title="Aktif" />
+        </div>
+
+        {/* Navigation Menus */}
+        <nav className="flex-1 px-3 py-2 space-y-5 overflow-y-auto" aria-label="Menu Aplikasi">
           {NAV_GROUPS.map((group) => (
             <div key={group.heading}>
-              <p className="px-3 mb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <p className="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                 {group.heading}
               </p>
               <ul className="space-y-1">
@@ -147,7 +182,6 @@ export default function AdminLayout() {
                   <li key={item.to}>
                     <NavLink
                       to={item.to}
-                      end={item.end}
                       onClick={() => setSidebarOpen(false)}
                       className={({ isActive }) =>
                         `sidebar-nav-link ${isActive ? 'active' : ''}`
@@ -163,75 +197,79 @@ export default function AdminLayout() {
           ))}
         </nav>
 
-        <div className="p-4 border-t border-white/10 space-y-2">
+        {/* Action Buttons: Reset & Logout */}
+        <div className="p-3 border-t border-white/10 space-y-1.5 text-xs">
           <button
             type="button"
             onClick={() => setResetModalOpen(true)}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-slate-300 border border-white/10 transition-colors"
+            className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
           >
-            <Icon name="refresh" size={14} />
-            <span>Reset Data Mock API</span>
+            <span className="flex items-center gap-2">
+              <Icon name="refresh" size={16} />
+              Reset Database Mock
+            </span>
           </button>
+
           <button
             type="button"
             onClick={() => setLogoutModalOpen(true)}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-red-500/15 hover:bg-red-500/25 text-xs font-semibold text-red-200 border border-red-400/20 transition-colors"
+            className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-red-300 hover:text-white hover:bg-red-500/20 transition-colors"
           >
-            <Icon name="logout" size={14} />
-            <span>Keluar Sesi</span>
+            <span className="flex items-center gap-2">
+              <Icon name="logout" size={16} />
+              Keluar Sesi
+            </span>
           </button>
         </div>
       </aside>
 
-      {/* Main Content Area */}
+      {/* MAIN WRAPPER */}
       <div className="admin-main-wrapper">
         <header className="admin-topbar">
-          <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div className="flex items-center gap-3">
             <button
               type="button"
+              className="lg:hidden p-2 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100"
               onClick={() => setSidebarOpen(true)}
               aria-label="Buka menu navigasi"
-              className="lg:hidden p-2 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100"
             >
               <Icon name="menu" size={20} />
             </button>
 
-            <form onSubmit={handleQuickSearch} role="search" className="hidden sm:flex items-center max-w-md w-full">
-              <div className="relative w-full">
-                <span className="absolute inset-y-0 left-3 flex items-center text-slate-400 pointer-events-none">
-                  <Icon name="search" size={16} />
-                </span>
-                <input
-                  type="search"
-                  value={quickQuery}
-                  onChange={(e) => setQuickQuery(e.target.value)}
-                  aria-label="Cari cepat kode atau nama perangkat"
-                  placeholder="Cari cepat unit radio (mis. SLR 5300, UTR-RPT)..."
-                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-600 focus:outline-none text-xs font-medium"
-                />
-              </div>
+            {/* Quick Search */}
+            <form onSubmit={handleQuickSearch} className="relative hidden md:block">
+              <input
+                type="search"
+                value={quickQuery}
+                onChange={(e) => setQuickQuery(e.target.value)}
+                placeholder="Cari Serial / Model Unit..."
+                className="w-64 lg:w-80 pl-9 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-500 focus:outline-none transition-all"
+              />
+              <span className="absolute left-3 top-2.5 text-slate-400">
+                <Icon name="search" size={14} />
+              </span>
             </form>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-3">
+            {/* Toggle Simulasi Gangguan API */}
             <button
               type="button"
               onClick={handleToggleSimError}
-              title="Fitur demonstrasi Error State & Retry UI"
-              className={`hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 border transition-all ${
                 simError
-                  ? 'bg-red-600 text-white border-red-700'
-                  : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+                  ? 'bg-red-50 text-red-700 border-red-300'
+                  : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
               }`}
+              title="Aktifkan simulasi galat jaringan (500) untuk menguji penanganan Error State"
             >
-              <Icon name="alert" size={14} />
-              <span>{simError ? 'Simulasi Error: ON' : 'Uji Error API'}</span>
+              <span className={`w-2 h-2 rounded-full ${simError ? 'bg-red-500 animate-ping' : 'bg-slate-400'}`} />
+              <span className="hidden sm:inline">Simulasi Galat:</span>
+              <span>{simError ? 'Aktif' : 'Normal'}</span>
             </button>
 
-            <Link
-              to="/profile"
-              className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition-colors"
-            >
+            {/* User Info Badge */}
+            <div className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-xl border border-slate-200 bg-white">
               <div className="w-8 h-8 rounded-lg bg-blue-600 text-white text-xs font-bold flex items-center justify-center">
                 {String(user?.name || 'A').slice(0, 2).toUpperCase()}
               </div>
@@ -243,7 +281,7 @@ export default function AdminLayout() {
                   Admin Operasional
                 </span>
               </div>
-            </Link>
+            </div>
           </div>
         </header>
 
@@ -284,7 +322,7 @@ export default function AdminLayout() {
         }
       >
         <p className="text-sm text-slate-600">
-          Seluruh perubahan data transaksi, inventaris, dan faktur yang sudah disimpan tetap aman tersimpan di penyimpanan lokal browser Anda.
+          Seluruh perubahan data inventaris dan master data yang sudah disimpan tetap aman tersimpan di penyimpanan lokal browser Anda.
         </p>
       </Modal>
 
@@ -293,7 +331,7 @@ export default function AdminLayout() {
         open={resetModalOpen}
         onClose={() => setResetModalOpen(false)}
         title="Reset Ulang Database Mock API?"
-        subtitle="Mengambil ulang seluruh data awal dari file JSON di /api/*.json melalui Axios."
+        subtitle="Mengambil ulang seluruh data awal dari Mock API."
         maxWidth="max-w-md"
         footer={
           <>
@@ -310,16 +348,15 @@ export default function AdminLayout() {
               onClick={handleResetDemoDb}
               className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white disabled:opacity-50"
             >
-              {resetting ? 'Memuat Ulang JSON...' : 'Ya, Reset Data Awal'}
+              {resetting ? 'Memuat Ulang...' : 'Ya, Reset Data Awal'}
             </button>
           </>
         }
       >
         <p className="text-sm text-slate-600">
-          Tindakan ini akan mengembalikan daftar unit, pelanggan, kontrak, dan invoice kembali ke dataset awal PT Utama Telekomindo.
+          Tindakan ini akan mengembalikan daftar unit dan pelanggan kembali ke dataset awal.
         </p>
       </Modal>
     </div>
   );
 }
-

@@ -12,7 +12,7 @@ import {
   resendPasswordResetOtp,
   verifyPasswordResetOtp,
 } from '../../services/authService';
-import { useToast } from '../../context/ToastContext';
+import { useToast } from '../../context/AuthContext';
 
 export default function VerifyResetOtpPage() {
   const navigate = useNavigate();

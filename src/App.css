@@ -1,0 +1,311 @@
+/* ==========================================================================
+   APPLICATION SHELL & LAYOUTS (CSS GRID & FLEXBOX)
+   ========================================================================== */
+
+/* Admin Shell using CSS Grid */
+.admin-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  min-height: 100vh;
+  background-color: var(--tera-bg-admin);
+}
+
+.admin-sidebar {
+  background: linear-gradient(180deg, var(--tera-navy) 0%, #091c47 100%);
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 40;
+}
+
+.admin-main-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+.admin-topbar {
+  height: var(--topbar-height);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--tera-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 1.5rem 1.75rem 2.5rem;
+  max-width: 1480px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Sidebar Navigation Links (Flexbox) */
+.sidebar-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 10px;
+  color: #cbd5e1;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.18s ease;
+  text-decoration: none;
+}
+
+.sidebar-nav-link:hover {
+  background-color: var(--tera-navy-hover);
+  color: #ffffff;
+}
+
+.sidebar-nav-link.active {
+  background-color: var(--tera-primary);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+/* Auth Split & Card Layout (Flexbox) */
+.auth-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: radial-gradient(circle at top right, #dbeafe 0%, #f8fafc 45%, #eef2ff 100%);
+  padding: 1.5rem 1rem;
+}
+
+/* Reusable Responsive CSS Grids */
+.kpi-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.15rem;
+}
+
+.kpi-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.15rem;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.dashboard-split-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr);
+  gap: 1.25rem;
+}
+
+/* ==========================================================================
+   MODULAR UI COMPONENTS (CARDS, TABLES, BADGES, MODALS, SKELETONS)
+   ========================================================================== */
+
+.tera-card {
+  background: var(--tera-surface);
+  border: 1px solid var(--tera-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.tera-card-hover:hover {
+  box-shadow: var(--shadow-elevated);
+  transform: translateY(-2px);
+}
+
+.tera-dark-card {
+  background: linear-gradient(145deg, var(--tera-navy-card) 0%, #102a5e 100%);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-elevated);
+}
+
+/* Data Tables */
+.tera-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tera-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.tera-table thead th {
+  background: #f8fafc;
+  color: var(--tera-text-secondary);
+  font-weight: 600;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--tera-border);
+  white-space: nowrap;
+  text-align: left;
+}
+
+.tera-table tbody td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.tera-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Skeleton Shimmer Animation for Loading States */
+@keyframes tera-shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.skeleton-box {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 800px 100%;
+  animation: tera-shimmer 1.4s infinite linear;
+  border-radius: 8px;
+}
+
+/* Modal Backdrop & Dialog */
+.modal-backdrop-layer {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 21, 54, 0.58);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 100;
+}
+
+.modal-dialog-box {
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-modal);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* OTP 6-Digit Box Grid */
+.otp-input-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES (BREAKPOINTS + PRINT)
+   ========================================================================== */
+
+/* 1. Large Desktop / Compact Laptop (<= 1280px) */
+@media (max-width: 1280px) {
+  .dashboard-split-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-content {
+    padding: 1.25rem;
+  }
+}
+
+/* 2. Tablet Landscape (<= 1024px) */
+@media (max-width: 1024px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    z-index: 60;
+  }
+
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .kpi-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kpi-grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* 3. Tablet Portrait / Large Mobile (<= 768px) */
+@media (max-width: 768px) {
+  .admin-topbar {
+    padding: 0 1rem;
+    height: 60px;
+  }
+
+  .kpi-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 4. Small Mobile (<= 480px) */
+@media (max-width: 480px) {
+  .kpi-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-content {
+    padding: 1rem 0.85rem 2rem;
+  }
+
+  .otp-input-grid {
+    gap: 0.35rem;
+  }
+}
+
+/* 5. Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

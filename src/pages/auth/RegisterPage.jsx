@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthLayout from '../../layouts/AuthLayout';
 import { initiateRegisterOtp } from '../../services/authService';
-import { useToast } from '../../context/ToastContext';
+import { useToast } from '../../context/AuthContext';
 import Icon from '../../components/Icon';
 
 export default function RegisterPage() {

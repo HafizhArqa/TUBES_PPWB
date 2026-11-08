@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import AuthLayout from '../../layouts/AuthLayout';
 import { getPendingResetOtp, completePasswordReset } from '../../services/authService';
-import { useToast } from '../../context/ToastContext';
+import { useToast } from '../../context/AuthContext';
 
 export default function ResetPasswordPage() {
   const { token } = useParams();

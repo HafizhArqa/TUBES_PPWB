@@ -15,7 +15,7 @@ import {
   deletePelangganEntity,
 } from '../../services/pelangganService';
 import { useAuth } from '../../context/AuthContext';
-import { useToast } from '../../context/ToastContext';
+import { useToast } from '../../context/AuthContext';
 import { LoadingState, ErrorState, EmptyState } from '../../components/StatusStates';
 import StatusBadge from '../../components/StatusBadge';
 import Pagination from '../../components/Pagination';

@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthLayout from '../../layouts/AuthLayout';
 import { requestPasswordResetOtp } from '../../services/authService';
-import { useToast } from '../../context/ToastContext';
+import { useToast } from '../../context/AuthContext';
 
 export default function ForgotPasswordPage() {
   const navigate = useNavigate();

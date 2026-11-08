@@ -14,7 +14,7 @@ import {
   verifyRegisterOtp,
 } from '../../services/authService';
 import { useAuth } from '../../context/AuthContext';
-import { useToast } from '../../context/ToastContext';
+import { useToast } from '../../context/AuthContext';
 
 export default function VerifyRegisterOtpPage() {
   const navigate = useNavigate();
