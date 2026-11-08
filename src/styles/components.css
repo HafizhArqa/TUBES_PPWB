@@ -1,0 +1,166 @@
+/* ==========================================================================
+   MODULAR UI COMPONENTS (CARDS, STEPPERS, TABLES, BADGES, MODALS, SKELETONS)
+   ========================================================================== */
+
+.tera-card {
+  background: var(--tera-surface);
+  border: 1px solid var(--tera-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.tera-card-hover:hover {
+  box-shadow: var(--shadow-elevated);
+  transform: translateY(-2px);
+}
+
+.tera-dark-card {
+  background: linear-gradient(145deg, var(--tera-navy-card) 0%, #102a5e 100%);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-elevated);
+}
+
+/* Section Number Badge in Transaction Builder */
+.section-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--tera-primary);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-right: 0.65rem;
+  flex-shrink: 0;
+}
+
+/* Interactive Choice Card */
+.choice-card {
+  border: 1.5px solid var(--tera-border);
+  border-radius: 14px;
+  padding: 1rem;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.choice-card:hover {
+  border-color: #93c5fd;
+  background: #f8fafc;
+}
+
+.choice-card.active {
+  border-color: var(--tera-primary);
+  background: var(--tera-primary-soft);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* Data Tables */
+.tera-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tera-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.tera-table thead th {
+  background: #f8fafc;
+  color: var(--tera-text-secondary);
+  font-weight: 600;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--tera-border);
+  white-space: nowrap;
+  text-align: left;
+}
+
+.tera-table tbody td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.tera-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Progress Stepper (Flexbox) */
+.tera-stepper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.tera-step-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* Skeleton Shimmer Animation for Loading States */
+@keyframes tera-shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.skeleton-box {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 800px 100%;
+  animation: tera-shimmer 1.4s infinite linear;
+  border-radius: 8px;
+}
+
+/* Modal Backdrop & Dialog */
+.modal-backdrop-layer {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 21, 54, 0.58);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 100;
+}
+
+.modal-dialog-box {
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-modal);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* OTP 6-Digit Box Grid */
+.otp-input-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+

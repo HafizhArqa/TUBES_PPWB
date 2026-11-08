@@ -1,0 +1,47 @@
+[
+  {
+    "id_riwayat": 901,
+    "id_unit": 501,
+    "status_sebelum": "Tersedia",
+    "status_sesudah": "Disewa",
+    "lokasi": "Site Pit Utara Muara Enim, Sumatera Selatan",
+    "klien": "PT Bukit Energi Nusantara",
+    "keterangan": "Mobilisasi & instalasi Kontrak Sewa TERA/KONT/202608/0101",
+    "diubah_oleh": "Ir. Bagaskara Pratama",
+    "created_at": "2026-08-01T10:00:00.000Z"
+  },
+  {
+    "id_riwayat": 902,
+    "id_unit": 504,
+    "status_sebelum": "Tersedia",
+    "status_sesudah": "Disewa",
+    "lokasi": "Site Pit Utara Muara Enim, Sumatera Selatan",
+    "klien": "PT Bukit Energi Nusantara",
+    "keterangan": "Deploy unit rig ruang dispatch Kontrak TERA/KONT/202608/0101",
+    "diubah_oleh": "Ir. Bagaskara Pratama",
+    "created_at": "2026-08-01T10:05:00.000Z"
+  },
+  {
+    "id_riwayat": 903,
+    "id_unit": 506,
+    "status_sebelum": "Tersedia",
+    "status_sesudah": "Maintenance",
+    "lokasi": "Workshop RF Kalibrasi Bekasi, Jawa Barat",
+    "klien": null,
+    "keterangan": "Kalibrasi rutin konektor antena N-Type dan uji daya pancar 50W.",
+    "diubah_oleh": "Ir. Bagaskara Pratama",
+    "created_at": "2026-10-19T14:20:00.000Z"
+  },
+  {
+    "id_riwayat": 904,
+    "id_unit": 512,
+    "status_sebelum": "Disewa",
+    "status_sesudah": "Rusak",
+    "lokasi": "Workshop RF Kalibrasi Bekasi, Jawa Barat",
+    "klien": null,
+    "keterangan": "Penggantian modul PA final & LCD retak pasca inspeksi dermaga.",
+    "diubah_oleh": "Nadia Kusumawardhani",
+    "created_at": "2026-10-25T16:10:00.000Z"
+  }
+]
+

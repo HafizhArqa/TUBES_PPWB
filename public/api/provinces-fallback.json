@@ -1,0 +1,14 @@
+[
+  { "id": "16", "name": "SUMATERA SELATAN" },
+  { "id": "31", "name": "DKI JAKARTA" },
+  { "id": "32", "name": "JAWA BARAT" },
+  { "id": "33", "name": "JAWA TENGAH" },
+  { "id": "35", "name": "JAWA TIMUR" },
+  { "id": "36", "name": "BANTEN" },
+  { "id": "62", "name": "KALIMANTAN TENGAH" },
+  { "id": "64", "name": "KALIMANTAN TIMUR" },
+  { "id": "72", "name": "SULAWESI TENGAH" },
+  { "id": "73", "name": "SULAWESI SELATAN" },
+  { "id": "91", "name": "PAPUA" }
+]
+

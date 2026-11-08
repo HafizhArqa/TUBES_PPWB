@@ -1,0 +1,51 @@
+[
+  {
+    "id_penawaran": 1101,
+    "id_request": 701,
+    "nomor_penawaran_internal": "INT/QUO/202605/001",
+    "tanggal_penawaran_internal": "2026-05-26",
+    "nilai_penawaran_internal": 338000000,
+    "catatan_internal": "Kalkulasi margin engineering sudah termasuk mobilisasi teknisi ke Muara Enim.",
+    "nomor_penawaran_resmi": "041/UT/QUO/V/2026",
+    "tanggal_penawaran_resmi": "2026-05-27",
+    "nilai_penawaran_resmi": 334900000,
+    "file_penawaran_resmi": "Surat_Penawaran_Resmi_041_BEN.pdf",
+    "status_lelang": "Menang",
+    "tanggal_hasil_lelang": "2026-05-30",
+    "file_hasil_lelang": "BA_Penetapan_Pemenang_BEN_2026.pdf",
+    "catatan_lelang": "Ditetapkan sebagai pemenang pengadaan melalui PO No. 4500091822."
+  },
+  {
+    "id_penawaran": 1102,
+    "id_request": 702,
+    "nomor_penawaran_internal": "INT/QUO/202607/002",
+    "tanggal_penawaran_internal": "2026-07-06",
+    "nilai_penawaran_internal": 375000000,
+    "catatan_internal": "Penyesuaian spesifikasi bracket stainless steel anti-korosi.",
+    "nomor_penawaran_resmi": "059/UT/QUO/VII/2026",
+    "tanggal_penawaran_resmi": "2026-07-08",
+    "nilai_penawaran_resmi": 373200000,
+    "file_penawaran_resmi": "Surat_Penawaran_Vale_Smelting.pdf",
+    "status_lelang": "Menang",
+    "tanggal_hasil_lelang": "2026-07-12",
+    "file_hasil_lelang": "LOI_Vale_Smelting_Bahodopi.pdf",
+    "catatan_lelang": "Menang evaluasi teknis dan harga terbaik."
+  },
+  {
+    "id_penawaran": 1103,
+    "id_request": 705,
+    "nomor_penawaran_internal": "INT/QUO/202610/005",
+    "tanggal_penawaran_internal": "2026-10-24",
+    "nilai_penawaran_internal": 244000000,
+    "catatan_internal": "Diskon loyalitas klien eksisting PT Bukit Energi Nusantara.",
+    "nomor_penawaran_resmi": "088/UT/QUO/X/2026",
+    "tanggal_penawaran_resmi": "2026-10-26",
+    "nilai_penawaran_resmi": 238800000,
+    "file_penawaran_resmi": "Quotation_088_Ekspansi_Lahat.pdf",
+    "status_lelang": "Menunggu",
+    "tanggal_hasil_lelang": "",
+    "file_hasil_lelang": "",
+    "catatan_lelang": "Menunggu rapat komite pengadaan pekan depan."
+  }
+]
+

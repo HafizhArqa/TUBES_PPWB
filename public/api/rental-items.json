@@ -1,0 +1,123 @@
+[
+  {
+    "id_item": 1001,
+    "id_request": 701,
+    "id_addendum": null,
+    "id_unit": 501,
+    "kode_unit_snapshot": "UTR-RPT-501",
+    "nama_unit_snapshot": "Motorola MOTOTRBO SLR 5300 UHF",
+    "jumlah": 2,
+    "harga_sewa_snapshot": 3850000,
+    "subtotal_per_bulan": 7700000,
+    "catatan": "Repeater utama & backup shelter bukit"
+  },
+  {
+    "id_item": 1002,
+    "id_request": 701,
+    "id_addendum": null,
+    "id_unit": 504,
+    "kode_unit_snapshot": "UTR-RBS-504",
+    "nama_unit_snapshot": "Motorola XiR M8668i Mobile Rig GPS",
+    "jumlah": 4,
+    "harga_sewa_snapshot": 1150000,
+    "subtotal_per_bulan": 4600000,
+    "catatan": "Unit rig truk komando & ruang kontrol"
+  },
+  {
+    "id_item": 1003,
+    "id_request": 701,
+    "id_addendum": null,
+    "id_unit": 507,
+    "kode_unit_snapshot": "UTR-RHT-507",
+    "nama_unit_snapshot": "Motorola XiR P8668i TIA4950 Explosion Proof",
+    "jumlah": 2,
+    "harga_sewa_snapshot": 650000,
+    "subtotal_per_bulan": 1300000,
+    "catatan": "Unit pengawas fuel station tambang"
+  },
+  {
+    "id_item": 1004,
+    "id_request": 701,
+    "id_addendum": 801,
+    "id_unit": 508,
+    "kode_unit_snapshot": "UTR-RHT-508",
+    "nama_unit_snapshot": "Motorola XiR P6620i Digital Portable HT",
+    "jumlah": 4,
+    "harga_sewa_snapshot": 450000,
+    "subtotal_per_bulan": 1800000,
+    "catatan": "Penambahan unit Adendum No. 1"
+  },
+  {
+    "id_item": 1005,
+    "id_request": 702,
+    "id_addendum": null,
+    "id_unit": 503,
+    "kode_unit_snapshot": "UTR-RPT-503",
+    "nama_unit_snapshot": "Hytera RD988S Digital Trunking Repeater",
+    "jumlah": 2,
+    "harga_sewa_snapshot": 3400000,
+    "subtotal_per_bulan": 6800000,
+    "catatan": "Sistem trunking smelter"
+  },
+  {
+    "id_item": 1006,
+    "id_request": 702,
+    "id_addendum": null,
+    "id_unit": 509,
+    "kode_unit_snapshot": "UTR-RHT-509",
+    "nama_unit_snapshot": "Hytera HP788 DMR Waterproof IP68 HT",
+    "jumlah": 6,
+    "harga_sewa_snapshot": 566667,
+    "subtotal_per_bulan": 3400000,
+    "catatan": "Termasuk multi-unit charger 6-slot"
+  },
+  {
+    "id_item": 1007,
+    "id_request": 703,
+    "id_addendum": null,
+    "id_unit": 510,
+    "kode_unit_snapshot": "UTR-SSB-510",
+    "nama_unit_snapshot": "Barrett 4050 HF SDR Transceiver 150W",
+    "jumlah": 3,
+    "harga_sewa_snapshot": 4633333,
+    "subtotal_per_bulan": 13900000,
+    "catatan": "Termasuk Automatic Antenna Tuner 4049"
+  },
+  {
+    "id_item": 1008,
+    "id_request": 704,
+    "id_addendum": null,
+    "id_unit": 507,
+    "kode_unit_snapshot": "UTR-RHT-507",
+    "nama_unit_snapshot": "Motorola XiR P8668i TIA4950 Explosion Proof",
+    "jumlah": 20,
+    "harga_sewa_snapshot": 12500000,
+    "subtotal_per_bulan": 250000000,
+    "catatan": "Pembelian unit baru pengadaan jual lepas"
+  },
+  {
+    "id_item": 1009,
+    "id_request": 705,
+    "id_addendum": null,
+    "id_unit": 502,
+    "kode_unit_snapshot": "UTR-RPT-502",
+    "nama_unit_snapshot": "Motorola SLR 8000 High Power 100W",
+    "jumlah": 1,
+    "harga_sewa_snapshot": 5200000,
+    "subtotal_per_bulan": 5200000,
+    "catatan": "Repeater utama bukit Lahat"
+  },
+  {
+    "id_item": 1010,
+    "id_request": 705,
+    "id_addendum": null,
+    "id_unit": 505,
+    "kode_unit_snapshot": "UTR-RBS-505",
+    "nama_unit_snapshot": "Icom IC-F5063D Base Station Control",
+    "jumlah": 5,
+    "harga_sewa_snapshot": 950000,
+    "subtotal_per_bulan": 4750000,
+    "catatan": "Pos timbangan & workshop alat berat"
+  }
+]
+
