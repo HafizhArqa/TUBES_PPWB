@@ -1,3 +1,11 @@
+/**
+ * @file PelangganPage.jsx
+ * @author Zakaria - Fitur Manajemen Master Data
+ * @description Modul Master Pelanggan Korporat B2B TERA.
+ * Mengelola direktori master data entitas mitra perusahaan (PT/CV), NPWP, PIC Procurement
+ * (nama, jabatan, kontak resmi), alamat site/kantor, serta portofolio kontrak aktif.
+ */
+
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   getPelangganDirectory,

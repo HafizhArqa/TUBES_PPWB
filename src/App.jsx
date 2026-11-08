@@ -27,6 +27,7 @@ import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import UnitsPage from './pages/admin/UnitsPage';
 import StatusUnitPage from './pages/admin/StatusUnitPage';
 import PelangganPage from './pages/admin/PelangganPage';
+import MasterTarifPage from './pages/admin/MasterTarifPage';
 import TransaksiIndexPage from './pages/admin/TransaksiIndexPage';
 import TransaksiCreatePage from './pages/admin/TransaksiCreatePage';
 import ProyekDetailPage from './pages/admin/ProyekDetailPage';
@@ -160,6 +161,7 @@ export default function App() {
               <Route path="units" element={<UnitsPage />} />
               <Route path="status-unit" element={<StatusUnitPage />} />
               <Route path="pelanggan" element={<PelangganPage />} />
+              <Route path="master-tarif" element={<MasterTarifPage />} />
               <Route path="transaksi" element={<TransaksiIndexPage />} />
               <Route path="transaksi/create" element={<TransaksiCreatePage />} />
               <Route path="proyek/:id" element={<ProyekDetailPage />} />
