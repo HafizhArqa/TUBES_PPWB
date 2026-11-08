@@ -1,128 +1,114 @@
+/**
+ * @file App.jsx
+ * @description Root Router Aplikasi TERA berbasis React Router v6.
+ * Menghubungkan seluruh modul tim (Dashboard, Kelola Unit, Master Data Pelanggan, Login & Register).
+ */
+
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
-
-import AdminLayout from './layouts/AdminLayout';
 
 // Hafizh Arqamilandri Wakhyudi: Fitur Login, Register, Forgot Password
-import LoginPage from './pages/auth/LoginPage';
-import RegisterPage from './pages/auth/RegisterPage';
-import VerifyRegisterOtpPage from './pages/auth/VerifyRegisterOtpPage';
-import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
-import VerifyResetOtpPage from './pages/auth/VerifyResetOtpPage';
-import ResetPasswordPage from './pages/auth/ResetPasswordPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
 // Marta Safitri: Fitur Dashboard
-import AdminDashboardPage from './pages/admin/AdminDashboardPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 
 // Steven Taufik Fajar: Kelola Unit
-import UnitsPage from './pages/admin/UnitsPage';
+import UnitsPage from './pages/UnitsPage';
 
 // Zakaria: Fitur Manajemen Master Data
-import PelangganPage from './pages/admin/PelangganPage';
+import PelangganPage from './pages/PelangganPage';
 
 import NotFoundPage from './pages/NotFoundPage';
 
-function GuestOnlyRoute({ children }) {
-  const { user } = useAuth();
-  if (user) {
-    return <Navigate to="/admin/dashboard" replace />;
-  }
-  return children;
-}
-
 function ProtectedRoute({ children }) {
-  const { user } = useAuth();
+  const user = sessionStorage.getItem('user');
   if (!user) {
     return <Navigate to="/login" replace />;
   }
   return children;
 }
 
+function GuestRoute({ children }) {
+  const user = sessionStorage.getItem('user');
+  if (user) {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
+  return children;
+}
+
 function RootRedirect() {
-  const { user } = useAuth();
+  const user = sessionStorage.getItem('user');
   if (!user) return <Navigate to="/login" replace />;
   return <Navigate to="/admin/dashboard" replace />;
 }
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<RootRedirect />} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<RootRedirect />} />
 
-          {/* Hafizh Arqamilandri Wakhyudi: Fitur Login, Register, Forgot Password */}
-          <Route
-            path="/login"
-            element={
-              <GuestOnlyRoute>
-                <LoginPage />
-              </GuestOnlyRoute>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <GuestOnlyRoute>
-                <RegisterPage />
-              </GuestOnlyRoute>
-            }
-          />
-          <Route
-            path="/register/verify-otp"
-            element={
-              <GuestOnlyRoute>
-                <VerifyRegisterOtpPage />
-              </GuestOnlyRoute>
-            }
-          />
-          <Route
-            path="/forgot-password"
-            element={
-              <GuestOnlyRoute>
-                <ForgotPasswordPage />
-              </GuestOnlyRoute>
-            }
-          />
-          <Route
-            path="/verify-otp"
-            element={
-              <GuestOnlyRoute>
-                <VerifyResetOtpPage />
-              </GuestOnlyRoute>
-            }
-          />
-          <Route
-            path="/reset-password/:token"
-            element={
-              <GuestOnlyRoute>
-                <ResetPasswordPage />
-              </GuestOnlyRoute>
-            }
-          />
+        {/* Fitur Login, Register, Forgot Password (Hafizh Arqamilandri Wakhyudi) */}
+        <Route
+          path="/login"
+          element={
+            <GuestRoute>
+              <LoginPage />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <GuestRoute>
+              <RegisterPage />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="/forgot-password"
+          element={
+            <GuestRoute>
+              <ForgotPasswordPage />
+            </GuestRoute>
+          }
+        />
 
-          {/* Portal Utama Admin: Marta, Steven, Zakaria */}
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Navigate to="/admin/dashboard" replace />} />
-            {/* Marta Safitri: Fitur Dashboard Admin */}
-            <Route path="dashboard" element={<AdminDashboardPage />} />
-            {/* Steven Taufik Fajar: Kelola Unit */}
-            <Route path="units" element={<UnitsPage />} />
-            {/* Zakaria: Fitur Manajemen Master Data */}
-            <Route path="pelanggan" element={<PelangganPage />} />
-          </Route>
+        {/* Fitur Dashboard (Marta Safitri) */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboardPage />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+        {/* Fitur Kelola Unit (Steven Taufik Fajar) */}
+        <Route
+          path="/admin/units"
+          element={
+            <ProtectedRoute>
+              <UnitsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Fitur Manajemen Master Data (Zakaria) */}
+        <Route
+          path="/admin/pelanggan"
+          element={
+            <ProtectedRoute>
+              <PelangganPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

@@ -1,15 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import Icon from '../components/Icon';
 
 export default function NotFoundPage() {
-  const { user } = useAuth();
-  const homePath = user
-    ? user.role === 'admin'
-      ? '/admin/dashboard'
-      : '/pelanggan/dashboard'
-    : '/login';
+  const user = (() => {
+    try {
+      return JSON.parse(sessionStorage.getItem('user'));
+    } catch {
+      return null;
+    }
+  })();
+  const homePath = user ? '/admin/dashboard' : '/login';
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-slate-50 px-4">

@@ -1,127 +1,111 @@
 # TERA — Telecommunication Equipment Rental Application
-### Sistem Informasi Penyewaan & Pengadaan Perangkat Telekomunikasi B2B PT Utama Telekomindo
+### Sistem Informasi Manajemen Perangkat Telekomunikasi PT Utama Telekomindo
 
 > **Tugas Besar I (UTS) — Perancangan dan Pemrograman Web**  
-> **Status Repository:** Public Access & Clean Modern Stack  
+> **Status Repository:** Public Access & Clean Modern Frontend Stack  
 > **Total Nilai Target:** 100 Poin (25 Poin Kelompok + 75 Poin Individu)
 
 ---
 
-## 1. Identitas Kelompok & Pembagian Tugas Resmi
+## 1. Identitas Kelompok & Pembagian Tugas
 
-Berdasarkan kesepakatan pembagian tugas anggota kelompok:
+Berdasarkan pembagian tugas resmi anggota kelompok:
 
-| No | Nama Anggota | Peran / Fitur Utama | Rute Halaman Aktif | File & Komponen Kunci |
+| No | Nama Anggota | Peran / Fitur Utama | Halaman & Rute Aktif | File & Komponen Kunci |
 | :---: | :--- | :--- | :--- | :--- |
-| **1** | **Zakaria** | **Fitur Manajemen Master Data** | `/admin/pelanggan` | • `src/pages/admin/PelangganPage.jsx`<br>• `src/services/pelangganService.js`<br>• `src/components/WilayahSelector.jsx`<br>• `src/services/wilayahPublicApi.js` |
-| **2** | **Hafizh Arqamilandri Wakhyudi** | **Fitur Login, Register, Forgot Password** | `/login`<br>`/register`<br>`/register/verify-otp`<br>`/forgot-password`<br>`/verify-otp`<br>`/reset-password/:token` | • `src/pages/auth/LoginPage.jsx`<br>• `src/pages/auth/RegisterPage.jsx`<br>• `src/pages/auth/VerifyRegisterOtpPage.jsx`<br>• `src/pages/auth/ForgotPasswordPage.jsx`<br>• `src/pages/auth/VerifyResetOtpPage.jsx`<br>• `src/pages/auth/ResetPasswordPage.jsx`<br>• `src/services/authService.js`<br>• `src/services/emailService.js` *(REST API Email)*<br>• `src/context/AuthContext.jsx` |
-| **3** | **Marta Safitri** | **Fitur Dashboard** | `/admin/dashboard` | • `src/pages/admin/AdminDashboardPage.jsx`<br>• `src/components/AreaLineChart.jsx`<br>• `src/services/dashboardService.js` |
-| **4** | **Steven Taufik Fajar** | **Kelola Unit** | `/admin/units` | • `src/pages/admin/UnitsPage.jsx`<br>• `src/services/unitService.js` |
-
-*Catatan: Seluruh sistem difokuskan pada manajemen operasional Admin. Seluruh modul portal pelanggan, transaksi lanjutan, dan laporan tambahan diarsipkan dengan aman di dalam folder `100% finish/`.*
+| **1** | **Zakaria** | **Fitur Manajemen Master Data** | `/admin/pelanggan` | • `src/pages/PelangganPage.jsx`<br>• `src/components/WilayahSelector.jsx` *(Fetch API EMSIFA)*<br>• `public/api/pelanggan.json` |
+| **2** | **Hafizh Arqamilandri Wakhyudi** | **Fitur Login, Register, Forgot Password** | `/login`<br>`/register`<br>`/forgot-password` | • `src/pages/LoginPage.jsx`<br>• `src/pages/RegisterPage.jsx`<br>• `src/pages/ForgotPasswordPage.jsx`<br>• `public/api/users.json`<br>• *Integrasi REST API Notifikasi Email* |
+| **3** | **Marta Safitri** | **Fitur Dashboard** | `/admin/dashboard` | • `src/pages/AdminDashboardPage.jsx`<br>• `src/components/AreaLineChart.jsx` *(Pure SVG)*<br>• `public/api/units.json`<br>• `public/api/pelanggan.json` |
+| **4** | **Steven Taufik Fajar** | **Kelola Unit** | `/admin/units` | • `src/pages/UnitsPage.jsx`<br>• `public/api/units.json` |
 
 ---
 
-## 2. Struktur Folder Standar Vite
+## 2. Struktur Direktori Proyek
 
-Struktur proyek mengikuti standar Vite React yang bersih dan modular:
+Struktur folder mengadopsi standar Vite React yang bersih, modular, dan sesuai spesifikasi tugas besar:
 
 ```text
 TUBES_PPWEB/
-├── 100% finish/               # Arsip modul lanjutan & portal pelanggan
-├── node_modules/              # Dependensi npm
-├── public/                    # Aset statis & mock data
-│   ├── favicon.svg            # Favicon aplikasi
-│   ├── icons.svg              # SVG sprite icon set
-│   └── api/                   # Seed endpoint JSON untuk Axios Mock API
+├── node_modules/              # Dependensi pustaka npm
+├── public/                    # Aset publik & Mock API JSON
+│   ├── favicon.svg            # Favicon sistem TERA
+│   ├── icons.svg              # SVG Icon sprite
+│   └── api/                   # Mock API JSON (dikonsumsi via Axios)
+│       ├── users.json         # Data pengguna & autentikasi
+│       ├── units.json         # Master inventaris perangkat radio
+│       └── pelanggan.json     # Master data mitra pelanggan B2B
 ├── src/                       # Source code React
 │   ├── assets/                # Aset gambar & ilustrasi
 │   │   └── react.svg
-│   ├── components/            # Komponen UI modular
-│   │   ├── AreaLineChart.jsx  # Grafik SVG murni (Marta Safitri)
-│   │   ├── WilayahSelector.jsx# Integrasi Public API EMSIFA (Zakaria)
-│   │   ├── Icon.jsx           # Render icon SVG
+│   ├── components/            # Komponen antarmuka modular
+│   │   ├── AreaLineChart.jsx  # Grafik SVG Interaktif tanpa library Chart.js (Marta)
+│   │   ├── Icon.jsx           # SVG Icon dinamis
 │   │   ├── Modal.jsx          # Accessible dialog modal
-│   │   ├── Pagination.jsx     # Navigasi paginasi data
-│   │   ├── StatusBadge.jsx    # Status indikator visual
-│   │   └── StatusStates.jsx   # Loading Skeleton & Error State dengan tombol Retry
-│   ├── context/               # React Context
-│   │   └── AuthContext.jsx    # Sesi pengguna & feedback toast (Hafizh)
-│   ├── layouts/               # Shell layout halaman
-│   │   ├── AdminLayout.jsx    # Shell dashboard admin (aside sidebar + topbar)
-│   │   └── AuthLayout.jsx     # Shell form autentikasi kartu
+│   │   ├── Navbar.jsx         # Header & navigasi responsif admin
+│   │   ├── Pagination.jsx     # Navigasi paginasi data tabel
+│   │   ├── StatusBadge.jsx    # Indikator status visual
+│   │   ├── StatusStates.jsx   # Loading Skeleton & Error State dengan tombol Retry
+│   │   └── WilayahSelector.jsx# Integrasi Public API EMSIFA via Fetch API (Zakaria)
 │   ├── pages/                 # Halaman aplikasi
-│   │   ├── admin/             # Portal Admin
-│   │   │   ├── AdminDashboardPage.jsx (Marta Safitri)
-│   │   │   ├── PelangganPage.jsx      (Zakaria)
-│   │   │   └── UnitsPage.jsx          (Steven Taufik Fajar)
-│   │   ├── auth/              # Portal Autentikasi (Hafizh Arqamilandri W.)
-│   │   │   ├── ForgotPasswordPage.jsx
-│   │   │   ├── LoginPage.jsx
-│   │   │   ├── RegisterPage.jsx
-│   │   │   ├── ResetPasswordPage.jsx
-│   │   │   ├── VerifyRegisterOtpPage.jsx
-│   │   │   └── VerifyResetOtpPage.jsx
-│   │   └── NotFoundPage.jsx   # Halaman 404
-│   ├── services/              # Logika data & HTTP Client
-│   │   ├── apiClient.js       # Instance Axios dengan simulasi latensi & galat
-│   │   ├── authService.js     # Layanan autentikasi & OTP (Hafizh)
-│   │   ├── dashboardService.js# Layanan metrik KPI dashboard (Marta)
-│   │   ├── mockDb.js          # Document store client-side via localStorage
-│   │   ├── pelangganService.js# Layanan master data pelanggan (Zakaria)
-│   │   ├── unitService.js     # Layanan inventaris radio (Steven)
-│   │   └── wilayahPublicApi.js# Layanan Fetch API Wilayah Indonesia (Zakaria)
-│   │   └── wilayahPublicApi.js# Layanan Fetch API Wilayah Indonesia (Zakaria)
-│   ├── utils/
-│   │   └── formatters.js      # Format mata uang Rupiah & tanggal Indonesia
-│   ├── App.css                # CSS aplikasi (Grid, Flexbox, layout & media queries)
-│   ├── App.jsx                # Router utama aplikasi
-│   ├── index.css              # Variabel warna & Tailwind directives
-│   └── main.jsx               # Entry point React 18
+│   │   ├── AdminDashboardPage.jsx # Dashboard metriks KPI (Marta Safitri)
+│   │   ├── ForgotPasswordPage.jsx # Lupa kata sandi & kirim instruksi email (Hafizh)
+│   │   ├── LoginPage.jsx          # Autentikasi sistem & notif email (Hafizh)
+│   │   ├── NotFoundPage.jsx       # Halaman fallback 404
+│   │   ├── PelangganPage.jsx      # Manajemen Master Data Pelanggan (Zakaria)
+│   │   ├── RegisterPage.jsx       # Registrasi akun administrator baru (Hafizh)
+│   │   └── UnitsPage.jsx          # Manajemen Kelola Unit Perangkat Radio (Steven)
+│   ├── App.css                # CSS Flexbox, Grid, dan Media Queries responsif
+│   ├── App.jsx                # Root Router aplikasi (React Router v6)
+│   ├── index.css              # Variabel warna & Tailwind CSS directives
+│   └── main.jsx               # Entry point aplikasi React 18
 ├── .gitignore
 ├── eslint.config.js
 ├── index.html
 ├── package.json
+├── postcss.config.js
 ├── README.md
+├── tailwind.config.js
 └── vite.config.js
 ```
 
 ---
 
-## 3. Pemenuhan Spesifikasi & Tech Stack UTS
+## 3. Pemenuhan Spesifikasi & Rubrik Penilaian
 
-Seluruh teknologi di luar kriteria resmi (seperti PHP/Laravel, Blade, MySQL, Bootstrap CSS/JS, Alpine.js, dan Chart.js) **telah dibersihkan dan dihapus sepenuhnya**. Aplikasi dibangun menggunakan stack resmi:
-
-| Kategori Kriteria | Teknologi Terpilih | Bukti Implementasi pada Proyek |
-| :--- | :--- | :--- |
-| **JS Framework** | **React 18** (`react`, `react-dom`, `react-router-dom`) + **Vite 6** | Arsitektur SPA modern berbasis komponen fungsional, Custom Hooks, dan Context API. |
-| **Modern Styling** | **CSS3 Murni (Custom Properties, Flexbox, CSS Grid)** + **Tailwind CSS** | Variabel warna dan tokens di `index.css`, layout shell & komponen di `App.css`, responsif di semua resolusi. |
-| **HTTP Client** | **Axios** & **Fetch API** | Axios instance di `apiClient.js` dengan interceptor simulasi latensi dan Fetch API di `wilayahPublicApi.js`. |
-| **Data Source 1 (Mock API)** | Endpoint JSON di `public/api/*.json` | Di-fetch secara asinkron via HTTP GET Axios dan disinkronkan ke client-side storage `mockDb.js`. |
-| **Data Source 2 (Public API)** | **EMSIFA Wilayah Indonesia API** | Fetch real-time provinsi dan kabupaten/kota via HTTP Fetch API untuk form lokasi site pelanggan B2B. |
-| **Grafik & Ikon** | **Pure SVG Interactive Chart & Inline SVG Icons** | `AreaLineChart.jsx` murni SVG (tanpa library eksternal) dan `Icon.jsx` SVG fleksibel. |
-| **Semantic HTML5 & A11y** | Tag semantic lengkap & WCAG Standard | `<header>`, `<nav>`, `<main id="main-content">`, `<aside>`, `<section>`, `<article>`, `.skip-link`, `aria-live`, `aria-modal`, `:focus-visible`. |
-| **State Handling & UI** | Loading, Error & Empty States | Skeleton shimmer (`LoadingState`), Error banner dengan tombol **Coba Lagi** (`ErrorState`), serta simulasi saklar gangguan API. |
+| Kategori Kriteria | Implementasi & Bukti Teknis |
+| :--- | :--- |
+| **Framework JavaScript** | **React 18** (`react`, `react-dom`, `react-router-dom`) menggunakan Vite. |
+| **Styling & Layout** | **CSS Flexbox & CSS Grid** dikombinasikan dengan **Tailwind CSS**. Menggunakan media queries untuk menjamin responsivitas di layar mobile, tablet, dan desktop. |
+| **HTTP Client** | **Axios** (untuk konsumsi Mock API JSON) & **Fetch API** (untuk Public API EMSIFA & FormSubmit REST API). |
+| **Data Source 1: Mock API** | File JSON (`public/api/users.json`, `units.json`, `pelanggan.json`) di-fetch secara dinamis menggunakan HTTP GET **Axios** (bukan di-render hardcoded langsung). |
+| **Data Source 2: Public API** | **EMSIFA API Wilayah Indonesia** dikonsumsi secara real-time menggunakan **Fetch API** pada komponen `WilayahSelector.jsx` untuk memilih Provinsi & Kota secara dinamis. |
+| **REST API Email** | Endpoint **FormSubmit REST API** mengirimkan email notifikasi login dan pemulihan kata sandi secara asinkron ke alamat email pengguna. |
+| **Semantic HTML5 & A11y** | Struktur `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<figure>`, `role="alert"`, `aria-label`, dan focus visible styling. |
+| **Client-Side Validation** | Form validasi interaktif di form Login, Register, Lupa Kata Sandi, Tambah Unit, dan Tambah Pelanggan dengan umpan balik pesan kesalahan yang jelas. |
+| **Loading & Error States** | Shimmer Skeleton (`LoadingState`), Error UI Banner dengan tombol interaktif **Coba Lagi** (`ErrorState`), dan `EmptyState`. |
 
 ---
 
-## 4. Cara Menjalankan Aplikasi
+## 4. Panduan Menjalankan Aplikasi
 
-1. Masuk ke direktori proyek:
-   ```powershell
+1. Buka terminal di direktori proyek:
+   ```bash
    cd C:\xampp\htdocs\TUBES_Pemweb\TUBES_PPWEB
    ```
-2. Jalankan development server:
-   ```powershell
+2. Pasang dependensi jika belum:
+   ```bash
+   npm install
+   ```
+3. Jalankan server pengembangan Vite:
+   ```bash
    npm run dev
    ```
-3. Buka URL yang ditampilkan di terminal (default: `http://localhost:5173/`).
+4. Buka peramban pada alamat lokal yang tertera (biasanya `http://localhost:5173`).
 
-**Kredensial Login Akun Resmi**:
-* **Akun Administrator**:
-  - Email: `admin@tera.com` (atau username `admin.tera`)
-  - Password: `admin123`
-  - *Mengarahkan ke Dashboard Admin (`/admin/dashboard`)*
-  - *Saat login, REST API email otomatis mengirimkan notifikasi sesi masuk ke email pengguna.*
-* **Registrasi Mandiri**:
-  - Pengguna dapat mendaftar langsung di `/register`, menerima kode verifikasi OTP via REST API Email, dan otomatis masuk ke Dashboard Admin.
+---
+
+## 5. Kredensial Akun Administrator
+
+* **Email:** `admin@tera.com` (atau username: `admin.tera`)
+* **Kata Sandi:** `admin123`
+* *Saat login berhasil, sistem memvalidasi kredensial via Axios Mock API dan mengirimkan email konfirmasi sesi ke alamat email pengguna.*

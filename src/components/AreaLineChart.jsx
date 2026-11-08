@@ -6,7 +6,14 @@
  */
 
 import React, { useState, useId } from 'react';
-import { formatCompactRupiah } from '../utils/formatters';
+
+function formatCompactRupiah(value) {
+  const num = Number(value) || 0;
+  if (num >= 1_000_000_000) return `Rp ${(num / 1_000_000_000).toFixed(1)} M`;
+  if (num >= 1_000_000) return `Rp ${(num / 1_000_000).toFixed(1)} jt`;
+  if (num >= 1_000) return `Rp ${(num / 1_000).toFixed(0)} rb`;
+  return `Rp ${num.toLocaleString('id-ID')}`;
+}
 
 /**
  * Komponen Grafik Area & Garis SVG Murni (Tanpa library eksternal Chart.js)

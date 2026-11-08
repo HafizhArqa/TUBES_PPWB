@@ -1,6 +1,5 @@
 import React from 'react';
 import Icon from './Icon';
-import { isSimulatedApiErrorEnabled, setSimulatedApiError } from '../services/apiClient';
 
 export function LoadingState({ message = 'Memuat data dari server API...', rows = 4 }) {
   return (
@@ -31,13 +30,6 @@ export function ErrorState({
   message = 'Terjadi kendala saat menghubungi layanan data.',
   onRetry,
 }) {
-  const simActive = isSimulatedApiErrorEnabled();
-
-  const handleDisableSimAndRetry = () => {
-    setSimulatedApiError(false);
-    onRetry?.();
-  };
-
   return (
     <section
       role="alert"
@@ -57,15 +49,6 @@ export function ErrorState({
           >
             <Icon name="refresh" size={16} />
             <span>Coba Lagi</span>
-          </button>
-        )}
-        {simActive && (
-          <button
-            type="button"
-            onClick={handleDisableSimAndRetry}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-sm font-semibold transition-colors"
-          >
-            <span>Matikan Simulasi Error & Muat Ulang</span>
           </button>
         )}
       </div>
