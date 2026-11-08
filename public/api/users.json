@@ -3,9 +3,9 @@
     "id": 101,
     "name": "Ir. Bagaskara Pratama",
     "username": "admin.tera",
-    "email": "admin@tera.co.id",
+    "email": "admin@tera.com",
     "role": "admin",
-    "password": "password123",
+    "password": "admin123",
     "email_verified_at": "2026-01-10T08:00:00.000Z",
     "created_at": "2026-01-10T08:00:00.000Z"
   },

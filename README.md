@@ -119,8 +119,8 @@ Seluruh teknologi di luar kriteria resmi (seperti PHP/Laravel, Blade, MySQL, Boo
 
 **Kredensial Login Akun Resmi**:
 * **Akun Administrator**:
-  - Email / Username: `admin@tera.co.id` atau `admin.tera`
-  - Password: `password123`
+  - Email: `admin@tera.com` (atau username `admin.tera`)
+  - Password: `admin123`
   - *Mengarahkan ke Dashboard Admin (`/admin/dashboard`)*
   - *Saat login, REST API email otomatis mengirimkan notifikasi sesi masuk ke email pengguna.*
 * **Registrasi Mandiri**:

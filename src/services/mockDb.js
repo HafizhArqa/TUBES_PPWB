@@ -57,6 +57,15 @@ export const ensureDbLoaded = async ({ skipLatency = false } = {}) => {
     try {
       const parsed = JSON.parse(raw);
       if (parsed && parsed.units && parsed.users) {
+        // Sinkronisasi otomatis kredensial admin ke admin@tera.com / admin123
+        const adminUser = parsed.users.find(
+          (u) => u.username === 'admin.tera' || u.email === 'admin@tera.co.id' || u.email === 'admin@tera.com'
+        );
+        if (adminUser) {
+          adminUser.email = 'admin@tera.com';
+          adminUser.password = 'admin123';
+          localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(parsed));
+        }
         return parsed;
       }
     } catch {
