@@ -14,7 +14,7 @@ Berdasarkan kesepakatan pembagian tugas anggota kelompok:
 
 | No | Nama Anggota | Peran / Fitur Utama | Rute Halaman Utama | File Kunci |
 | :---: | :--- | :--- | :--- | :--- |
-| **1** | **Zakaria** | **Fitur Kelola Transaksi** | `/admin/transaksi`<br>`/admin/transaksi/create`<br>`/admin/proyek/:id`<br>`/admin/angsuran` | `TransaksiIndexPage.jsx`<br>`TransaksiCreatePage.jsx`<br>`ProyekDetailPage.jsx` (8 Tab)<br>`AngsuranPage.jsx`<br>`transaksiService.js` |
+| **1** | **Zakaria** | **Fitur Manajemen Master Data** | `/admin/pelanggan`<br>`/admin/master-tarif` | `PelangganPage.jsx`<br>`MasterTarifPage.jsx`<br>`masterDataService.js`<br>`pelangganService.js`<br>`WilayahSelector.jsx` |
 | **2** | **Hafizh Arqamilandri Wakhyudi** | **Fitur Login, Register, Forgot Password** | `/login`<br>`/register`<br>`/register/verify-otp`<br>`/forgot-password`<br>`/verify-otp`<br>`/reset-password/:token`<br>`/profile` | `LoginPage.jsx`<br>`RegisterPage.jsx`<br>`VerifyRegisterOtpPage.jsx`<br>`ForgotPasswordPage.jsx`<br>`VerifyResetOtpPage.jsx`<br>`ResetPasswordPage.jsx`<br>`ProfilePage.jsx`<br>`authService.js`<br>`AuthContext.jsx` |
 | **3** | **Marta Safitri** | **Fitur Dashboard** | `/admin/dashboard`<br>`/pelanggan/dashboard`<br>`/admin/laporan-penyewaan`<br>`/admin/laporan-pendapatan` | `AdminDashboardPage.jsx`<br>`PelangganDashboardPage.jsx`<br>`AreaLineChart.jsx` (Pure SVG)<br>`laporanService.js`<br>`LaporanPenyewaanPage.jsx`<br>`LaporanPendapatanPage.jsx` |
 | **4** | **Steven Taufik Fajar** | **Kelola Unit** | `/admin/units`<br>`/admin/status-unit`<br>`/pelanggan/katalog` | `UnitsPage.jsx` (CRUD + Riwayat)<br>`StatusUnitPage.jsx` (Grid/Table)<br>`unitService.js`<br>`KatalogPage.jsx` |
@@ -42,24 +42,23 @@ Seluruh teknologi di luar kriteria resmi (seperti PHP/Laravel, Blade, MySQL/SQLi
 
 Gunakan rincian berikut untuk penyusunan laporan individu Word/PDF per anggota:
 
-### A. Zakaria — Fitur Kelola Transaksi
-* **Deskripsi Fitur:** Mengembangkan modul manajemen transaksi dua mode (Sewa Korporat dan Jual Lepas), formulir kalkulator komersial B2B, Pusat Kendali Proyek 8-Tab (*Project Control Center*), dan pemantauan faktur angsuran.
+### A. Zakaria — Fitur Manajemen Master Data
+* **Deskripsi Fitur:** Mengembangkan modul pengelolaan Master Data Enterprise B2B TERA, mencakup Master Pelanggan / Mitra B2B (PT/CV, NPWP, kontak resmi PIC, portofolio kontrak), Master Tarif Acuan Sewa & Jual Standar, serta parameter perpajakan B2B (PPh 23 2%, PPN 11%, dan SLA uptime 99.5%).
 * **HTML Semantics & A11y:**
-  - `<section aria-labelledby="billing-summary">` untuk ringkasan penagihan.
-  - Tab navigation menggunakan `role="tablist"` dan `role="tab"` dengan indikator `aria-selected` pada Proyek Detail 8-Tab.
-  - Form field dilengkapi `<label htmlFor="...">`, `aria-describedby` untuk bantuan kalkulasi PPh 23 / PPN 11%, dan input numerik terformat.
+  - Menggunakan semantic `<header>`, `<main id="main-content">`, `<section aria-labelledby="...">`, `<article>`, dan tabel data responsif `<table className="tera-table">`.
+  - Dialog modal pembuatan dan pengubahan master data dilengkapi `role="dialog"`, `aria-modal="true"`, serta tombol penutup yang mendukung tombol `Escape`.
+  - Formulir master pelanggan dan tarif dilengkapi `<label htmlFor="...">`, `aria-invalid`, serta input validasi numerik untuk tarif sewa dan harga jual.
 * **CSS Grid, Flexbox & Responsiveness:**
-  - CSS Grid multi-kolom (`.builder-split-grid`) pada `TransaksiCreatePage.jsx` memisahkan konfigurasi form dengan ringkasan kalkulator komersial *sticky*.
-  - Flexbox responsive pada action bar proyek detail (`flex-wrap gap-2`).
-  - `@media (max-width: 768px)` mengubah tata letak invoice dari tabel menjadi kartu ringkas mobile.
+  - Parameter perpajakan diatur dalam CSS Grid adaptif (`grid grid-cols-1 sm:grid-cols-3 gap-4`).
+  - Search bar dan kategori filter tab menggunakan Flexbox responsif yang otomatis membungkus pada layar sempit (`flex-wrap`).
+  - `@media (max-width: 640px)` mengoptimalkan tabel master data menjadi tampilan scroll horizontal yang aman (`overflow-x-auto`).
 * **React Architecture & State:**
-  - Custom calculation engine pada `transaksiService.js`:
-    $$\text{Total Sewa} = (\text{Tarif Bulanan} \times \text{Durasi}) - \text{PPh 23 (2\%)} + \text{Biaya OTC} - \text{Penalti SLA}$$
-    $$\text{Total Jual Lepas} = \text{Harga Barang} + \text{PPN 11\%} + \text{Ongkos Kirim} - \text{Diskon}$$
-  - Multiple modals state untuk adendum multi-item, approval tender, dan konfirmasi perpanjangan kontrak.
+  - `masterDataService.js` & `pelangganService.js`: Manajemen state dan fungsi CRUD terisolasi untuk data mitra dan paket standar acuan komersial.
+  - Client-side validation: Pengecekan nama perusahaan, format NPWP, validasi kontak telepon/email PIC, serta validasi nilai tarif positif (> 0).
+  - Modal confirmation state untuk aksi penghapusan master data dan feedback visual menggunakan `ToastContext`.
 * **API Integration:**
-  - `GET /api/kontrak.json`, `GET /api/rental-requests.json`, `GET /api/invoices.json` melalui Axios HTTP Client.
-  - Error state handling dengan pesan informatif dan pembaruan riwayat audit log.
+  - Mengonsumsi endpoint Mock JSON API: `GET /api/pelanggan.json` dan `GET /api/katalog-standar.json` melalui Axios HTTP Client.
+  - Integrasi **Public External API EMSIFA Wilayah Indonesia** (`https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`) via Fetch API untuk pemilihan provinsi & kabupaten/kota lokasi kantor/site mitra.
 
 ---
 
