@@ -85,7 +85,7 @@ export default function LoginPage() {
             onChange={(e) => setIdentity(e.target.value)}
             aria-invalid={Boolean(errors.identity)}
             aria-describedby={errors.identity ? 'err-login-identity' : undefined}
-            placeholder="admin@tera.co.id atau admin.tera"
+            placeholder="nama@email.com"
             className={`w-full rounded-xl border px-3.5 py-2.5 text-sm focus:outline-none ${
               errors.identity
                 ? 'border-red-500 bg-red-50/30'

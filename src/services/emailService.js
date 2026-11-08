@@ -51,3 +51,4 @@ export const sendOtpEmailApi = async ({ email, otp, purpose = 'register', name =
     };
   }
 };
+

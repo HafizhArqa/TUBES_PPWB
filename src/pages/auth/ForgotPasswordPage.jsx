@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             aria-invalid={Boolean(error)}
-            placeholder="Contoh: pelanggan@tera.co.id"
+            placeholder="nama@email.com"
             className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-blue-600 focus:outline-none"
           />
         </div>
