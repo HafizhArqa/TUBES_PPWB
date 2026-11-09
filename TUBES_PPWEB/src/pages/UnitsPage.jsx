@@ -150,3 +150,83 @@ return (
     </div>
   </div>
 );
+{/* Tambahkan di bawah top section container */}
+<div className="bg-white dark:bg-[#1E293B] border border-[#E2E8F0] dark:border-[#334155] rounded-[18px] p-6 shadow-sm hover:border-blue-400 hover:shadow-md transition-all duration-200">
+  <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+    <div>
+      <h3 className="text-xl sm:text-[22px] font-bold text-[#1E293B] dark:text-white tracking-tight">
+        Recent Transactions
+      </h3>
+      <p className="text-xs text-[#64748B] dark:text-[#94A3B8] mt-0.5">
+        Daftar armada repeater, base station, handy talkie, dan radio maritim aktif
+      </p>
+    </div>
+
+    <div className="flex items-center gap-3 bg-[#F1F5F9] dark:bg-gray-800/80 rounded-full px-4 py-2 w-full sm:w-72 border border-[#E2E8F0] dark:border-gray-700 hover:border-blue-400 focus-within:border-blue-600 transition-all">
+      <Icon name="search" size={16} className="text-[#64748B]" />
+      <input
+        type="search"
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setCurrentPage(1);
+        }}
+        placeholder="Cari kode unit, model, lokasi..."
+        className="bg-transparent text-xs text-[#1E293B] dark:text-white placeholder-[#64748B] outline-none w-full"
+      />
+    </div>
+  </div>
+
+  <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E2E8F0] dark:border-[#334155] pb-1 mb-5">
+    <div className="flex items-center gap-6 text-sm">
+      {STATUSES.map((st) => {
+        const isActive = statusFilter === st;
+        const labelMap = {
+          Semua: 'All Transactions',
+          Tersedia: 'Income / Tersedia',
+          Disewa: 'Expense / Disewa',
+          Perawatan: 'Maintenance',
+        };
+        return (
+          <button
+            key={st}
+            type="button"
+            onClick={() => {
+              setStatusFilter(st);
+              setCurrentPage(1);
+            }}
+            className={`relative pb-3 text-sm font-semibold transition-colors ${
+              isActive ? 'text-blue-600 dark:text-blue-400' : 'text-[#64748B] dark:text-[#94A3B8] hover:text-blue-600'
+            }`}
+          >
+            {labelMap[st] || st}
+            {isActive && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-full" />}
+          </button>
+        );
+      })}
+    </div>
+
+    <div className="flex flex-wrap items-center gap-2">
+      {CATEGORIES.map((cat) => {
+        const isActive = category === cat;
+        return (
+          <button
+            key={cat}
+            type="button"
+            onClick={() => {
+              setCategory(cat);
+              setCurrentPage(1);
+            }}
+            className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
+              isActive
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'bg-[#F1F5F9] dark:bg-gray-800 text-[#64748B] dark:text-[#94A3B8] hover:text-blue-600 hover:bg-blue-50 border border-transparent'
+            }`}
+          >
+            {cat}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+</div>
