@@ -205,4 +205,38 @@
     "created_at": "2026-03-18T08:00:00.000Z",
     "updated_at": "2026-10-08T09:00:00.000Z"
   },
+  {
+    "id_unit": 510,
+    "kode_unit": "UTR-SSB-510",
+    "nama_unit": "Barrett 4050 HF SDR Transceiver 150W",
+    "kategori": "Radio HF SSB",
+    "merk": "Barrett",
+    "frekuensi": "HF 1.6-30 MHz SSB",
+    "harga_sewa": 4600000,
+    "harga_jual": 62500000,
+    "status_unit": "Disewa",
+    "lokasi": "Pelabuhan Tanjung Perak, Surabaya, Jawa Timur",
+    "klien": "PT Pelayaran Samudera Raya",
+    "foto_unit": "/images/units/hf-barrett4050.svg",
+    "spesifikasi": "Software-Defined Radio HF jarak jauh antar pulau/kapal, layar sentuh warna, ALE 2G/3G.",
+    "created_at": "2026-04-01T08:00:00.000Z",
+    "updated_at": "2026-08-20T10:15:00.000Z"
+  },
+  {
+    "id_unit": 511,
+    "kode_unit": "UTR-SSB-511",
+    "nama_unit": "Codan Envoy X2 Long-Range HF SSB",
+    "kategori": "Radio HF SSB",
+    "merk": "Codan",
+    "frekuensi": "HF 1.6-30 MHz (125W)",
+    "harga_sewa": 4300000,
+    "harga_jual": 58000000,
+    "status_unit": "Tersedia",
+    "lokasi": "Gudang Pusat Cilandak, Jakarta Selatan",
+    "klien": null,
+    "foto_unit": "/images/units/hf-codan.svg",
+    "spesifikasi": "Transceiver HF digital taktis & remote forestry camp, enkripsi suara AES-256 opsional, IP67 handset.",
+    "created_at": "2026-04-12T08:00:00.000Z",
+    "updated_at": "2026-10-01T09:00:00.000Z"
+  },
 ]
