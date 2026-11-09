@@ -98,13 +98,8 @@ export default function LoginPage() {
           <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20">
             <Icon name="creditCards" size={22} />
           </div>
-          <span className="text-2xl font-bold tracking-tight text-[#1E293B] dark:text-white">
-            BankFlash<span className="text-blue-600">.</span>
-          </span>
+          
         </div>
-        <span className="text-xs text-[#64748B] dark:text-[#94A3B8] bg-white dark:bg-[#1E293B] border border-[#E2E8F0] dark:border-[#334155] px-4 py-1.5 rounded-full font-medium shadow-sm hidden sm:inline-block">
-          Portal Manajemen Internal
-        </span>
       </header>
 
       <main className="w-full max-w-md mx-auto my-auto py-8">
@@ -194,5 +189,7 @@ export default function LoginPage() {
     </div>
   );
 }
+
+// 1. Fitur controlled form input identity dan password
 
 // 1. Fitur controlled form input identity dan password
