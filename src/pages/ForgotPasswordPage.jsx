@@ -1,6 +1,6 @@
 /**
  * @file ForgotPasswordPage.jsx
- * @description Halaman permintaan pemulihan kata sandi TERA dengan tema Putih, Grey, dan Hover Biru.
+ * @description Halaman permintaan pemulihan kata sandi TERA.
  * Verifikasi via Mock API (Axios) dan pengiriman instruksi reset ke email via REST API.
  */
 
