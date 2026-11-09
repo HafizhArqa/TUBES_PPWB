@@ -8,6 +8,8 @@
 import React, { useState, useEffect, useCallback } from 'react';;
 import axios from 'axios';
 import Navbar from '../components/Navbar';
+import BankCard from '../components/BankCard';
+import Icon from '../components/Icon';
 import {
   LoadingState,
   ErrorState,
@@ -34,6 +36,8 @@ export default function AdminDashboardPage() {
     setLoading(true);
     setError('');
     try {
+        // 1. Pengecekan pra-fetch untuk simulasi galat
+      checkSimulatedError();
       // Fetch data awal via Axios Mock API
       const [unitsRes, pelangganRes] = await Promise.all([
         axios.get('/api/units.json'),
@@ -208,6 +212,31 @@ export default function AdminDashboardPage() {
               message={error}
               onRetry={loadData}
             />
+          )}
+          {/* Konten Utama Saat Sukses */}
+          {stats && !loading && !error && (
+            <>
+              {/* =========================================================================
+                  SECTION 1: KARTU RINGKASAN (NILAI KONTRAK & UTILISASI ARMADA)
+                  ========================================================================= */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <BankCard
+                  variant="blue"
+                  label="Total Nilai Kontrak Sewa"
+                  balance={formatRupiah(stats.kpi.totalNilaiKontrak)}
+                  validThru={`${stats.kpi.kontrakAktifCount} Kontrak Aktif`}
+                />
+                <BankCard
+                  variant="white"
+                  label="Utilisasi Armada Radio"
+                  balance={`${stats.kpi.utilisasiPersen}%`}
+                  validThru={`${stats.kpi.unitDisewa} dari ${stats.kpi.totalUnits} unit`}
+                  validLabel="UNIT DISEWA"
+                  cardNumber="REG: TERA-UTIL-2026"
+                />
+              </div>
+
+            </>
           )}
        </main>
       </div>
