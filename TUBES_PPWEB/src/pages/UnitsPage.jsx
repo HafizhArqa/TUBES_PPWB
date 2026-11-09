@@ -230,3 +230,92 @@ return (
     </div>
   </div>
 </div>
+{/* State UI Handles */}
+{loading && <LoadingState message="Memuat katalog unit dari Mock API..." rows={4} />}
+
+{error && !loading && (
+  <ErrorState title="Gagal Memuat Inventaris Unit" message={error} onRetry={fetchUnits} />
+)}
+
+{!loading && !error && filteredUnits.length === 0 && (
+  <EmptyState
+    title="Unit Radio Tidak Ditemukan"
+    description="Tidak ada data unit yang cocok dengan filter atau kata kunci pencarian."
+    actionText="Reset Semua Filter"
+    onAction={() => {
+      setQuery('');
+      setCategory('Semua');
+      setStatusFilter('Semua');
+    }}
+  />
+)}
+
+{/* Data Table */}
+{!loading && !error && filteredUnits.length > 0 && (
+  <div className="overflow-x-auto">
+    <table className="w-full text-left">
+      <thead>
+        <tr className="text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] border-b border-[#E2E8F0] dark:border-[#334155]">
+          <th className="pb-3.5 px-3">Description</th>
+          <th className="pb-3.5 px-3">Transaction ID</th>
+          <th className="pb-3.5 px-3">Type</th>
+          <th className="pb-3.5 px-3">Card / Frekuensi</th>
+          <th className="pb-3.5 px-3">Date / Lokasi</th>
+          <th className="pb-3.5 px-3 text-right">Amount</th>
+          <th className="pb-3.5 px-3 text-center">Receipt</th>
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-[#E2E8F0] dark:divide-[#334155] text-xs">
+        {paginatedUnits.map((unit) => {
+          const isDisewa = unit.status_unit === 'Disewa';
+          return (
+            <tr
+              key={unit.id}
+              className="hover:bg-blue-50/40 dark:hover:bg-blue-950/30 transition-colors group cursor-pointer"
+            >
+              <td className="py-4 px-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-[#F1F5F9] dark:bg-gray-800 border border-[#E2E8F0] flex items-center justify-center text-[#64748B] group-hover:text-blue-600 transition-all">
+                    <svg
+                      className={`w-4 h-4 transform ${isDisewa ? '-rotate-45 text-rose-500' : 'rotate-45 text-emerald-500'}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19V5m-7 7l7-7 7 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <span className="font-bold text-[#1E293B] dark:text-white block group-hover:text-blue-600">
+                      {unit.nama_unit}
+                    </span>
+                    <span className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">{unit.merk}</span>
+                  </div>
+                </div>
+              </td>
+              <td className="py-4 px-3 font-mono text-[#64748B]">#{unit.kode_unit}</td>
+              <td className="py-4 px-3 text-[#64748B] font-medium">{unit.kategori}</td>
+              <td className="py-4 px-3 font-mono text-[11px] text-[#64748B]">{unit.frekuensi || '1234 ****'}</td>
+              <td className="py-4 px-3 text-[#64748B]">{unit.lokasi}</td>
+              <td className="py-4 px-3 text-right font-bold">
+                <span className={isDisewa ? 'text-rose-500' : 'text-emerald-500'}>
+                  {isDisewa ? '-' : '+'}
+                  {formatRupiah(unit.harga_sewa || unit.tarif_sewa_bulanan)}
+                </span>
+              </td>
+              <td className="py-4 px-3 text-center">
+                <button
+                  type="button"
+                  onClick={() => setSelectedUnit(unit)}
+                  className="px-4 py-1.5 rounded-full border border-[#E2E8F0] dark:border-gray-700 text-xs font-semibold text-[#64748B] hover:text-blue-600 hover:border-blue-600 transition-all shadow-sm"
+                >
+                  Download
+                </button>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+)}
