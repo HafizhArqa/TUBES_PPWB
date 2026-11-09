@@ -98,6 +98,34 @@ export default function BankCard({
           </span>
         </div>
       </div>
+      {/* Bottom Row: Official Code & Dual Ring Emblem */}
+      <div
+        className={`flex items-center justify-between pt-3.5 ${
+          isBlue ? 'border-t border-white/20' : 'border-t border-[#E2E8F0] dark:border-[#334155]'
+        }`}
+      >
+        <span
+          className={`text-xs sm:text-sm font-mono font-bold tracking-wider ${
+            isBlue ? 'text-white' : 'text-[#1E293B] dark:text-white'
+          }`}
+        >
+          {cardNumber}
+        </span>
+
+        {/* Dual Interlocking Symbol */}
+        <div className="relative flex items-center">
+          <span
+            className={`w-6 h-6 rounded-full inline-block ${
+              isBlue ? 'bg-white/40' : 'bg-blue-600/20'
+            }`}
+          />
+          <span
+            className={`w-6 h-6 rounded-full inline-block -ml-3 ${
+              isBlue ? 'bg-white/30' : 'bg-blue-600/40'
+            }`}
+          />
+        </div>
+      </div>
     </div>
   );
 }
