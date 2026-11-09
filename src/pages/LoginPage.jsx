@@ -1,6 +1,6 @@
 /**
  * @file LoginPage.jsx
- * @description Halaman autentikasi sistem BankFlash TERA dengan tema Putih, Grey, dan Hover Biru.
+ * @description Halaman autentikasi sistem TERA .
  * Konsumsi Mock API (/api/users.json) via Axios, validasi client-side, dan notifikasi email via REST API.
  */
 
@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Icon from '../components/Icon';
-import { checkSimulatedError } from '../components/StatusStates';
+import { checkSimulatedError, isSimulatedErrorActive, setSimulatedError } from '../components/StatusStates';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -192,9 +192,6 @@ export default function LoginPage() {
               <span>{loading ? 'Memvalidasi Kredensial...' : 'Masuk ke Akun'}</span>
             </button>
           </form>
-
-          {/* Kredensial Cepat */}
-        
         </section>
       </main>
 
