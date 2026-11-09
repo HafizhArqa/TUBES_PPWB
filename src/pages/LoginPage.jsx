@@ -69,16 +69,23 @@ export default function LoginPage() {
 
       sessionStorage.setItem('user', JSON.stringify(user));
       navigate('/admin/dashboard', { replace: true });
-    } catch (err) {
+        } catch (err) {
       console.error('[Login Error]:', err);
-      const userMessage = err.isSimulated
-        ? err.message
-        : err.response
-        ? `Server Mock API merespon dengan status ${err.response.status}: ${err.response.statusText || 'Gagal memuat users.json'}.`
-        : err.request
-        ? 'Gagal menghubungi endpoint Mock API users.json. Pastikan server dev aktif.'
-        : err.message || 'Terjadi kesalahan saat memvalidasi kredensial.';
-
+      let userMessage = 'Terjadi kendala saat memvalidasi kredensial akun.';
+      if (err.isSimulated) {
+        userMessage = err.message;
+      } else if (err.response) {
+        const code = err.response.status;
+        userMessage = code === 404
+          ? 'File Mock API users.json tidak ditemukan pada server.'
+          : code === 401
+          ? 'Autentikasi kredensial ditolak oleh sistem keamanan.'
+          : `Server mengembalikan galat HTTP ${code}: ${err.response.statusText || 'Gagal'}.`;
+      } else if (err.request) {
+        userMessage = 'Koneksi ke endpoint Mock API gagal. Periksa server Vite Anda.';
+      } else if (err.message) {
+        userMessage = err.message;
+      }
       setError(userMessage);
     } finally {
       setLoading(false);
