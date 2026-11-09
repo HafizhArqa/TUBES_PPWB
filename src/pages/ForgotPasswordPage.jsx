@@ -60,7 +60,7 @@ export default function ForgotPasswordPage() {
           pesan: `Halo ${user.name},\n\nPermintaan reset kata sandi Anda telah diverifikasi oleh sistem TERA.\nKredensial akun Anda:\nEmail: ${user.email}\nKata Sandi: ${user.password || 'admin123'}\n\nPT Utama Telekomindo`,
         }),
       }).catch(() => {});
-      
+
       setSuccess(true);
     } catch (err) {
       console.error('[Forgot Password Error]:', err);
@@ -82,12 +82,6 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen flex flex-col justify-between bg-[#F8FAFC] dark:bg-[#0F172A] text-[#1E293B] dark:text-[#F8FAFC] transition-colors duration-200 p-4 sm:p-6 font-sans">
       <header className="w-full max-w-5xl mx-auto flex items-center justify-between py-2">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20">
-            <Icon name="creditCards" size={22} />
-          </div>
-          <span className="text-2xl font-bold tracking-tight text-[#1E293B] dark:text-white">
-            BankFlash<span className="text-blue-600">.</span>
-          </span>
         </div>
       </header>
 
