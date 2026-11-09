@@ -8,6 +8,13 @@
 import React, { useState, useEffect, useCallback } from 'react';;
 import axios from 'axios';
 import Navbar from '../components/Navbar';
+import {
+  LoadingState,
+  ErrorState,
+  checkSimulatedError,
+  isSimulatedErrorActive,
+  setSimulatedError,
+} from '../components/StatusStates';
 
 const formatRupiah = (number) =>
   new Intl.NumberFormat('id-ID', {
@@ -120,6 +127,13 @@ export default function AdminDashboardPage() {
     loadData();
   }, [loadData]);
 
+  const handleToggleSimulation = () => {
+    const nextState = !simActive;
+    setSimActive(nextState);
+    setSimulatedError(nextState);
+    loadData();
+  };
+
   const teamMembers = [
     {
       id: 'Bagas',
@@ -149,7 +163,53 @@ export default function AdminDashboardPage() {
       {/* Main Content Area */}
       <div className="lg:ml-[250px] min-h-screen flex flex-col">
         <main id="main-content" className="flex-1 p-4 sm:p-7 max-w-[1600px] w-full mx-auto space-y-7">
-        </main>
+            {/* Top Bar Action (Simulasi Error & Segarkan API) */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-1 border-b border-[#E2E8F0]/60 dark:border-[#334155]/60">
+            <div>
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+                Ringkasan Finansial, Utilisasi Armada Radio, &amp; Monitoring Site TERA
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleToggleSimulation}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+                  simActive
+                    ? 'bg-amber-500 border-amber-600 text-white shadow-sm'
+                    : 'bg-white dark:bg-[#1E293B] border-[#E2E8F0] dark:border-[#334155] text-[#64748B] dark:text-[#94A3B8] hover:border-blue-400 hover:text-blue-600'
+                }`}
+                title="Aktifkan simulasi error untuk uji error state"
+              >
+                <Icon name="alert" size={13} />
+                <span>{simActive ? 'Simulasi Error: ON' : 'Tes Simulasi Error'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={loadData}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#1E293B] border border-[#E2E8F0] dark:border-[#334155] text-[#64748B] dark:text-[#94A3B8] text-xs font-semibold hover:border-blue-400 hover:text-blue-600 shadow-sm transition-all"
+              >
+                <Icon name="refresh" size={13} />
+                <span>Segarkan API</span>
+              </button>
+            </div>
+          </div>
+       {/* Loading State UI (Skeleton Shimmer) */}
+          {(loading || (!stats && !error)) && (
+            <LoadingState message="Memuat data operasional & finansial TERA..." rows={4} />
+          )}
+
+          {/* Error State UI */}
+          {error && !loading && (
+            <ErrorState
+              title="Gagal Memuat Metrik Dashboard"
+              message={error}
+              onRetry={loadData}
+            />
+          )}
+       </main>
       </div>
     </div>
   );
