@@ -1,1 +1,53 @@
-{}
+[
+  {
+    "id_unit": 501,
+    "kode_unit": "UTR-RPT-501",
+    "nama_unit": "Motorola MOTOTRBO SLR 5300 UHF",
+    "kategori": "Repeater",
+    "merk": "Motorola",
+    "frekuensi": "UHF 403-470 MHz (50W)",
+    "harga_sewa": 3850000,
+    "harga_jual": 46500000,
+    "status_unit": "Disewa",
+    "lokasi": "Site Pit Utara Muara Enim, Sumatera Selatan",
+    "klien": "PT Bukit Energi Nusantara",
+    "foto_unit": "/images/units/repeater-slr5300.svg",
+    "spesifikasi": "Digital DMR Tier II/III, 64 Channel, Rackmount 1U, IP Site Connect, Continuous Duty 50W.",
+    "created_at": "2026-01-15T08:00:00.000Z",
+    "updated_at": "2026-08-01T10:00:00.000Z"
+  },
+  {
+    "id_unit": 502,
+    "kode_unit": "UTR-RPT-502",
+    "nama_unit": "Motorola SLR 8000 High Power 100W",
+    "kategori": "Repeater",
+    "merk": "Motorola",
+    "frekuensi": "VHF 136-174 MHz (100W)",
+    "harga_sewa": 5200000,
+    "harga_jual": 68000000,
+    "status_unit": "Tersedia",
+    "lokasi": "Gudang Pusat Cilandak, Jakarta Selatan",
+    "klien": null,
+    "foto_unit": "/images/units/repeater-slr8000.svg",
+    "spesifikasi": "Repeater daya tinggi 100W, 2U Modular Chassis, terintegrasi Power Amplifier & Power Supply AC/DC.",
+    "created_at": "2026-01-18T08:00:00.000Z",
+    "updated_at": "2026-09-10T10:00:00.000Z"
+  },
+  {
+    "id_unit": 503,
+    "kode_unit": "UTR-RPT-503",
+    "nama_unit": "Hytera RD988S Digital Trunking Repeater",
+    "kategori": "Repeater",
+    "merk": "Hytera",
+    "frekuensi": "UHF 350-400 MHz (50W)",
+    "harga_sewa": 3400000,
+    "harga_jual": 41000000,
+    "status_unit": "Disewa",
+    "lokasi": "Site Smelter Bahodopi, Morowali, Sulawesi Tengah",
+    "klien": "PT Vale Smelting Timur",
+    "foto_unit": "/images/units/repeater-hytera.svg",
+    "spesifikasi": "Dual mode Analog/Digital DMR Tier III Trunking, LCD warna 2.0 inci, proteksi panas tambang.",
+    "created_at": "2026-02-01T08:00:00.000Z",
+    "updated_at": "2026-07-15T09:00:00.000Z"
+  }
+]
