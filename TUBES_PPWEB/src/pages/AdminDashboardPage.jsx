@@ -7,6 +7,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';;
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import BankCard from '../components/BankCard';
 import Icon from '../components/Icon';
@@ -235,7 +236,75 @@ export default function AdminDashboardPage() {
                   cardNumber="REG: TERA-UTIL-2026"
                 />
               </div>
+                {/* =========================================================================
+                  SECTION 4: REAL TERA OPERATIONAL DATA TABLE
+                  ========================================================================= */}
+              <div className="bg-white dark:bg-[#1E293B] border border-[#E2E8F0] dark:border-[#334155] rounded-[18px] p-6 shadow-sm hover:border-blue-400 hover:shadow-md transition-all duration-200">
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-5 pb-3 border-b border-[#E2E8F0] dark:border-[#334155]">
+                  <div>
+                    <h3 className="text-lg sm:text-[20px] font-bold text-[#1E293B] dark:text-white tracking-tight">
+                      Monitoring Unit Radio Sedang Beroperasi
+                    </h3>
+                    <p className="text-xs text-[#64748B] dark:text-[#94A3B8] mt-0.5">
+                      Armada unit radio telekomunikasi aktif di site mitra yang terhubung via Mock API
+                    </p>
+                  </div>
 
+                  <Link
+                    to="/admin/units"
+                    className="inline-flex items-center gap-2 text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/40 dark:text-blue-400 px-4 py-2 rounded-full transition-colors"
+                  >
+                    <span>Buka Kelola Unit Lengkap</span>
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr className="text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] border-b border-[#E2E8F0] dark:border-[#334155]">
+                        <th className="pb-3.5 px-3">Kode Unit</th>
+                        <th className="pb-3.5 px-3">Model Perangkat</th>
+                        <th className="pb-3.5 px-3">Kategori</th>
+                        <th className="pb-3.5 px-3">Lokasi Site</th>
+                        <th className="pb-3.5 px-3">Status</th>
+                        <th className="pb-3.5 px-3 text-right">Tarif Sewa/Bulan</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#E2E8F0] dark:divide-[#334155] text-xs">
+                      {stats.rentedUnits.map((u) => (
+                        <tr
+                          key={u.id}
+                          className="hover:bg-blue-50/40 dark:hover:bg-blue-950/30 transition-colors group cursor-pointer"
+                        >
+                          <td className="py-4 px-3 font-mono font-bold text-blue-600 group-hover:text-blue-700">
+                            {u.kode_unit}
+                          </td>
+                          <td className="py-4 px-3 font-semibold text-[#1E293B] dark:text-white">
+                            {u.nama_unit}
+                          </td>
+                          <td className="py-4 px-3 text-[#64748B] dark:text-[#94A3B8]">
+                            {u.kategori}
+                          </td>
+                          <td className="py-4 px-3 text-[#64748B] dark:text-[#94A3B8]">
+                            {u.lokasi}
+                          </td>
+                          <td className="py-4 px-3">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                              {u.status_unit}
+                            </span>
+                          </td>
+                          <td className="py-4 px-3 text-right font-bold text-[#1E293B] dark:text-white">
+                            {formatRupiah(u.tarif_sewa_bulanan || u.harga_sewa)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </>
           )}
        </main>
