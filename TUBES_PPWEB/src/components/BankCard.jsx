@@ -26,7 +26,25 @@ export default function BankCard({
       }`}
       style={{ minHeight: '220px' }}
     >
-      {/* */}
+      {/* Top Row: Metric Label, Value & Modern Telecom Badge */}
+      <div className="flex items-start justify-between">
+        <div>
+          <span
+            className={`text-xs block mb-1 font-semibold uppercase tracking-wider ${
+              isBlue ? 'text-white/80' : 'text-[#64748B] dark:text-[#94A3B8]'
+            }`}
+          >
+            {label}
+          </span>
+          <span
+            className={`text-2xl sm:text-[23px] font-extrabold tracking-tight ${
+              isBlue ? 'text-white' : 'text-[#1E293B] dark:text-white'
+            }`}
+          >
+            {balance}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
