@@ -194,3 +194,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+// 1. Fitur controlled form input identity dan password
