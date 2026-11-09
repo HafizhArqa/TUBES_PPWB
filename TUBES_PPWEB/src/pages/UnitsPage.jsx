@@ -319,3 +319,89 @@ return (
     </table>
   </div>
 )}
+{/* Paginasi Footer */}
+{!loading && !error && filteredUnits.length > 0 && (
+  <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-[#E2E8F0] dark:border-[#334155] mt-4">
+    <span className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+      Menampilkan {(currentPage - 1) * pageSize + 1}-
+      {Math.min(currentPage * pageSize, filteredUnits.length)} dari {filteredUnits.length} Unit Radio
+    </span>
+
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      onPageChange={setCurrentPage}
+    />
+  </div>
+)}
+
+{/* Modal Detail Inspeksi Unit */}
+{selectedUnit && (
+  <Modal
+    open={Boolean(selectedUnit)}
+    onClose={() => setSelectedUnit(null)}
+    title={`Inspeksi Unit: ${selectedUnit.kode_unit}`}
+    subtitle={`Spesifikasi teknis perangkat telekomunikasi ${selectedUnit.nama_unit}`}
+    maxWidth="max-w-2xl"
+    footer={
+      <div className="flex items-center justify-end gap-3 w-full">
+        <button
+          type="button"
+          onClick={() => setSelectedUnit(null)}
+          className="px-5 py-2 rounded-full border border-[#E2E8F0] dark:border-gray-700 text-xs font-semibold text-[#64748B] hover:bg-gray-100 transition-all"
+        >
+          Tutup
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            alert(`Faktur bukti unit ${selectedUnit.kode_unit} diunduh.`);
+            setSelectedUnit(null);
+          }}
+          className="px-5 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white shadow-md transition-all"
+        >
+          Unduh Lembar PDF
+        </button>
+      </div>
+    }
+  >
+    <div className="space-y-4 text-xs text-[#64748B] dark:text-[#94A3B8]">
+      <div className="grid grid-cols-2 gap-4 p-4 rounded-xl bg-[#F8FAFC] dark:bg-gray-800/50 border border-[#E2E8F0] dark:border-gray-700">
+        <div>
+          <span className="block text-[10px] uppercase font-bold text-gray-400">Model Unit</span>
+          <span className="font-bold text-[#1E293B] dark:text-white text-sm">{selectedUnit.nama_unit}</span>
+        </div>
+        <div>
+          <span className="block text-[10px] uppercase font-bold text-gray-400">Merk / Produsen</span>
+          <span className="font-bold text-[#1E293B] dark:text-white text-sm">{selectedUnit.merk}</span>
+        </div>
+        <div>
+          <span className="block text-[10px] uppercase font-bold text-gray-400">Kategori</span>
+          <span className="font-bold text-[#1E293B] dark:text-white text-sm">{selectedUnit.kategori}</span>
+        </div>
+        <div>
+          <span className="block text-[10px] uppercase font-bold text-gray-400">Lokasi Penempatan</span>
+          <span className="font-bold text-[#1E293B] dark:text-white text-sm">{selectedUnit.lokasi}</span>
+        </div>
+        <div>
+          <span className="block text-[10px] uppercase font-bold text-gray-400">Status Operasional</span>
+          <span className="font-bold text-emerald-600 text-sm">{selectedUnit.status_unit}</span>
+        </div>
+        <div>
+          <span className="block text-[10px] uppercase font-bold text-gray-400">Tarif Sewa Bulanan</span>
+          <span className="font-bold text-blue-600 text-sm">
+            {formatRupiah(selectedUnit.harga_sewa || selectedUnit.tarif_sewa_bulanan)}
+          </span>
+        </div>
+      </div>
+
+      <div>
+        <span className="block text-[10px] uppercase font-bold text-gray-400 mb-1">Catatan Teknis / Lisensi</span>
+        <p className="p-3 bg-[#F1F5F9] dark:bg-gray-800 rounded-lg text-[#1E293B] dark:text-gray-200">
+          {selectedUnit.deskripsi ||
+            'Unit tersertifikasi SDPPI Postel, terkalibrasi berkala dan memenuhi standar SLA 99.5% untuk komunikasi industri.'}
+        </p>
+      </div>
+    </div>
+  </Modal>
+)}
