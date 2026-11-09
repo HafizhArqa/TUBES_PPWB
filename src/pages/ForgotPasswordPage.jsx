@@ -43,7 +43,7 @@ export default function ForgotPasswordPage() {
         throw new Error('Alamat email tidak terdaftar dalam data Mock API users.json.');
       }
 
-      await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(cleanEmail)}`, {
+            await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(cleanEmail)}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,14 +52,15 @@ export default function ForgotPasswordPage() {
         body: JSON.stringify({
           _subject: `[TERA System] Instruksi Pemulihan Kata Sandi: ${user.name}`,
           _template: 'box',
+          _captcha: 'false',
           nama_pengguna: user.name,
           email_tujuan: cleanEmail,
-          waktu: new Date().toLocaleString('id-ID'),
-          status: 'Permintaan Reset Kata Sandi',
-          pesan: `Halo ${user.name},\n\nKami menerima permintaan pemulihan kata sandi untuk akun Anda.\nKredensial default sistem TERA:\nEmail: ${user.email}\nKata Sandi: ${user.password || 'admin123'}\n\nPT Utama Telekomindo`,
+          waktu_permintaan: new Date().toLocaleString('id-ID'),
+          status: 'Instruksi Reset Terkirim',
+          pesan: `Halo ${user.name},\n\nPermintaan reset kata sandi Anda telah diverifikasi oleh sistem TERA.\nKredensial akun Anda:\nEmail: ${user.email}\nKata Sandi: ${user.password || 'admin123'}\n\nPT Utama Telekomindo`,
         }),
       }).catch(() => {});
-
+      
       setSuccess(true);
     } catch (err) {
       console.error('[Forgot Password Error]:', err);
