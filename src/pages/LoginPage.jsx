@@ -154,19 +154,24 @@ export default function LoginPage() {
                 </Link>
               </div>
               <div className="relative">
-                <input
+                                <input
                   id="login-password"
                   type={showPass ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="admin123"
+                  placeholder="Password"
+                  autoComplete="current-password"
+                  aria-required="true"
+                  aria-label="Kata sandi akun TERA"
                   className="w-full rounded-[14px] border border-[#E2E8F0] dark:border-[#334155] bg-[#F1F5F9] dark:bg-gray-800/80 pl-4 pr-10 py-2.5 text-xs text-[#1E293B] dark:text-white placeholder-[#64748B] hover:border-blue-400 focus:border-blue-600 focus:bg-white focus:outline-none transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass((v) => !v)}
                   className="absolute inset-y-0 right-3 flex items-center text-[#64748B] hover:text-blue-600 transition-colors"
-                  aria-label="Tampilkan kata sandi"
+                  aria-label={showPass ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
+                  aria-pressed={showPass}
+                  title={showPass ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
                 >
                   <Icon name={showPass ? 'eyeOff' : 'eye'} size={17} />
                 </button>
