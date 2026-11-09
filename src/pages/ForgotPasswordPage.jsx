@@ -18,17 +18,17 @@ export default function ForgotPasswordPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const cleanEmail = email.trim().toLowerCase();
+        const cleanEmail = email.trim().toLowerCase();
 
     if (!cleanEmail) {
-      setError('Alamat email wajib diisi.');
+      setError('Alamat email akun Anda wajib diisi.');
       return;
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
-      setError('Format email tidak valid (contoh: nama@email.com).');
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(cleanEmail)) {
+      setError('Format alamat email tidak valid (contoh: nama@tera.com).');
       return;
     }
-
     setLoading(true);
     setError('');
 
