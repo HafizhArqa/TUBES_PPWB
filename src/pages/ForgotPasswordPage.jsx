@@ -1,7 +1,8 @@
 /**
  * @file ForgotPasswordPage.jsx
- * @description Halaman permintaan pemulihan kata sandi TERA.
- * Verifikasi via Mock API (Axios) dan pengiriman instruksi reset ke email via REST API.
+ * @author Hafizh Arqamilandri Wakhyudi
+ * @module Modul 1: Autentikasi & Reset Sandi
+ * @description Halaman pemulihan kata sandi TERA dengan verifikasi email Mock API Axios dan pengiriman instruksi via REST API.
  */
 
 import React, { useState } from 'react';

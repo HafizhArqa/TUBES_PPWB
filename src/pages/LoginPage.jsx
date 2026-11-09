@@ -1,9 +1,9 @@
 /**
  * @file LoginPage.jsx
- * @description Halaman autentikasi sistem TERA .
- * Konsumsi Mock API (/api/users.json) via Axios, validasi client-side, dan notifikasi email via REST API.
+ * @author Hafizh Arqamilandri Wakhyudi
+ * @module Modul 1: Autentikasi & Reset Sandi
+ * @description Halaman autentikasi TERA dengan validasi client-side, verifikasi Mock API Axios, dan notifikasi email REST API.
  */
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
