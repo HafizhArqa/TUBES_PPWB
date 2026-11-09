@@ -88,9 +88,7 @@ export default function ForgotPasswordPage() {
       <main className="w-full max-w-md mx-auto my-auto py-8">
         <section className="bg-white dark:bg-[#1E293B] border border-[#E2E8F0] dark:border-[#334155] shadow-sm hover:border-blue-400 hover:shadow-md rounded-[22px] p-7 sm:p-9 transition-all">
           <div className="text-center mb-6">
-            <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 flex items-center justify-center mx-auto mb-3">
-              <Icon name="key" size={22} />
-            </div>
+            
             <h1 className="text-2xl font-bold text-[#1E293B] dark:text-white tracking-tight">
               Lupa Kata Sandi
             </h1>
