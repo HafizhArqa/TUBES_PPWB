@@ -49,9 +49,7 @@
     "spesifikasi": "Dual mode Analog/Digital DMR Tier III Trunking, LCD warna 2.0 inci, proteksi panas tambang.",
     "created_at": "2026-02-01T08:00:00.000Z",
     "updated_at": "2026-07-15T09:00:00.000Z"
-  }
-]
-[
+  },
   {
     "id_unit": 501,
     "kode_unit": "UTR-RPT-501",
@@ -153,7 +151,7 @@
     "spesifikasi": "Multi-protokol NXDN & DMR, Active Noise Reduction DSP, MIL-STD-810 C/D/E/F/G.",
     "created_at": "2026-02-20T08:00:00.000Z",
     "updated_at": "2026-10-19T14:20:00.000Z"
-  }
+  },
     {
     "id_unit": 507,
     "kode_unit": "UTR-RHT-507",
