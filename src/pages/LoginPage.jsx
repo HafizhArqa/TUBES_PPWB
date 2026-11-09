@@ -178,12 +178,18 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <button
+                        <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 px-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/25 transition-all disabled:opacity-50 mt-2"
+              className="w-full py-3 px-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
             >
-              {loading ? 'Memvalidasi Kredensial...' : 'Masuk ke Akun'}
+              {loading && (
+                <svg className="animate-spin h-3.5 w-3.5 text-white" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                </svg>
+              )}
+              <span>{loading ? 'Memvalidasi Kredensial...' : 'Masuk ke Akun'}</span>
             </button>
           </form>
 
