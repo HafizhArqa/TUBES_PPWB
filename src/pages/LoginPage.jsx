@@ -94,12 +94,6 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#F8FAFC] dark:bg-[#0F172A] text-[#1E293B] dark:text-[#F8FAFC] transition-colors duration-200 p-4 sm:p-6 font-sans">
       <header className="w-full max-w-5xl mx-auto flex items-center justify-between py-2">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20">
-            <Icon name="creditCards" size={22} />
-          </div>
-          
-        </div>
       </header>
 
       <main className="w-full max-w-md mx-auto my-auto py-8">
@@ -189,6 +183,8 @@ export default function LoginPage() {
     </div>
   );
 }
+
+// 1. Fitur controlled form input identity dan password
 
 // 1. Fitur controlled form input identity dan password
 
