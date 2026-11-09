@@ -16,7 +16,7 @@ const formatRupiah = (number) =>
   }).format(number || 0);
 
 export default function AdminDashboardPage() {
-   const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [quickAmount, setQuickAmount] = useState('2.500.000');
@@ -30,10 +30,16 @@ export default function AdminDashboardPage() {
       const [unitsRes, pelangganRes] = await Promise.all([
         axios.get('/api/units.json'),
         axios.get('/api/pelanggan.json'),
+        axios.get('/api/kontrak.json'),
+        axios.get('/api/activity-logs.json'),
+        axios.get('/api/invoices.json'),
       ]);
 
       const units = Array.isArray(unitsRes.data) ? unitsRes.data : [];
       const pelanggan = Array.isArray(pelangganRes.data) ? pelangganRes.data : [];
+      const kontrak = Array.isArray(kontrakRes.data) ? kontrakRes.data : [];
+      const activityLogs = Array.isArray(logsRes.data) ? logsRes.data : [];
+      const invoices = Array.isArray(invoicesRes.data) ? invoicesRes.data : [];
     } finally {
       setLoading(false);
     }
