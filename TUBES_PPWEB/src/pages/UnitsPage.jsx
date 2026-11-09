@@ -22,11 +22,56 @@ export default function UnitsPage() {
   const [units, setUnits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  
+  // Tambahkan di dalam UnitsPage()
+const [category, setCategory] = useState('Semua');
+const [statusFilter, setStatusFilter] = useState('Semua');
+const [query, setQuery] = useState('');
+const [selectedUnit, setSelectedUnit] = useState(null);
+const [currentPage, setCurrentPage] = useState(1);
+const pageSize = 6;
+const [simActive, setSimActive] = useState(isSimulatedErrorActive());
+
+const fetchUnits = useCallback(async () => {
+  setLoading(true);
+  setError('');
+  try {
+    checkSimulatedError();
+    const res = await axios.get('/api/units.json');
+    if (!Array.isArray(res.data)) {
+      throw new Error('Respon dari server Mock API bukan array data unit yang valid.');
+    }
+    setUnits(res.data);
+  } catch (err) {
+    console.error('[Units Fetch Error]:', err);
+    const message = err.isSimulated
+      ? err.message
+      : err.response
+      ? `Server Mock API mengembalikan status ${err.response.status}: ${err.response.statusText || 'Gagal memuat units.json'}.`
+      : err.request
+      ? 'Gagal terhubung ke endpoint Mock API units.json. Periksa koneksi server dev.'
+      : `Terjadi kendala saat mengambil data unit: ${err.message}`;
+
+    setError(message);
+  } finally {
+    setLoading(false);
+  }
+}, []);
+
+useEffect(() => {
+  fetchUnits();
+}, [fetchUnits]);
+
+const handleToggleSimulation = () => {
+  const nextState = !simActive;
+  setSimActive(nextState);
+  setSimulatedError(nextState);
+  fetchUnits();
+};
   return (
     <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0F172A] text-[#1E293B] dark:text-[#F8FAFC]">
       <Navbar />
       <div className="lg:ml-[250px] p-6">Units Page Initialized</div>
     </div>
+    
   );
 }
