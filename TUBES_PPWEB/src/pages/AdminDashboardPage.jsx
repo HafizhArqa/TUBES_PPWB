@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import axios from 'axios';
 import Navbar from '../components/Navbar';
 
 const formatRupiah = (number) =>
@@ -40,6 +41,18 @@ export default function AdminDashboardPage() {
       const kontrak = Array.isArray(kontrakRes.data) ? kontrakRes.data : [];
       const activityLogs = Array.isArray(logsRes.data) ? logsRes.data : [];
       const invoices = Array.isArray(invoicesRes.data) ? invoicesRes.data : [];
+       
+      const totalUnits = units.length;
+      const unitTersedia = units.filter((u) => u.status_unit === 'Tersedia').length;
+      const unitDisewa = units.filter((u) => u.status_unit === 'Disewa').length;
+      const unitPerawatan = units.filter(
+        (u) => u.status_unit === 'Perawatan' || u.status_unit === 'Maintenance' || u.status_unit === 'Rusak'
+      ).length;
+      const kontrakAktif = kontrak.filter((k) => k.status_kontrak === 'Aktif');
+      const totalNilaiKontrak = kontrakAktif.reduce(
+        (sum, k) => sum + (Number(k.nilai_kontrak) || 0),
+        0
+      );
     } finally {
       setLoading(false);
     }
