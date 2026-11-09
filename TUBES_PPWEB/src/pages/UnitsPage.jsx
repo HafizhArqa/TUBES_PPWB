@@ -75,3 +75,33 @@ const handleToggleSimulation = () => {
     
   );
 }
+const formatRupiah = (number) =>
+  new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    maximumFractionDigits: 0,
+  }).format(number || 0);
+
+const filteredUnits = units.filter((u) => {
+  if (category !== 'Semua' && u.kategori !== category) return false;
+  if (statusFilter !== 'Semua') {
+    if (statusFilter === 'Perawatan') {
+      if (u.status_unit !== 'Perawatan' && u.status_unit !== 'Maintenance' && u.status_unit !== 'Rusak') return false;
+    } else if (u.status_unit !== statusFilter) {
+      return false;
+    }
+  }
+  if (query.trim()) {
+    const q = query.toLowerCase();
+    const match =
+      String(u.kode_unit || '').toLowerCase().includes(q) ||
+      String(u.nama_unit || '').toLowerCase().includes(q) ||
+      String(u.merk || '').toLowerCase().includes(q) ||
+      String(u.lokasi || '').toLowerCase().includes(q);
+    if (!match) return false;
+  }
+  return true;
+});
+
+const totalPages = Math.ceil(filteredUnits.length / pageSize) || 1;
+const paginatedUnits = filteredUnits.slice((currentPage - 1) * pageSize, currentPage * pageSize);
