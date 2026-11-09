@@ -16,6 +16,33 @@ const formatRupiah = (number) =>
   }).format(number || 0);
 
 export default function AdminDashboardPage() {
+   const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [quickAmount, setQuickAmount] = useState('2.500.000');
+  const [selectedUser, setSelectedUser] = useState('Bagas');
+
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    setError('');
+    try {
+      // Fetch data awal via Axios Mock API
+      const [unitsRes, pelangganRes] = await Promise.all([
+        axios.get('/api/units.json'),
+        axios.get('/api/pelanggan.json'),
+      ]);
+
+      const units = Array.isArray(unitsRes.data) ? unitsRes.data : [];
+      const pelanggan = Array.isArray(pelangganRes.data) ? pelangganRes.data : [];
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+ 
   return (
     <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0F172A] text-[#1E293B] dark:text-[#F8FAFC] font-sans antialiased transition-colors duration-200">
       {/* Sidebar & Topbar Navbar */}
