@@ -136,7 +136,10 @@ export default function LoginPage() {
                 type="text"
                 value={identity}
                 onChange={(e) => setIdentity(e.target.value)}
-                placeholder="admin@tera.com"
+                placeholder="nama@email.com"
+                autoComplete="username"
+                aria-required="true"
+                aria-label="Email atau Username akun TERA"
                 className="w-full rounded-[14px] border border-[#E2E8F0] dark:border-[#334155] bg-[#F1F5F9] dark:bg-gray-800/80 px-4 py-2.5 text-xs text-[#1E293B] dark:text-white placeholder-[#64748B] hover:border-blue-400 focus:border-blue-600 focus:bg-white focus:outline-none transition-all"
               />
             </div>
