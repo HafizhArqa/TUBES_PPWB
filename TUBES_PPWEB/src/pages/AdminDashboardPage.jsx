@@ -32,6 +32,29 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState('');
   const [quickAmount, setQuickAmount] = useState('2.500.000');
   const [selectedUser, setSelectedUser] = useState('Bagas');
+  const [simActive, setSimActive] = useState(() => isSimulatedErrorActive());
+  const [isDark, setIsDark] = useState(() => {
+    try {
+      const saved = localStorage.getItem('theme');
+      if (saved !== null) return saved === 'dark';
+      return false;
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDark) {
+      root.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      root.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDark]);
+
+  const toggleTheme = () => setIsDark((prev) => !prev);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -40,7 +63,7 @@ export default function AdminDashboardPage() {
         // 1. Pengecekan pra-fetch untuk simulasi galat
       checkSimulatedError();
       // Fetch data awal via Axios Mock API
-      const [unitsRes, pelangganRes] = await Promise.all([
+      const [unitsRes, pelangganRes, kontrakRes, logsRes, invoicesRes] = await Promise.all([
         axios.get('/api/units.json'),
         axios.get('/api/pelanggan.json'),
         axios.get('/api/kontrak.json'),
@@ -177,6 +200,21 @@ export default function AdminDashboardPage() {
             </div>
 
             <div className="flex items-center gap-2">
+              {/* Tombol Icon Dark Mode / Light Mode di Samping Tes Simulasi Error */}
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="w-8 h-8 rounded-full bg-white dark:bg-[#1E293B] border border-[#E2E8F0] dark:border-[#334155] text-[#64748B] dark:text-[#94A3B8] hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400 flex items-center justify-center transition-all shadow-sm cursor-pointer"
+                title={isDark ? 'Ganti ke Light Mode' : 'Ganti ke Dark Mode'}
+                aria-label="Toggle Theme"
+              >
+                <Icon
+                  name={isDark ? 'sun' : 'moon'}
+                  size={14}
+                  className={isDark ? 'text-amber-400' : 'text-blue-600'}
+                />
+              </button>
+
               <button
                 type="button"
                 onClick={handleToggleSimulation}
@@ -217,26 +255,26 @@ export default function AdminDashboardPage() {
           {/* Konten Utama Saat Sukses */}
           {stats && !loading && !error && (
             <>
+            {/* =========================================================================
+    SECTION 1: KARTU RINGKASAN (NILAI KONTRAK & UTILISASI ARMADA)
+    ========================================================================= */}
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <BankCard
+    variant="blue"
+    label="Total Nilai Kontrak Sewa"
+    balance={formatRupiah(stats.kpi.totalNilaiKontrak)}
+    validThru={`${stats.kpi.kontrakAktifCount} Kontrak Aktif`}
+  />
+  <BankCard
+    variant="white"
+    label="Utilisasi Armada Radio"
+    balance={`${stats.kpi.utilisasiPersen}%`}
+    validThru={`${stats.kpi.unitDisewa} dari ${stats.kpi.totalUnits} unit`}
+    validLabel="UNIT DISEWA"
+    cardNumber="REG: TERA-UTIL-2026"
+  />
+</div>
               {/* =========================================================================
-                  SECTION 1: KARTU RINGKASAN (NILAI KONTRAK & UTILISASI ARMADA)
-                  ========================================================================= */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <BankCard
-                  variant="blue"
-                  label="Total Nilai Kontrak Sewa"
-                  balance={formatRupiah(stats.kpi.totalNilaiKontrak)}
-                  validThru={`${stats.kpi.kontrakAktifCount} Kontrak Aktif`}
-                />
-                <BankCard
-                  variant="white"
-                  label="Utilisasi Armada Radio"
-                  balance={`${stats.kpi.utilisasiPersen}%`}
-                  validThru={`${stats.kpi.unitDisewa} dari ${stats.kpi.totalUnits} unit`}
-                  validLabel="UNIT DISEWA"
-                  cardNumber="REG: TERA-UTIL-2026"
-                />
-              </div>
-                {/* =========================================================================
                   SECTION 4: REAL TERA OPERATIONAL DATA TABLE
                   ========================================================================= */}
               <div className="bg-white dark:bg-[#1E293B] border border-[#E2E8F0] dark:border-[#334155] rounded-[18px] p-6 shadow-sm hover:border-blue-400 hover:shadow-md transition-all duration-200">
