@@ -435,3 +435,26 @@ export default function PelangganPage() {
             <div className="p-5 bg-gray-50 border border-gray-100 rounded-2xl flex items-start gap-4">
               <div className="w-14 h-14 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl font-bold shrink-0">
                 {selectedItem.nama.substring(0, 2).toUpperCase()}
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-1">
+                  <h3 className="text-lg font-bold text-gray-900">{selectedItem.nama}</h3>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${selectedItem.status === 'Aktif' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>{selectedItem.status}</span>
+                </div>
+                <p className="text-sm text-gray-600 mb-3">Pelanggan Korporat B2B â€¢ PIC: {selectedItem.pic} ({selectedItem.jabatan})</p>
+                <div className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Tanggal Terdaftar</div>
+                <div className="text-sm font-medium text-gray-900 mt-0.5">05 Februari 2026</div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Kontak */}
+              <div className="p-5 border border-gray-100 rounded-2xl">
+                <h4 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <Icon name="users" className="w-4 h-4 text-gray-400" /> Kontak & Identitas Legalitas
+                </h4>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between border-b border-dashed border-gray-100 pb-2"><span className="text-gray-500">Email</span><span className="font-medium">{selectedItem.email}</span></div>
+                  <div className="flex justify-between border-b border-dashed border-gray-100 pb-2"><span className="text-gray-500">No. Telepon / WA</span><span className="font-mono font-medium">{selectedItem.telepon}</span></div>
+                  <div className="flex justify-between border-b border-dashed border-gray-100 pb-2"><span className="text-gray-500">No. NPWP / NIK</span><span className="font-mono font-medium">{selectedItem.npwp}</span></div>
+                  <div>
