@@ -1,8 +1,7 @@
 /**
  * @file ForgotPasswordPage.jsx
- * @author Hafizh Arqamilandri Wakhyudi
- * @module Modul 1: Autentikasi & Reset Sandi
- * @description Halaman pemulihan kata sandi TERA dengan verifikasi email Mock API Axios dan pengiriman instruksi via REST API.
+ * @description Halaman permintaan pemulihan kata sandi BankFlash TERA dengan tema Putih, Grey, dan Hover Biru.
+ * Verifikasi via Mock API (Axios) dan pengiriman instruksi reset ke email via REST API.
  */
 
 import React, { useState } from 'react';
@@ -19,17 +18,17 @@ export default function ForgotPasswordPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-        const cleanEmail = email.trim().toLowerCase();
+    const cleanEmail = email.trim().toLowerCase();
 
     if (!cleanEmail) {
-      setError('Alamat email akun Anda wajib diisi.');
+      setError('Alamat email wajib diisi.');
       return;
     }
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailPattern.test(cleanEmail)) {
-      setError('Format alamat email tidak valid (contoh: nama@tera.com).');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+      setError('Format email tidak valid (contoh: nama@email.com).');
       return;
     }
+
     setLoading(true);
     setError('');
 
@@ -44,7 +43,7 @@ export default function ForgotPasswordPage() {
         throw new Error('Alamat email tidak terdaftar dalam data Mock API users.json.');
       }
 
-            await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(cleanEmail)}`, {
+      await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(cleanEmail)}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,12 +52,11 @@ export default function ForgotPasswordPage() {
         body: JSON.stringify({
           _subject: `[TERA System] Instruksi Pemulihan Kata Sandi: ${user.name}`,
           _template: 'box',
-          _captcha: 'false',
           nama_pengguna: user.name,
           email_tujuan: cleanEmail,
-          waktu_permintaan: new Date().toLocaleString('id-ID'),
-          status: 'Instruksi Reset Terkirim',
-          pesan: `Halo ${user.name},\n\nPermintaan reset kata sandi Anda telah diverifikasi oleh sistem TERA.\nKredensial akun Anda:\nEmail: ${user.email}\nKata Sandi: ${user.password || 'admin123'}\n\nPT Utama Telekomindo`,
+          waktu: new Date().toLocaleString('id-ID'),
+          status: 'Permintaan Reset Kata Sandi',
+          pesan: `Halo ${user.name},\n\nKami menerima permintaan pemulihan kata sandi untuk akun Anda.\nKredensial default sistem TERA:\nEmail: ${user.email}\nKata Sandi: ${user.password || 'admin123'}\n\nPT Utama Telekomindo`,
         }),
       }).catch(() => {});
 
@@ -83,13 +81,21 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen flex flex-col justify-between bg-[#F8FAFC] dark:bg-[#0F172A] text-[#1E293B] dark:text-[#F8FAFC] transition-colors duration-200 p-4 sm:p-6 font-sans">
       <header className="w-full max-w-5xl mx-auto flex items-center justify-between py-2">
         <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20">
+            <Icon name="creditCards" size={22} />
+          </div>
+          <span className="text-2xl font-bold tracking-tight text-[#1E293B] dark:text-white">
+            BankFlash<span className="text-blue-600">.</span>
+          </span>
         </div>
       </header>
 
       <main className="w-full max-w-md mx-auto my-auto py-8">
         <section className="bg-white dark:bg-[#1E293B] border border-[#E2E8F0] dark:border-[#334155] shadow-sm hover:border-blue-400 hover:shadow-md rounded-[22px] p-7 sm:p-9 transition-all">
           <div className="text-center mb-6">
-            
+            <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 flex items-center justify-center mx-auto mb-3">
+              <Icon name="key" size={22} />
+            </div>
             <h1 className="text-2xl font-bold text-[#1E293B] dark:text-white tracking-tight">
               Lupa Kata Sandi
             </h1>
@@ -141,9 +147,6 @@ export default function ForgotPasswordPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@tera.com"
-                  autoComplete="email"
-                  aria-required="true"
-                  aria-label="Alamat email pemulihan akun TERA"
                   className="w-full rounded-[14px] border border-[#E2E8F0] dark:border-[#334155] bg-[#F1F5F9] dark:bg-gray-800/80 px-4 py-2.5 text-xs text-[#1E293B] dark:text-white placeholder-[#64748B] hover:border-blue-400 focus:border-blue-600 focus:bg-white focus:outline-none transition-all"
                 />
               </div>
@@ -151,15 +154,9 @@ export default function ForgotPasswordPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 px-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
+                className="w-full py-3 px-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/25 transition-all disabled:opacity-50 mt-2"
               >
-                {loading && (
-                  <svg className="animate-spin h-3.5 w-3.5 text-white" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                  </svg>
-                )}
-                <span>{loading ? 'Mengirim Instruksi...' : 'Kirim Instruksi Pemulihan'}</span>
+                {loading ? 'Mengirim Instruksi via REST API...' : 'Kirim Instruksi ke Email'}
               </button>
 
               <div className="pt-3 text-center">

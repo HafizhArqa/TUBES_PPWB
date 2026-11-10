@@ -270,17 +270,6 @@ export default function LoginPage() {
                 <span>{loading ? 'Memvalidasi Kredensial...' : 'Masuk ke Akun'}</span>
               </button>
             </form>
-
-            {/* Kredensial Cepat */}
-            <div className="mt-5 pt-4 border-t border-[#E2E8F0] dark:border-[#334155] text-center">
-              <button
-                type="button"
-                onClick={handleFillTestCredentials}
-                className="w-full py-2 px-3 rounded-[12px] bg-slate-100 dark:bg-slate-800 text-[11px] font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700/80 transition-colors"
-              >
-                Gunakan Akun Ini (admin@tera.com)
-              </button>
-            </div>
           </section>
         </main>
 

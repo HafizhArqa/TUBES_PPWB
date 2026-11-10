@@ -1,14 +1,14 @@
 /**
  * @file LoginPage.jsx
- * @author Hafizh Arqamilandri Wakhyudi
- * @module Modul 1: Autentikasi & Reset Sandi
- * @description Halaman autentikasi TERA dengan validasi client-side, verifikasi Mock API Axios, dan notifikasi email REST API.
+ * @description Halaman autentikasi sistem BankFlash TERA dengan tema Putih, Grey, dan Hover Biru.
+ * Konsumsi Mock API (/api/users.json) via Axios, validasi client-side, dan notifikasi email via REST API.
  */
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Icon from '../components/Icon';
-import { checkSimulatedError, isSimulatedErrorActive, setSimulatedError } from '../components/StatusStates';
+import { checkSimulatedError } from '../components/StatusStates';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -69,23 +69,16 @@ export default function LoginPage() {
 
       sessionStorage.setItem('user', JSON.stringify(user));
       navigate('/admin/dashboard', { replace: true });
-        } catch (err) {
+    } catch (err) {
       console.error('[Login Error]:', err);
-      let userMessage = 'Terjadi kendala saat memvalidasi kredensial akun.';
-      if (err.isSimulated) {
-        userMessage = err.message;
-      } else if (err.response) {
-        const code = err.response.status;
-        userMessage = code === 404
-          ? 'File Mock API users.json tidak ditemukan pada server.'
-          : code === 401
-          ? 'Autentikasi kredensial ditolak oleh sistem keamanan.'
-          : `Server mengembalikan galat HTTP ${code}: ${err.response.statusText || 'Gagal'}.`;
-      } else if (err.request) {
-        userMessage = 'Koneksi ke endpoint Mock API gagal. Periksa server Vite Anda.';
-      } else if (err.message) {
-        userMessage = err.message;
-      }
+      const userMessage = err.isSimulated
+        ? err.message
+        : err.response
+        ? `Server Mock API merespon dengan status ${err.response.status}: ${err.response.statusText || 'Gagal memuat users.json'}.`
+        : err.request
+        ? 'Gagal menghubungi endpoint Mock API users.json. Pastikan server dev aktif.'
+        : err.message || 'Terjadi kesalahan saat memvalidasi kredensial.';
+
       setError(userMessage);
     } finally {
       setLoading(false);
@@ -101,6 +94,17 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#F8FAFC] dark:bg-[#0F172A] text-[#1E293B] dark:text-[#F8FAFC] transition-colors duration-200 p-4 sm:p-6 font-sans">
       <header className="w-full max-w-5xl mx-auto flex items-center justify-between py-2">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20">
+            <Icon name="creditCards" size={22} />
+          </div>
+          <span className="text-2xl font-bold tracking-tight text-[#1E293B] dark:text-white">
+            BankFlash<span className="text-blue-600">.</span>
+          </span>
+        </div>
+        <span className="text-xs text-[#64748B] dark:text-[#94A3B8] bg-white dark:bg-[#1E293B] border border-[#E2E8F0] dark:border-[#334155] px-4 py-1.5 rounded-full font-medium shadow-sm hidden sm:inline-block">
+          Portal Manajemen Internal
+        </span>
       </header>
 
       <main className="w-full max-w-md mx-auto my-auto py-8">
@@ -136,10 +140,7 @@ export default function LoginPage() {
                 type="text"
                 value={identity}
                 onChange={(e) => setIdentity(e.target.value)}
-                placeholder="nama@email.com"
-                autoComplete="username"
-                aria-required="true"
-                aria-label="Email atau Username akun TERA"
+                placeholder="admin@tera.com"
                 className="w-full rounded-[14px] border border-[#E2E8F0] dark:border-[#334155] bg-[#F1F5F9] dark:bg-gray-800/80 px-4 py-2.5 text-xs text-[#1E293B] dark:text-white placeholder-[#64748B] hover:border-blue-400 focus:border-blue-600 focus:bg-white focus:outline-none transition-all"
               />
             </div>
@@ -154,44 +155,36 @@ export default function LoginPage() {
                 </Link>
               </div>
               <div className="relative">
-                                <input
+                <input
                   id="login-password"
                   type={showPass ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Password"
-                  autoComplete="current-password"
-                  aria-required="true"
-                  aria-label="Kata sandi akun TERA"
+                  placeholder="admin123"
                   className="w-full rounded-[14px] border border-[#E2E8F0] dark:border-[#334155] bg-[#F1F5F9] dark:bg-gray-800/80 pl-4 pr-10 py-2.5 text-xs text-[#1E293B] dark:text-white placeholder-[#64748B] hover:border-blue-400 focus:border-blue-600 focus:bg-white focus:outline-none transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass((v) => !v)}
                   className="absolute inset-y-0 right-3 flex items-center text-[#64748B] hover:text-blue-600 transition-colors"
-                  aria-label={showPass ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
-                  aria-pressed={showPass}
-                  title={showPass ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
+                  aria-label="Tampilkan kata sandi"
                 >
                   <Icon name={showPass ? 'eyeOff' : 'eye'} size={17} />
                 </button>
               </div>
             </div>
 
-                        <button
+            <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 px-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
+              className="w-full py-3 px-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/25 transition-all disabled:opacity-50 mt-2"
             >
-              {loading && (
-                <svg className="animate-spin h-3.5 w-3.5 text-white" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                </svg>
-              )}
-              <span>{loading ? 'Memvalidasi Kredensial...' : 'Masuk ke Akun'}</span>
+              {loading ? 'Memvalidasi Kredensial...' : 'Masuk ke Akun'}
             </button>
           </form>
+
+          {/* Kredensial Cepat */}
+        
         </section>
       </main>
 
@@ -201,9 +194,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-// 1. Fitur controlled form input identity dan password
-
-// 1. Fitur controlled form input identity dan password
-
-// 1. Fitur controlled form input identity dan password

@@ -5,11 +5,14 @@
  * 100% Data Fetching dari Mock API (units.json, pelanggan.json, kontrak.json, activity-logs.json, invoices.json).
  */
 
-import React, { useState, useEffect, useCallback } from 'react';;
-import axios from 'axios';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import Navbar from '../components/Navbar';
 import BankCard from '../components/BankCard';
+import WeeklyActivityChart from '../components/WeeklyActivityChart';
+import ExpenseStatisticsChart from '../components/ExpenseStatisticsChart';
+import BalanceHistoryChart from '../components/BalanceHistoryChart';
 import Icon from '../components/Icon';
 import {
   LoadingState,
@@ -30,39 +33,18 @@ export default function AdminDashboardPage() {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [simActive, setSimActive] = useState(isSimulatedErrorActive());
   const [quickAmount, setQuickAmount] = useState('2.500.000');
   const [selectedUser, setSelectedUser] = useState('Bagas');
-  const [simActive, setSimActive] = useState(() => isSimulatedErrorActive());
-  const [isDark, setIsDark] = useState(() => {
-    try {
-      const saved = localStorage.getItem('theme');
-      if (saved !== null) return saved === 'dark';
-      return false;
-    } catch {
-      return false;
-    }
-  });
-
-  useEffect(() => {
-    const root = document.documentElement;
-    if (isDark) {
-      root.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      root.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDark]);
-
-  const toggleTheme = () => setIsDark((prev) => !prev);
 
   const loadData = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-        // 1. Pengecekan pra-fetch untuk simulasi galat
+      // 1. Pengecekan pra-fetch untuk simulasi galat
       checkSimulatedError();
-      // Fetch data awal via Axios Mock API
+
+      // 2. Fetch seluruh data dinamis asinkron via Axios Mock API (100% Fetch)
       const [unitsRes, pelangganRes, kontrakRes, logsRes, invoicesRes] = await Promise.all([
         axios.get('/api/units.json'),
         axios.get('/api/pelanggan.json'),
@@ -76,7 +58,7 @@ export default function AdminDashboardPage() {
       const kontrak = Array.isArray(kontrakRes.data) ? kontrakRes.data : [];
       const activityLogs = Array.isArray(logsRes.data) ? logsRes.data : [];
       const invoices = Array.isArray(invoicesRes.data) ? invoicesRes.data : [];
-       
+
       const totalUnits = units.length;
       const unitTersedia = units.filter((u) => u.status_unit === 'Tersedia').length;
       const unitDisewa = units.filter((u) => u.status_unit === 'Disewa').length;
@@ -89,7 +71,7 @@ export default function AdminDashboardPage() {
         0
       );
 
-           // Data Transaksi Nyata dari Invoices & Mutasi Kas TERA
+      // Data Transaksi Nyata dari Invoices & Mutasi Kas TERA
       const recentTx = [
         {
           id: 1,
@@ -182,7 +164,7 @@ export default function AdminDashboardPage() {
       avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
     },
   ];
- 
+
   return (
     <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0F172A] text-[#1E293B] dark:text-[#F8FAFC] font-sans antialiased transition-colors duration-200">
       {/* Sidebar & Topbar Navbar */}
@@ -191,7 +173,7 @@ export default function AdminDashboardPage() {
       {/* Main Content Area */}
       <div className="lg:ml-[250px] min-h-screen flex flex-col">
         <main id="main-content" className="flex-1 p-4 sm:p-7 max-w-[1600px] w-full mx-auto space-y-7">
-            {/* Top Bar Action (Simulasi Error & Segarkan API) */}
+          {/* Top Bar Action (Simulasi Error & Segarkan API) */}
           <div className="flex flex-wrap items-center justify-between gap-3 pb-1 border-b border-[#E2E8F0]/60 dark:border-[#334155]/60">
             <div>
               <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
@@ -200,21 +182,6 @@ export default function AdminDashboardPage() {
             </div>
 
             <div className="flex items-center gap-2">
-              {/* Tombol Icon Dark Mode / Light Mode di Samping Tes Simulasi Error */}
-              <button
-                type="button"
-                onClick={toggleTheme}
-                className="w-8 h-8 rounded-full bg-white dark:bg-[#1E293B] border border-[#E2E8F0] dark:border-[#334155] text-[#64748B] dark:text-[#94A3B8] hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400 flex items-center justify-center transition-all shadow-sm cursor-pointer"
-                title={isDark ? 'Ganti ke Light Mode' : 'Ganti ke Dark Mode'}
-                aria-label="Toggle Theme"
-              >
-                <Icon
-                  name={isDark ? 'sun' : 'moon'}
-                  size={14}
-                  className={isDark ? 'text-amber-400' : 'text-blue-600'}
-                />
-              </button>
-
               <button
                 type="button"
                 onClick={handleToggleSimulation}
@@ -239,7 +206,8 @@ export default function AdminDashboardPage() {
               </button>
             </div>
           </div>
-       {/* Loading State UI (Skeleton Shimmer) */}
+
+          {/* Loading State UI (Skeleton Shimmer) */}
           {(loading || (!stats && !error)) && (
             <LoadingState message="Memuat data operasional & finansial TERA..." rows={4} />
           )}
@@ -252,28 +220,17 @@ export default function AdminDashboardPage() {
               onRetry={loadData}
             />
           )}
+
           {/* Konten Utama Saat Sukses */}
           {stats && !loading && !error && (
             <>
-            {/* =========================================================================
-    SECTION 1: KARTU RINGKASAN (NILAI KONTRAK & UTILISASI ARMADA)
-    ========================================================================= */}
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-  <BankCard
-    variant="blue"
-    label="Total Nilai Kontrak Sewa"
-    balance={formatRupiah(stats.kpi.totalNilaiKontrak)}
-    validThru={`${stats.kpi.kontrakAktifCount} Kontrak Aktif`}
-  />
-  <BankCard
-    variant="white"
-    label="Utilisasi Armada Radio"
-    balance={`${stats.kpi.utilisasiPersen}%`}
-    validThru={`${stats.kpi.unitDisewa} dari ${stats.kpi.totalUnits} unit`}
-    validLabel="UNIT DISEWA"
-    cardNumber="REG: TERA-UTIL-2026"
-  />
-</div>
+              
+                     
+
+                  
+
+              
+
               {/* =========================================================================
                   SECTION 4: REAL TERA OPERATIONAL DATA TABLE
                   ========================================================================= */}
@@ -345,7 +302,7 @@ export default function AdminDashboardPage() {
               </div>
             </>
           )}
-       </main>
+        </main>
       </div>
     </div>
   );
