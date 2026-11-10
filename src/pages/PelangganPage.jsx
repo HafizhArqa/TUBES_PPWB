@@ -458,3 +458,26 @@ export default function PelangganPage() {
                   <div className="flex justify-between border-b border-dashed border-gray-100 pb-2"><span className="text-gray-500">No. Telepon / WA</span><span className="font-mono font-medium">{selectedItem.telepon}</span></div>
                   <div className="flex justify-between border-b border-dashed border-gray-100 pb-2"><span className="text-gray-500">No. NPWP / NIK</span><span className="font-mono font-medium">{selectedItem.npwp}</span></div>
                   <div>
+                    <span className="text-gray-500 block mb-1 mt-3">Alamat Lengkap Kantor / Site</span>
+                    <span className="font-medium text-gray-900 leading-relaxed block">{selectedItem.alamat}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Statistik dari kontrak.json (fallback) */}
+              <div className="p-5 border border-gray-100 rounded-2xl bg-white shadow-sm">
+                 <h4 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg> 
+                  Statistik Penyewaan Mitra
+                </h4>
+                <div className="grid grid-cols-2 gap-3 mb-3">
+                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-100">
+                    <div className="text-xs text-gray-500 uppercase font-semibold mb-1">Total Sewa</div>
+                    <div className="text-xl font-bold text-gray-900">1 <span className="text-sm font-normal text-gray-500">Kontrak</span></div>
+                  </div>
+                  <div className="p-3 bg-blue-50/50 rounded-xl border border-blue-100">
+                    <div className="text-xs text-blue-600 uppercase font-semibold mb-1">Unit Aktif</div>
+                    <div className="text-xl font-bold text-blue-700">14 <span className="text-sm font-normal text-blue-500">Unit</span></div>
+                  </div>
+                </div>
+                <div className="p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
