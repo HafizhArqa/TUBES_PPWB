@@ -67,3 +67,26 @@ const WilayahSelector = () => {
             <h4 className="text-sm font-semibold text-gray-900">Penentuan Wilayah Site Operasional</h4>
             <p className="text-xs text-gray-500">Integrasi Public API Wilayah Indonesia via Fetch API</p>
           </div>
+        </div>
+        <span className="px-3 py-1 text-xs font-medium text-emerald-700 bg-emerald-100 rounded-full border border-emerald-200">EMSIFA Public API (Live)</span>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs text-gray-600 mb-1">Pilih Provinsi Site</label>
+          <select className="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:border-blue-500 outline-none">
+            <option>-- Pilih Provinsi --</option>
+            {provinces.map(p => <option key={p.id}>{p.name}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs text-gray-600 mb-1">Pilih Kota / Kabupaten Site</label>
+          <select className="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:border-blue-500 outline-none" disabled>
+            <option>-- Pilih Kabupaten/Kota --</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ==========================================
