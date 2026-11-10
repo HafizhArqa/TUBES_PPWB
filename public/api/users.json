@@ -1,0 +1,32 @@
+[
+  {
+    "id": 101,
+    "name": "Administrator TERA",
+    "username": "admin.tera",
+    "email": "admin@tera.com",
+    "role": "admin",
+    "password": "admin123",
+    "email_verified_at": "2026-01-10T08:00:00.000Z",
+    "created_at": "2026-01-10T08:00:00.000Z"
+  },
+  {
+    "id": 102,
+    "name": "jack carbine",
+    "username": "finance.tera",
+    "email": "jackcarbine37@gmail.com",
+    "role": "admin",
+    "password": "admin123",
+    "email_verified_at": "2026-01-12T08:30:00.000Z",
+    "created_at": "2026-01-12T08:30:00.000Z"
+  },
+  {
+    "id": 103,
+    "name": "Test101 (Lead Auth)",
+    "username": "test101",
+    "email": "test101@gmail.com",
+    "role": "admin",
+    "password": "admin123",
+    "email_verified_at": "2026-01-15T09:00:00.000Z",
+    "created_at": "2026-01-15T09:00:00.000Z"
+  }
+]
