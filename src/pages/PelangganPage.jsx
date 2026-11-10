@@ -320,3 +320,26 @@ export default function PelangganPage() {
                             </div>
                           </td>
                           <td className="px-6 py-4">
+                            <div className="font-semibold text-gray-800 text-sm">{item.pic}</div>
+                            <div className="text-xs text-gray-500 mt-0.5">{item.jabatan}</div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="text-sm text-blue-600 hover:underline cursor-pointer">{item.email}</div>
+                            <div className="text-xs text-gray-500 mt-0.5 font-mono">{item.telepon}</div>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-600 max-w-[200px] truncate">{item.alamat}</td>
+                          <td className="px-6 py-4 text-center">
+                            <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold border ${item.status === 'Aktif' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-rose-50 text-rose-600 border-rose-200'}`}>
+                              {item.status.toUpperCase()}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                            <button 
+                              onClick={() => { setSelectedItem(item); setIsInspectModalOpen(true); }}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-blue-600 transition-colors"
+                            >
+                              <Icon name="eye" className="w-4 h-4" /> Inspeksi
+                            </button>
+                          </td>
+                        </tr>
+                      ))
