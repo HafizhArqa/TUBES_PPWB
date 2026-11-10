@@ -113,3 +113,26 @@ export default function PelangganPage() {
     setIsError(false);
     setTimeout(() => {
       try {
+        const localData = JSON.parse(localStorage.getItem('tera_pelanggan')) || [];
+        setData([...MOCK_PELANGGAN, ...localData]);
+      } catch (err) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 800); // simulate network delay
+  };
+
+  useEffect(() => { loadData(); }, []);
+
+  // Filter Data
+  const filteredData = useMemo(() => {
+    return data.filter(item => {
+      const matchesSearch = item.nama.toLowerCase().includes(searchQuery.toLowerCase()) || item.pic.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesTab = activeTab === 'All' ? true : item.status === activeTab;
+      return matchesSearch && matchesTab;
+    });
+  }, [data, searchQuery, activeTab]);
+
+  // Handle Submit
+  const handleAddSubmit = (e) => {
