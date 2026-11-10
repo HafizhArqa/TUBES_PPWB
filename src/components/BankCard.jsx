@@ -44,7 +44,6 @@ export default function BankCard({
             {balance}
           </span>
         </div>
-
         {/* Clean Signal / Contactless Emblem */}
         <div className="pt-1">
           <div
@@ -99,7 +98,6 @@ export default function BankCard({
           </span>
         </div>
       </div>
-
       {/* Bottom Row: Official Code & Dual Ring Emblem */}
       <div
         className={`flex items-center justify-between pt-3.5 ${
