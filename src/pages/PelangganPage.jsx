@@ -44,3 +44,26 @@ const Modal = ({ isOpen, onClose, title, children }) => {
           </button>
         </div>
         <div className="p-6">{children}</div>
+      </div>
+    </div>
+  );
+};
+
+const WilayahSelector = () => {
+  const [provinces, setProvinces] = useState([]);
+  useEffect(() => {
+    fetch('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json')
+      .then(res => res.json())
+      .then(data => setProvinces(data))
+      .catch(() => setProvinces([{ id: '1', name: 'DKI JAKARTA (Fallback)' }]));
+  }, []);
+
+  return (
+    <div className="p-4 bg-blue-50/50 rounded-xl border border-blue-100 mb-6">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-blue-100 text-blue-600 rounded-lg font-bold text-xs">API</div>
+          <div>
+            <h4 className="text-sm font-semibold text-gray-900">Penentuan Wilayah Site Operasional</h4>
+            <p className="text-xs text-gray-500">Integrasi Public API Wilayah Indonesia via Fetch API</p>
+          </div>
