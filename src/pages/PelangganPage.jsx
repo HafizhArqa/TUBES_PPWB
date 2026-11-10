@@ -136,3 +136,26 @@ export default function PelangganPage() {
 
   // Handle Submit
   const handleAddSubmit = (e) => {
+    e.preventDefault();
+    // Regex validasi email dari instruksi Zakaria
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert("Format email tidak valid!");
+      return;
+    }
+
+    const newPelanggan = {
+      ...formData,
+      id: `PLG-2026-${Math.floor(100 + Math.random() * 900)}`,
+      status: 'Aktif'
+    };
+
+    const updatedData = [...data, newPelanggan];
+    setData(updatedData);
+    
+    // Simpan ke localstorage sesuai requirement
+    const localData = JSON.parse(localStorage.getItem('tera_pelanggan')) || [];
+    localStorage.setItem('tera_pelanggan', JSON.stringify([...localData, newPelanggan]));
+    
+    setIsAddModalOpen(false);
+    setFormData({ nama: '', npwp: '', pic: '', jabatan: '', email: '', telepon: '', alamat: '' });
