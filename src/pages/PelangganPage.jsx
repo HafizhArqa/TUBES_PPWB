@@ -90,3 +90,26 @@ const WilayahSelector = () => {
 };
 
 // ==========================================
+// 3. KOMPONEN UTAMA (PELANGGAN PAGE)
+// ==========================================
+export default function PelangganPage() {
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeTab, setActiveTab] = useState('All');
+  
+  // Modal States
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isInspectModalOpen, setIsInspectModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  // Form State
+  const [formData, setFormData] = useState({ nama: '', npwp: '', pic: '', jabatan: '', email: '', telepon: '', alamat: '' });
+
+  // Load Data
+  const loadData = () => {
+    setIsLoading(true);
+    setIsError(false);
+    setTimeout(() => {
+      try {
