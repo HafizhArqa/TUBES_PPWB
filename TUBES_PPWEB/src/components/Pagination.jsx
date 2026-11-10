@@ -17,6 +17,7 @@ export default function Pagination({
   const pages = Array.from({ length: calculatedPages }, (_, idx) => idx + 1);
 
   return (
+    <nav aria-label="Navigasi halaman tabel" className="flex items-center gap-1 sm:gap-2">
     <nav aria-label="Navigasi halaman tabel" className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
       <button
         type="button"

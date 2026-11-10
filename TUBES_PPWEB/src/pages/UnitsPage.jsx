@@ -2,6 +2,14 @@
  * @file UnitsPage.jsx
  * @description Halaman Kelola Unit Radio BankFlash TERA dengan tema Putih, Grey, dan Hover Biru.
  * Memadukan CSS Grid + Flexbox dengan Tailwind CSS.
+ * 100% Data Fetching dari Mock API (units.json) via Axios, dilengkapi Paginasi, Filter Kategori/Status, & Modal Inspeksi.
+ */
+
+import React, { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
+import Navbar from '../components/Navbar';
+import BankCard from '../components/BankCard';
+import MyExpenseBarChart from '../components/MyExpenseBarChart';
  * 100% Data Fetching dari Mock API (units.json) via Axios, dilengkapi Paginasi, Filter Kategori/Status, Modal Inspeksi, serta tampilan responsif Mobile/Tablet/Desktop.
  */
 
@@ -154,6 +162,7 @@ export default function UnitsPage() {
       if (!Array.isArray(res.data)) {
         throw new Error('Respon dari server Mock API bukan array data unit yang valid.');
       }
+      setUnits(res.data);
       const customUnits = loadCustomUnits();
       const customCodes = new Set(customUnits.map((u) => String(u.kode_unit || '').toUpperCase()));
       const merged = [
@@ -335,6 +344,20 @@ export default function UnitsPage() {
       <Navbar />
 
       <div className="lg:ml-[250px] min-h-screen flex flex-col">
+        <main id="main-content" className="flex-1 p-4 sm:p-7 max-w-[1600px] w-full mx-auto space-y-7">
+          {/* Top Bar Action (Simulasi & Refresh) */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-1 border-b border-[#E2E8F0]/60 dark:border-[#334155]/60">
+            <div>
+              <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+                Inventaris &amp; Monitoring Seluruh Perangkat Telekomunikasi TERA
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleToggleSimulation}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
         <main id="main-content" className="flex-1 p-4 sm:p-6 lg:p-7 max-w-[1600px] w-full mx-auto space-y-5 sm:space-y-6 text-left">
           {/* Top Bar Action (Simulasi & Refresh) */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-[#E2E8F0]/70 dark:border-[#334155]/70">
@@ -368,6 +391,28 @@ export default function UnitsPage() {
             </div>
           </div>
 
+          {/* =========================================================================
+              TOP SECTION: MY CARDS (LEFT 60%) + MY EXPENSE (RIGHT 40%) - BANKFLASH TRANSACTIONS STYLE
+              ========================================================================= */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-7">
+            {/* MY CARDS SECTION */}
+            
+
+            {/* MY EXPENSE SECTION */}
+           
+          </div>
+
+          {/* =========================================================================
+              KATALOG & DAFTAR UNIT RADIO (CLEAN MODERN TABLE)
+              ========================================================================= */}
+          <div className="bg-white dark:bg-[#1E293B] border border-[#E2E8F0] dark:border-[#334155] rounded-[18px] p-6 shadow-sm hover:border-blue-400 hover:shadow-md transition-all duration-200">
+            {/* Header Judul */}
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+              <div>
+                <h3 className="text-xl sm:text-[22px] font-bold text-[#1E293B] dark:text-white tracking-tight">
+                  Recent Transactions
+                </h3>
+                <p className="text-xs text-[#64748B] dark:text-[#94A3B8] mt-0.5">
           {/* Feedback Banner Saat Unit Berhasil Ditambahkan */}
           {feedbackBanner && (
             <div
@@ -406,6 +451,26 @@ export default function UnitsPage() {
                 </p>
               </div>
 
+              {/* Search Pill: Grey background, hover/focus blue */}
+              <div className="flex items-center gap-3 bg-[#F1F5F9] dark:bg-gray-800/80 rounded-full px-4 py-2 w-full sm:w-72 border border-[#E2E8F0] dark:border-gray-700 hover:border-blue-400 focus-within:border-blue-600 transition-all">
+                <Icon name="search" size={16} className="text-[#64748B]" />
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  placeholder="Cari kode unit, model, lokasi..."
+                  className="bg-transparent text-xs text-[#1E293B] dark:text-white placeholder-[#64748B] outline-none w-full"
+                />
+              </div>
+            </div>
+
+            {/* Navigation Tabs Bar (BankFlash style: All Transactions, Income, Expense, etc.) */}
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E2E8F0] dark:border-[#334155] pb-1 mb-5">
+              {/* Status Tabs */}
+              <div className="flex items-center gap-6 text-sm">
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
                 {/* Search Pill: Grey background, hover/focus blue */}
                 <div className="flex items-center gap-2.5 bg-[#F1F5F9] dark:bg-gray-800/80 rounded-full px-4 py-2.5 w-full sm:flex-1 lg:flex-initial lg:w-72 border border-[#E2E8F0] dark:border-gray-700 hover:border-blue-400 focus-within:border-blue-600 focus-within:ring-2 focus-within:ring-blue-100 dark:focus-within:ring-blue-900/40 transition-all">
@@ -455,6 +520,7 @@ export default function UnitsPage() {
                         setStatusFilter(st);
                         setCurrentPage(1);
                       }}
+                      className={`relative pb-3 text-sm font-semibold transition-colors ${
                       className={`relative pb-3 text-xs sm:text-sm font-semibold whitespace-nowrap transition-colors shrink-0 ${
                         isActive
                           ? 'text-blue-600 dark:text-blue-400'
@@ -470,6 +536,28 @@ export default function UnitsPage() {
                 })}
               </div>
 
+              {/* Category Filter Pills: Grey, Hover Biru */}
+              <div className="flex flex-wrap items-center gap-2">
+                {CATEGORIES.map((cat) => {
+                  const isActive = category === cat;
+                  return (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => {
+                        setCategory(cat);
+                        setCurrentPage(1);
+                      }}
+                      className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
+                        isActive
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : 'bg-[#F1F5F9] dark:bg-gray-800 text-[#64748B] dark:text-[#94A3B8] hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 hover:border-blue-300 border border-transparent'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  );
+                })}
               {/* Category Filter Pills & Counter */}
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-2">
@@ -525,6 +613,23 @@ export default function UnitsPage() {
                   setQuery('');
                   setCategory('Semua');
                   setStatusFilter('Semua');
+                }}
+              />
+            )}
+
+            {/* Data Table Hasil Fetch */}
+            {!loading && !error && filteredUnits.length > 0 && (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] border-b border-[#E2E8F0] dark:border-[#334155]">
+                      <th className="pb-3.5 px-3">Description</th>
+                      <th className="pb-3.5 px-3">Transaction ID</th>
+                      <th className="pb-3.5 px-3">Type</th>
+                      <th className="pb-3.5 px-3">Card / Frekuensi</th>
+                      <th className="pb-3.5 px-3">Date / Lokasi</th>
+                      <th className="pb-3.5 px-3 text-right">Amount</th>
+                      <th className="pb-3.5 px-3 text-center">Receipt</th>
                   setCurrentPage(1);
                 }}
               />
@@ -640,6 +745,13 @@ export default function UnitsPage() {
                       const isDisewa = unit.status_unit === 'Disewa';
                       return (
                         <tr
+                          key={unit.id}
+                          className="hover:bg-blue-50/40 dark:hover:bg-blue-950/30 transition-colors group cursor-pointer"
+                        >
+                          {/* Description: Circle Icon with arrow + Title */}
+                          <td className="py-4 px-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-9 h-9 rounded-full bg-[#F1F5F9] dark:bg-gray-800 border border-[#E2E8F0] dark:border-gray-700 flex items-center justify-center text-[#64748B] group-hover:text-blue-600 group-hover:border-blue-400 group-hover:bg-blue-50 transition-all flex-shrink-0">
                           key={unit.id_unit || unit.kode_unit}
                           onClick={() => setSelectedUnit(unit)}
                           className="hover:bg-blue-50/40 dark:hover:bg-blue-950/30 transition-colors group cursor-pointer"
@@ -659,6 +771,12 @@ export default function UnitsPage() {
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19V5m-7 7l7-7 7 7" />
                                 </svg>
                               </div>
+                              <div>
+                                <span className="font-bold text-[#1E293B] dark:text-white block group-hover:text-blue-600 transition-colors">
+                                  {unit.nama_unit}
+                                </span>
+                                <span className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">
+                                  {unit.merk}
                               <div className="min-w-0">
                                 <span className="font-bold text-[#1E293B] dark:text-white block group-hover:text-blue-600 transition-colors leading-snug">
                                   {unit.nama_unit}
@@ -674,6 +792,17 @@ export default function UnitsPage() {
                           </td>
 
                           {/* Transaction ID */}
+                          <td className="py-4 px-3 font-mono text-[#64748B] dark:text-[#94A3B8]">
+                            #{unit.kode_unit}
+                          </td>
+
+                          {/* Type */}
+                          <td className="py-4 px-3 text-[#64748B] dark:text-[#94A3B8] font-medium">
+                            {unit.kategori}
+                          </td>
+
+                          {/* Card / Frekuensi */}
+                          <td className="py-4 px-3 font-mono text-[11px] text-[#64748B] dark:text-[#94A3B8]">
                           <td className="py-4 px-2.5 xl:px-3 font-mono text-[#64748B] dark:text-[#94A3B8] whitespace-nowrap">
                             #{unit.kode_unit}
                           </td>
@@ -689,11 +818,13 @@ export default function UnitsPage() {
                           </td>
 
                           {/* Date / Lokasi */}
+                          <td className="py-4 px-3 text-[#64748B] dark:text-[#94A3B8]">
                           <td className="py-4 px-2.5 xl:px-3 text-[#64748B] dark:text-[#94A3B8] max-w-[165px] xl:max-w-[230px] leading-snug">
                             {unit.lokasi}
                           </td>
 
                           {/* Amount */}
+                          <td className="py-4 px-3 text-right font-bold">
                           <td className="py-4 px-2.5 xl:px-3 text-right font-bold whitespace-nowrap">
                             <span className={isDisewa ? 'text-rose-500' : 'text-emerald-500'}>
                               {isDisewa ? '-' : '+'}
@@ -702,6 +833,11 @@ export default function UnitsPage() {
                           </td>
 
                           {/* Receipt: Pill Outline Button with Blue Hover */}
+                          <td className="py-4 px-3 text-center">
+                            <button
+                              type="button"
+                              onClick={() => setSelectedUnit(unit)}
+                              className="px-4 py-1.5 rounded-full border border-[#E2E8F0] dark:border-gray-700 text-xs font-semibold text-[#64748B] dark:text-[#94A3B8] hover:text-blue-600 hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all shadow-sm"
                           <td className="py-4 px-2.5 xl:px-3 text-center whitespace-nowrap">
                             <button
                               type="button"
@@ -724,6 +860,8 @@ export default function UnitsPage() {
 
             {/* Pagination: BankFlash style */}
             {!loading && !error && filteredUnits.length > 0 && (
+              <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-[#E2E8F0] dark:border-[#334155] mt-4">
+                <span className="text-xs text-[#64748B] dark:text-[#94A3B8]">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-[#E2E8F0] dark:border-[#334155] mt-4">
                 <span className="text-xs text-[#64748B] dark:text-[#94A3B8] text-center sm:text-left">
                   Menampilkan {(currentPage - 1) * pageSize + 1}-
@@ -1071,6 +1209,7 @@ export default function UnitsPage() {
           subtitle={`Spesifikasi teknis perangkat telekomunikasi ${selectedUnit.nama_unit}`}
           maxWidth="max-w-2xl"
           footer={
+            <div className="flex items-center justify-end gap-3 w-full">
             <div className="flex flex-wrap items-center justify-end gap-2.5 sm:gap-3 w-full">
               <button
                 type="button"
@@ -1092,6 +1231,8 @@ export default function UnitsPage() {
             </div>
           }
         >
+          <div className="space-y-4 text-xs text-[#64748B] dark:text-[#94A3B8]">
+            <div className="grid grid-cols-2 gap-4 p-4 rounded-xl bg-[#F8FAFC] dark:bg-gray-800/50 border border-[#E2E8F0] dark:border-gray-700">
           <div className="space-y-4 text-xs text-[#64748B] dark:text-[#94A3B8] text-left">
             {selectedUnit.foto_unit && (
               <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-gray-800/50 border border-[#E2E8F0] dark:border-gray-700 flex items-center justify-center">
@@ -1134,6 +1275,14 @@ export default function UnitsPage() {
               </div>
               <div>
                 <span className="block text-[10px] uppercase font-bold text-gray-400">Status Operasional</span>
+                <span className="font-bold text-emerald-600 text-sm">{selectedUnit.status_unit}</span>
+              </div>
+              <div>
+                <span className="block text-[10px] uppercase font-bold text-gray-400">Tarif Sewa Bulanan</span>
+                <span className="font-bold text-blue-600 text-sm">
+                  {formatRupiah(selectedUnit.harga_sewa || selectedUnit.tarif_sewa_bulanan)}
+                </span>
+              </div>
                 <span
                   className={`inline-block mt-1 px-2.5 py-0.5 rounded-full text-xs font-bold border ${getStatusBadgeClass(
                     selectedUnit.status_unit
@@ -1166,6 +1315,8 @@ export default function UnitsPage() {
 
             <div>
               <span className="block text-[10px] uppercase font-bold text-gray-400 mb-1">Catatan Teknis / Lisensi</span>
+              <p className="p-3 bg-[#F1F5F9] dark:bg-gray-800 rounded-lg text-[#1E293B] dark:text-gray-200">
+                {selectedUnit.deskripsi ||
               <p className="p-3 bg-[#F1F5F9] dark:bg-gray-800 rounded-lg text-[#1E293B] dark:text-gray-200 leading-relaxed">
                 {selectedUnit.spesifikasi ||
                   selectedUnit.deskripsi ||

@@ -52,6 +52,10 @@ export default function Modal({
         aria-labelledby={headingId}
         className={`w-full ${maxWidth} bg-white dark:bg-[#1E293B] text-[#1E293B] dark:text-[#F8FAFC] border border-[#E2E8F0] dark:border-[#334155] shadow-2xl rounded-[22px] overflow-hidden`}
       >
+        <div className="flex items-start justify-between gap-4 px-6 sm:px-8 py-5 border-b border-[#E2E8F0] dark:border-[#334155] bg-white dark:bg-[#1E293B]">
+          <div>
+            <h2 id={headingId} className="text-lg font-bold text-[#1E293B] dark:text-white">
+              {title}
         <div className="flex items-start justify-between gap-4 px-5 sm:px-7 py-4 sm:py-5 border-b border-[#E2E8F0] dark:border-[#334155] bg-white dark:bg-[#1E293B]">
           <div className="min-w-0">
             <h2 id={headingId} className="text-base sm:text-lg font-bold text-[#1E293B] dark:text-white flex items-center gap-2">
@@ -64,6 +68,16 @@ export default function Modal({
             type="button"
             onClick={onClose}
             aria-label="Tutup dialog"
+            className="p-1.5 rounded-full text-[#64748B] hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-800 transition-colors"
+          >
+            <Icon name="close" size={20} />
+          </button>
+        </div>
+
+        <div className="px-6 sm:px-8 py-6 max-h-[75vh] overflow-y-auto">{children}</div>
+
+        {footer && (
+          <div className="px-6 sm:px-8 py-4 border-t border-[#E2E8F0] dark:border-[#334155] bg-[#F8FAFC] dark:bg-gray-800/40 flex items-center justify-end gap-3">
             className="p-2 rounded-xl bg-[#F1F5F9] dark:bg-gray-800 text-[#64748B] hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors shrink-0"
           >
             <Icon name="close" size={18} />
