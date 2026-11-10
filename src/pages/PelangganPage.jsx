@@ -228,3 +228,26 @@ export default function PelangganPage() {
                   <h3 className="text-3xl font-bold text-gray-900">{data.filter(d => d.status === 'Aktif').length} Akun</h3>
                   <p className="text-xs text-gray-400 mt-2">Kontrak penyewaan berjalan</p>
                 </div>
+                <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600">
+                  <Icon name="check" />
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex justify-between items-start">
+                <div>
+                  <p className="text-xs font-semibold text-rose-600 uppercase tracking-wider mb-2">Suspended / Non-Aktif</p>
+                  <h3 className="text-3xl font-bold text-gray-900">{data.filter(d => d.status === 'Suspended').length} Akun</h3>
+                  <p className="text-xs text-gray-400 mt-2">Menunggu verifikasi / rekonsiliasi</p>
+                </div>
+                <div className="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center text-rose-600">
+                  <Icon name="warning" />
+                </div>
+              </div>
+            </section>
+
+            {/* MAIN TABLE SECTION */}
+            <section className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-gray-100">
+                <h3 className="text-lg font-bold text-gray-900">Daftar Pelanggan & Mitra Korporat</h3>
+                <p className="text-sm text-gray-500 mb-6">Kelola informasi legalitas NPWP, kontak PIC, wilayah operasional, dan riwayat sewa.</p>
+                
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
