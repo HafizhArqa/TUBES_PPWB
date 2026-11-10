@@ -389,3 +389,26 @@ export default function PelangganPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Jabatan PIC</label>
+              <input type="text" placeholder="Contoh: Head of IT & Telecom" value={formData.jabatan} onChange={e=>setFormData({...formData, jabatan: e.target.value})} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:border-blue-500 transition-colors" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Pelanggan <span className="text-rose-500">*</span></label>
+              <input required type="email" placeholder="corporate@perusahaan.com" value={formData.email} onChange={e=>setFormData({...formData, email: e.target.value})} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:border-blue-500 transition-colors" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Nomor Telepon / WA <span className="text-rose-500">*</span></label>
+              <input required type="text" placeholder="+62 812-3456-7890" value={formData.telepon} onChange={e=>setFormData({...formData, telepon: e.target.value})} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-mono outline-none focus:border-blue-500 transition-colors" />
+            </div>
+          </div>
+          
+          <WilayahSelector />
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Alamat Lengkap / Kantor <span className="text-rose-500">*</span></label>
+            <input required type="text" placeholder="Jl. Jenderal Sudirman No. 45, Jakarta Pusat" value={formData.alamat} onChange={e=>setFormData({...formData, alamat: e.target.value})} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:border-blue-500 transition-colors" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Dokumen Persyaratan (Legalitas) <span className="text-rose-500">*</span></label>
+            <div className="w-full border-2 border-dashed border-blue-200 bg-blue-50/30 rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-blue-50 transition-colors">
+              <Icon name="upload" className="w-8 h-8 text-blue-500 mb-2" />
