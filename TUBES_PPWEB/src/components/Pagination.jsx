@@ -18,6 +18,7 @@ export default function Pagination({
 
   return (
     <nav aria-label="Navigasi halaman tabel" className="flex items-center gap-1 sm:gap-2">
+    <nav aria-label="Navigasi halaman tabel" className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
       <button
         type="button"
         disabled={currentPage <= 1}

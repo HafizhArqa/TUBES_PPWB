@@ -10,6 +10,7 @@ export default function Modal({
   isOpen,
   onClose,
   title,
+  titleIcon,
   subtitle,
   maxWidth = 'max-w-xl',
   children,
@@ -55,6 +56,11 @@ export default function Modal({
           <div>
             <h2 id={headingId} className="text-lg font-bold text-[#1E293B] dark:text-white">
               {title}
+        <div className="flex items-start justify-between gap-4 px-5 sm:px-7 py-4 sm:py-5 border-b border-[#E2E8F0] dark:border-[#334155] bg-white dark:bg-[#1E293B]">
+          <div className="min-w-0">
+            <h2 id={headingId} className="text-base sm:text-lg font-bold text-[#1E293B] dark:text-white flex items-center gap-2">
+              {titleIcon && <span className="shrink-0 flex items-center">{titleIcon}</span>}
+              <span className="truncate">{title}</span>
             </h2>
             {subtitle && <p className="text-xs text-[#64748B] dark:text-[#94A3B8] mt-0.5">{subtitle}</p>}
           </div>
@@ -72,6 +78,16 @@ export default function Modal({
 
         {footer && (
           <div className="px-6 sm:px-8 py-4 border-t border-[#E2E8F0] dark:border-[#334155] bg-[#F8FAFC] dark:bg-gray-800/40 flex items-center justify-end gap-3">
+            className="p-2 rounded-xl bg-[#F1F5F9] dark:bg-gray-800 text-[#64748B] hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors shrink-0"
+          >
+            <Icon name="close" size={18} />
+          </button>
+        </div>
+
+        <div className="px-5 sm:px-7 py-5 sm:py-6 max-h-[75vh] overflow-y-auto">{children}</div>
+
+        {footer && (
+          <div className="px-5 sm:px-7 py-4 border-t border-[#E2E8F0] dark:border-[#334155] bg-[#F8FAFC] dark:bg-gray-800/40 flex items-center justify-end gap-3">
             {footer}
           </div>
         )}

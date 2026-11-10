@@ -1,11 +1,6 @@
 # TERA — Telecommunication Equipment Rental Application
 ### Sistem Informasi Manajemen Perangkat Telekomunikasi PT Utama Telekomindo
 
-> **Tugas Besar I (UTS) — Perancangan dan Pemrograman Web**  
-> **Status Repository:** Public Access & Clean Modern Frontend Stack  
-> **Total Nilai Target:** 100 Poin (25 Poin Kelompok + 75 Poin Individu)
-
----
 
 ## 1. Identitas Kelompok & Pembagian Modul Fitur
 
@@ -76,25 +71,7 @@ TUBES_PPWEB/
 
 ---
 
-## 3. Matriks Pemenuhan Rubrik Penilaian (Total Target: 100 Poin)
-
-| Kategori Rubrik | Poin | Kriteria Sempurna (Top Tier) | Implementasi & Bukti Teknis pada Proyek TERA | Status |
-| :--- | :---: | :--- | :--- | :---: |
-| **Framework & Structure** | **15 pts** | Framework proper, Component architecture, Professional state & props | React 18 SPA berbasis Vite 6, modular component architecture, reusable props, controlled form state, protected routes. | **100% Sesuai** |
-| **HTML Semantics & A11y** | **12 pts** | Excellent semantic, Comprehensive accessibility, Fully functional keyboard navigation | Penggunaan tag semantik `<header>`, `<aside>`, `<nav>`, `<main id="main-content">`, `<section>`, `<table>`, atribut `aria-label`, `aria-hidden`, `role="alert"`, dan focus outline. | **100% Sesuai** |
-| **Modern CSS & Responsive** | **12 pts** | Expert Flexbox/Grid usage, Comprehensive breakpoints, Perfect all devices | Kombinasi CSS Grid (`grid-cols-*`) + Flexbox (`flex`, `items-center`) + Tailwind CSS. 4 level breakpoints responsif (`sm`, `md`, `lg`, `xl`) dan dark mode toggle. | **100% Sesuai** |
-| **API & Data Fetching** | **10 pts** | Clean fetch implementation, reusable, all dynamic | 100% data dinamis diambil via HTTP request: Mock API via **Axios** (`units.json`, `pelanggan.json`, `kontrak.json`, `invoices.json`, `users.json`) & Public API Wilayah Indonesia via **Fetch API**. | **100% Sesuai** |
-| **Error Handling & UX States** | **10 pts** | Comprehensive error handling, try-catch, Skeleton shimmer, Retry | Seluruh fetch dibungkus `try ... catch`. Dilengkapi UI Skeleton Shimmer saat loading, Empty State saat filter kosong, tombol Coba Lagi (*Retry*), dan tombol **"Tes Simulasi Error"**. | **100% Sesuai** |
-| **Code Quality & DRY** | **10 pts** | Completely clean console errors, Well-organized folder structure, Excellent reusability | Zero console errors, pemisahan folder yang rapi (`components/`, `pages/`, `public/api/`), komponen reusable (`Icon`, `Modal`, `Pagination`, `StatusStates`, `BankCard`). | **100% Sesuai** |
-| **Git & Version Control** | **10 pts** | 15+ meaningful commits, descriptive commit messages, clean branches | Commit history terstruktur, deskriptif, dan terorganisir rapi. | **100% Sesuai** |
-| **Design & UX** | **6 pts** | Professional visual consistency, Modern banking style, Intuitive UX | Modern BankFlash Dashboard Layout: Palet warna bersih (White, Grey, Accent Blue Hover), border radius konsisten (14–18px), soft shadow, navigasi intuitif. | **100% Sesuai** |
-| **Laporan & Dokumentasi** | **5 pts** | Complete tech stack description, clear setup instructions, and links | Dokumentasi lengkap dengan penjelasan arsitektur, panduan instalasi, dan kredensial testing. | **100% Sesuai** |
-| **Repository & Git (Kelompok)** | **5 pts** | Public access, clear setup, README lengkap | Setup langkah demi langkah yang jelas dan siap dijalankan penguji. | **100% Sesuai** |
-| **Integrasi & Fungsionalitas** | **15 pts** | All pages connected, dynamic correct, 100% working, comprehensive error handling | 6 halaman terhubung penuh via React Router, autentikasi sesi, CRUD data filter, ekspor inspeksi modal. | **100% Sesuai** |
-
----
-
-## 4. Panduan Menjalankan & Pengujian
+## 3. Panduan Menjalankan & Pengujian
 
 ### A. Langkah Instalasi & Menjalankan:
 1. Masuk ke direktori proyek:
