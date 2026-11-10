@@ -343,3 +343,26 @@ export default function PelangganPage() {
                           </td>
                         </tr>
                       ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </>
+        )}
+      </main>
+
+      {/* MODAL TAMBAH PELANGGAN */}
+      <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} title="Tambah Pelanggan Baru">
+        <p className="text-sm text-gray-500 mb-6">Isi data identitas korporat dan informasi kontak PIC untuk pendaftaran akun sewa B2B.</p>
+        <form onSubmit={handleAddSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Kode Registrasi Mitra</label>
+              <div className="flex gap-2">
+                <input type="text" value="PLG-2026-393" disabled className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-mono text-gray-500" />
+                <button type="button" className="px-4 border border-gray-200 rounded-xl text-blue-600 hover:bg-blue-50"><Icon name="refresh" className="w-4 h-4" /></button>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Kategori & Status</label>
