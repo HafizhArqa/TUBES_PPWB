@@ -1,0 +1,122 @@
+/**
+ * @file style3.css
+ * @description Modul 3: Components, Cards, Tables, Buttons & Hover Blue Utilities
+ * Karakteristik visual modern banking dashboard: rounded 18px, soft shadow, border tipis, hover biru.
+ */
+
+/* ==========================================================================
+   CARDS & WIDGET SURFACES
+   ========================================================================== */
+
+.bank-card {
+  background-color: var(--bank-card);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--bank-border);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.02);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.bank-card:hover {
+  border-color: var(--bank-border-hover);
+  box-shadow: 0 8px 24px 0 rgba(37, 99, 235, 0.08);
+}
+
+/* ==========================================================================
+   BUTTONS & INTERACTIVE HOVER BLUE UTILITIES
+   ========================================================================== */
+
+.btn-bank-primary {
+  background-color: var(--bank-primary);
+  color: #FFFFFF;
+  border-radius: var(--button-radius);
+  padding: 0.625rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-bank-primary:hover {
+  background-color: var(--bank-primary-hover);
+  box-shadow: 0 6px 20px 0 rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-bank-outline {
+  background-color: transparent;
+  color: var(--bank-text-muted);
+  border: 1px solid var(--bank-border);
+  border-radius: var(--button-radius);
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+}
+
+.btn-bank-outline:hover {
+  color: var(--bank-primary);
+  border-color: var(--bank-primary);
+  background-color: var(--bank-primary-light);
+}
+
+/* Global Hover Blue Utility */
+.hover-blue {
+  transition: color 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+}
+
+.hover-blue:hover {
+  color: var(--bank-primary) !important;
+  border-color: var(--bank-primary) !important;
+}
+
+/* ==========================================================================
+   TABLE DESIGN: CLEAN, MODERN, SPACIOUS
+   ========================================================================== */
+
+.bank-table-container {
+  overflow-x: auto;
+  border-radius: var(--card-radius);
+}
+
+.bank-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+
+.bank-table th {
+  padding: 1rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--bank-text-muted);
+  border-bottom: 1px solid var(--bank-border);
+  background-color: transparent;
+  letter-spacing: 0.025em;
+}
+
+.bank-table td {
+  padding: 1.125rem 1.25rem;
+  font-size: 0.8125rem;
+  border-bottom: 1px solid var(--bank-border);
+  transition: background-color 0.18s ease;
+}
+
+.bank-table tbody tr:hover td {
+  background-color: var(--bank-primary-light);
+}
+
+.dark .bank-table tbody tr:hover td {
+  background-color: rgba(30, 58, 138, 0.2);
+}
+
