@@ -412,3 +412,26 @@ export default function PelangganPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1.5">Dokumen Persyaratan (Legalitas) <span className="text-rose-500">*</span></label>
             <div className="w-full border-2 border-dashed border-blue-200 bg-blue-50/30 rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-blue-50 transition-colors">
               <Icon name="upload" className="w-8 h-8 text-blue-500 mb-2" />
+              <span className="text-sm font-semibold text-gray-800">Upload Dokumen Legalitas (KTP/NPWP/NIB)</span>
+              <span className="text-xs text-gray-500 mt-1">PDF, JPG, PNG hingga 5MB</span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end gap-3 pt-6 mt-6 border-t border-gray-100">
+            <button type="button" onClick={() => setIsAddModalOpen(false)} className="px-6 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-full hover:bg-gray-50">Batal</button>
+            <button type="submit" className="px-6 py-2.5 text-sm font-bold text-white bg-blue-600 rounded-full hover:bg-blue-700 shadow-sm shadow-blue-200 flex items-center gap-2">
+              <Icon name="plus" className="w-4 h-4" /> Simpan Pelanggan
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* MODAL INSPEKSI (DETAIL PELANGGAN) */}
+      <Modal isOpen={isInspectModalOpen} onClose={() => setIsInspectModalOpen(false)} title="Detail Informasi Pelanggan">
+        {selectedItem && (
+          <div className="space-y-6">
+            <p className="text-sm text-gray-500 mb-6 -mt-4">Rincian data profil korporat, kontak PIC, statistik riwayat penyewaan, dan wilayah operasional EMSIFA.</p>
+            
+            <div className="p-5 bg-gray-50 border border-gray-100 rounded-2xl flex items-start gap-4">
+              <div className="w-14 h-14 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl font-bold shrink-0">
+                {selectedItem.nama.substring(0, 2).toUpperCase()}
