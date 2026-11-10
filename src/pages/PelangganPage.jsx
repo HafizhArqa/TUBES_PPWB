@@ -274,3 +274,26 @@ export default function PelangganPage() {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Cari perusahaan, NPWP, PIC..."
+                        className="pl-9 pr-4 py-2 border border-gray-200 rounded-full text-sm focus:border-blue-500 outline-none w-full sm:w-64 bg-gray-50/50 focus:bg-white transition-colors"
+                      />
+                    </div>
+                    <button 
+                      onClick={() => setIsAddModalOpen(true)}
+                      className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-sm shadow-blue-200 active:scale-95"
+                    >
+                      <Icon name="plus" className="w-4 h-4" /> Tambah Pelanggan
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* TABLE */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse min-w-[1000px]">
+                  <thead>
+                    <tr className="bg-gray-50/50 border-b border-gray-100">
+                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Nama Perusahaan & NPWP</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">PIC Procurement</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Email & No. Telepon</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Alamat Site / Kantor</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase text-center">Status</th>
