@@ -297,3 +297,26 @@ export default function PelangganPage() {
                       <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Email & No. Telepon</th>
                       <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Alamat Site / Kantor</th>
                       <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase text-center">Status</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase text-right">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {isLoading ? (
+                      <tr><td colSpan="6" className="p-8 text-center text-gray-500">Memuat data...</td></tr>
+                    ) : filteredData.length === 0 ? (
+                      <tr><td colSpan="6" className="p-8 text-center text-gray-500">Tidak ada pelanggan ditemukan.</td></tr>
+                    ) : (
+                      filteredData.slice(0, 6).map((item, index) => (
+                        <tr key={index} className="border-b border-gray-50 hover:bg-blue-50/30 transition-colors">
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm shrink-0">
+                                {item.nama.substring(0, 2).toUpperCase()}
+                              </div>
+                              <div>
+                                <div className="font-bold text-gray-900">{item.nama}</div>
+                                <div className="text-xs text-gray-500 font-mono mt-0.5">NPWP: {item.npwp}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
