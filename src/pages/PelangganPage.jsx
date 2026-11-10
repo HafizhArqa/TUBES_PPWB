@@ -182,3 +182,26 @@ export default function PelangganPage() {
           <div className="px-4 py-3 text-sm font-medium text-gray-500 rounded-xl cursor-not-allowed">Kelola Data Unit</div>
           <div className="px-4 py-3 text-sm font-medium text-blue-700 bg-blue-50/50 rounded-xl border-l-4 border-blue-600">Data Pelanggan</div>
         </nav>
+      </aside>
+
+      {/* MAIN CONTENT */}
+      <main id="main-content" className="flex-1 p-4 md:p-8 overflow-y-auto">
+        
+        {/* HEADER */}
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <h2 className="text-2xl font-bold text-gray-900">Data Pelanggan</h2>
+          <div className="flex items-center gap-3">
+            <button onClick={handleSimulateError} className="px-4 py-2 text-sm text-rose-600 bg-rose-50 rounded-full font-medium hover:bg-rose-100 transition-colors flex items-center gap-2">
+              <Icon name="warning" className="w-4 h-4" /> Tes Simulasi Error
+            </button>
+            <button onClick={loadData} className="px-4 py-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-full font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
+              <Icon name="refresh" className="w-4 h-4" /> Segarkan API
+            </button>
+            <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold shadow-sm">ZK</div>
+          </div>
+        </header>
+
+        {isError ? (
+          <div role="alert" className="p-6 bg-rose-50 border border-rose-200 rounded-2xl flex flex-col items-center justify-center text-center my-10">
+            <Icon name="warning" className="w-12 h-12 text-rose-500 mb-3" />
+            <h3 className="text-rose-800 font-bold mb-1">Gagal Memuat Data Pelanggan</h3>
