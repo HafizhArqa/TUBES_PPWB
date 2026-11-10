@@ -1,0 +1,146 @@
+/**
+ * @file style2.css
+ * @description Modul 2: Layout Systems, CSS Grid & Flexbox, serta Media Queries Responsif
+ * Mengatur tata letak Shell Aplikasi, Sidebar Fixed, Topbar Header, dan Grid Halaman.
+ */
+
+/* ==========================================================================
+   APP SHELL LAYOUT: CSS GRID & FLEXBOX
+   ========================================================================== */
+
+/* Main Shell using CSS Grid */
+.bank-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  min-height: 100vh;
+  background-color: var(--bank-bg);
+}
+
+@media (max-width: 1024px) {
+  .bank-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Fixed Sidebar Navigation using CSS Flexbox */
+.bank-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  background-color: var(--bank-card);
+  border-right: 1px solid var(--bank-border);
+  z-index: 50;
+  overflow-y: auto;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.25s ease;
+}
+
+/* Main Content Wrapper */
+.bank-main-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+/* Topbar Header using CSS Flexbox */
+.bank-topbar {
+  height: var(--topbar-height);
+  background-color: var(--bank-card);
+  border-bottom: 1px solid var(--bank-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+@media (max-width: 640px) {
+  .bank-topbar {
+    padding: 0 1rem;
+    height: 70px;
+  }
+}
+
+/* Page Content Container */
+.bank-content {
+  flex: 1;
+  padding: 1.75rem 2rem 3rem;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .bank-content {
+    padding: 1rem 1rem 2rem;
+  }
+}
+
+/* ==========================================================================
+   CSS GRID CONTAINER LAYOUTS
+   ========================================================================== */
+
+/* 2-Column Dashboard Grid (60% / 40%) */
+.bank-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 1180px) {
+  .bank-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 2-Cards Grid for "My Cards" */
+.bank-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .bank-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 3-Column Metric Grid */
+.bank-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .bank-metric-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Bottom Split Grid */
+.bank-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .bank-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
