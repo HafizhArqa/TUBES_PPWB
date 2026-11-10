@@ -159,3 +159,26 @@ export default function PelangganPage() {
     
     setIsAddModalOpen(false);
     setFormData({ nama: '', npwp: '', pic: '', jabatan: '', email: '', telepon: '', alamat: '' });
+  };
+
+  const handleSimulateError = () => {
+    setIsError(true);
+    setData([]);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#F8FAFC] flex font-sans text-gray-800">
+      {/* SIDEBAR MOCKUP (Agar tampilan pas dengan screenshot) */}
+      <aside className="w-64 bg-white border-r border-gray-100 hidden md:flex flex-col px-4 py-6">
+        <div className="flex items-center gap-3 mb-10 px-2">
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">T</div>
+          <div>
+            <h1 className="font-bold text-gray-900 leading-tight">TERA.</h1>
+            <p className="text-[10px] text-gray-500">Telekomindo</p>
+          </div>
+        </div>
+        <nav className="space-y-2">
+          <div className="px-4 py-3 text-sm font-medium text-gray-500 rounded-xl cursor-not-allowed">Dashboard</div>
+          <div className="px-4 py-3 text-sm font-medium text-gray-500 rounded-xl cursor-not-allowed">Kelola Data Unit</div>
+          <div className="px-4 py-3 text-sm font-medium text-blue-700 bg-blue-50/50 rounded-xl border-l-4 border-blue-600">Data Pelanggan</div>
+        </nav>
