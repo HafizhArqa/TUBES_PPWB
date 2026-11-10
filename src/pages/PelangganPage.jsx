@@ -366,3 +366,26 @@ export default function PelangganPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Kategori & Status</label>
+              <div className="flex gap-2">
+                <select className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:border-blue-500 bg-white">
+                  <option>Korporat B2B</option>
+                </select>
+                <select className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:border-blue-500 bg-white">
+                  <option>Aktif (Approved)</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Nama Perusahaan <span className="text-rose-500">*</span></label>
+              <input required type="text" placeholder="Contoh: PT Bangun Nusantara" value={formData.nama} onChange={e=>setFormData({...formData, nama: e.target.value})} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:border-blue-500 transition-colors" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">No. Identitas (NPWP) <span className="text-rose-500">*</span></label>
+              <input required type="text" placeholder="01.842.519.4-304.000" value={formData.npwp} onChange={e=>setFormData({...formData, npwp: e.target.value})} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-mono outline-none focus:border-blue-500 transition-colors" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Nama PIC Procurement <span className="text-rose-500">*</span></label>
+              <input required type="text" placeholder="Contoh: Budi Pratama" value={formData.pic} onChange={e=>setFormData({...formData, pic: e.target.value})} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:border-blue-500 transition-colors" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Jabatan PIC</label>
