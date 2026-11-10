@@ -251,3 +251,26 @@ export default function PelangganPage() {
                 <p className="text-sm text-gray-500 mb-6">Kelola informasi legalitas NPWP, kontak PIC, wilayah operasional, dan riwayat sewa.</p>
                 
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                  {/* TABS */}
+                  <div className="flex items-center gap-6 border-b border-gray-200">
+                    {['All', 'Aktif', 'Suspended'].map(tab => (
+                      <button 
+                        key={tab}
+                        onClick={() => setActiveTab(tab)}
+                        className={`pb-3 text-sm font-medium transition-colors relative ${activeTab === tab ? 'text-blue-600' : 'text-gray-500 hover:text-gray-800'}`}
+                      >
+                        {tab === 'All' ? 'All Accounts (Semua)' : tab === 'Aktif' ? 'Active Approved (Aktif)' : 'Suspended (Tidak Aktif)'}
+                        {activeTab === tab && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 rounded-t-full"></div>}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* KOTAK PENCARIAN & TOMBOL TAMBAH - Menerapkan Flexbox sesuai instruksi */}
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <Icon name="search" className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Cari perusahaan, NPWP, PIC..."
